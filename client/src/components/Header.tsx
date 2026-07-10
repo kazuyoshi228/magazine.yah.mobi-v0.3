@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Globe } from "lucide-react";
+import { Globe, PenLine } from "lucide-react";
+import { useAuth } from "@/_core/hooks/useAuth";
 
 export type Lang = "ja" | "en" | "ko" | "zh-TW";
 
@@ -109,6 +110,8 @@ export default function Header({ lang, onLangChange }: HeaderProps) {
 
   const navItems = NAV_ITEMS[lang];
   const ctaLabel = CTA_LABEL[lang];
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
 
   return (
     <header
@@ -201,6 +204,30 @@ export default function Header({ lang, onLangChange }: HeaderProps) {
 
         {/* Right side */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginLeft: "auto" }}>
+          {/* Admin CMS link (管理者ログイン時のみ表示) */}
+          {isAdmin && (
+            <Link
+              href="/admin/cms"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.375rem",
+                fontSize: "0.6875rem",
+                fontWeight: 500,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "#555555",
+                border: "1px solid #D7D7D7",
+                padding: "0.375rem 0.75rem",
+                transition: "border-color 160ms",
+              }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#000")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#D7D7D7")}
+            >
+              <PenLine size={12} strokeWidth={1.5} />
+              {!isMobile && <span>CMS</span>}
+            </Link>
+          )}
           {/* Language switcher */}
           <div style={{ position: "relative" }}>
             <button

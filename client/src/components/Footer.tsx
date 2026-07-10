@@ -267,6 +267,15 @@ export default function Footer({ lang }: FooterProps) {
           </p>
           <p style={{ fontSize: "0.75rem", color: "#BBBBBB", margin: 0, letterSpacing: "0.05em" }}>
             magazine.yah.mobi
+            {" · "}
+            <Link
+              href="/login"
+              style={{ color: "#BBBBBB", transition: "color 150ms" }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#555555")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#BBBBBB")}
+            >
+              Admin
+            </Link>
           </p>
         </div>
       </div>

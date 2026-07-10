@@ -29,7 +29,12 @@ export default function SeoHead({
   schemaJson,
   noindex = false,
 }: SeoHeadProps) {
-  const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} — Japan Travel & eSIM Guide`;
+  // metaTitle に既にサイト名が含まれる場合はサフィックスを付けない（二重表示防止）
+  const fullTitle = !title
+    ? `${SITE_NAME} — Japan Travel & eSIM Guide`
+    : /yah\.(magazine|mobi)/i.test(title)
+      ? title
+      : `${title} | ${SITE_NAME}`;
   const metaDesc =
     description ||
     "日本旅行をもっとスマートに。eSIM・グルメ・旅行ガイドをお届けするyah.magazineです。";
