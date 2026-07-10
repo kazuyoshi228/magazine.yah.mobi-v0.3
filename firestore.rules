@@ -3,8 +3,22 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // 管理者判定: ①カスタムクレーム admin（ブートストラップ用・set-admin.mjs）
+    // または ②admin_whitelist コレクションにログインメールが登録済み。
+    // whitelist 方式はトークン更新を待たず追加即時反映される。
     function isAdmin() {
-      return request.auth != null && request.auth.token.admin == true;
+      return request.auth != null && (
+        request.auth.token.admin == true ||
+        exists(/databases/$(database)/documents/admin_whitelist/$(request.auth.token.email))
+      );
+    }
+
+    // ─── 管理者ホワイトリスト（email をドキュメントIDに使用） ───────────────
+    match /admin_whitelist/{email} {
+      // 自分のエントリの存在確認は本人が可能（UIの権限判定用）。一覧は admin のみ。
+      allow read: if request.auth != null
+        && (request.auth.token.email == email || isAdmin());
+      allow write: if isAdmin();
     }
 
     // ─── 記事 ──────────────────────────────────────────────────────────────

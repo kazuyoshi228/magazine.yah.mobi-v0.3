@@ -219,3 +219,39 @@ export function trackEvent(ev: Omit<EventDoc, "createdAt">): void {
     /* 計測失敗は無視 */
   });
 }
+
+// ─── 管理者ホワイトリスト（email をドキュメントIDに使用） ─────────────────────
+
+const whitelistCol = collection(db, "admin_whitelist");
+
+export interface WhitelistEntry {
+  email: string;
+  addedBy: string | null;
+  addedAt: number;
+}
+
+export async function listWhitelist(): Promise<WhitelistEntry[]> {
+  const snap = await getDocs(query(whitelistCol, orderBy("addedAt", "desc")));
+  return snap.docs.map((d) => d.data() as WhitelistEntry);
+}
+
+/** email を正規化（小文字・トリム）。ルール側は token.email をそのまま照合するため小文字前提。 */
+function normalizeEmail(email: string): string {
+  return email.trim().toLowerCase();
+}
+
+export async function addToWhitelist(email: string, addedBy: string | null): Promise<void> {
+  const normalized = normalizeEmail(email);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized)) {
+    throw new Error("メールアドレスの形式が正しくありません。");
+  }
+  await setDoc(doc(whitelistCol, normalized), {
+    email: normalized,
+    addedBy,
+    addedAt: Date.now(),
+  } satisfies WhitelistEntry);
+}
+
+export async function removeFromWhitelist(email: string): Promise<void> {
+  await deleteDoc(doc(whitelistCol, normalizeEmail(email)));
+}

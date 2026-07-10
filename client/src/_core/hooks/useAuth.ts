@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { auth, signInWithGoogle, signOutFirebase, onAuthStateChanged } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db, signInWithGoogle, signOutFirebase, onAuthStateChanged } from "@/lib/firebase";
 
 export interface AuthUser {
   uid: string;
   name: string | null;
   email: string | null;
   avatarUrl: string | null;
-  /** admin カスタムクレームで判定（scripts/set-admin.mjs で付与） */
+  /** admin 判定: カスタムクレーム または admin_whitelist 登録 */
   role: "admin" | "user";
 }
 
@@ -29,19 +30,24 @@ export function useAuth(options?: UseAuthOptions) {
         return;
       }
       try {
-        let token = await fbUser.getIdTokenResult();
-        // admin クレームが未反映の場合、セッション内で一度だけトークンを強制更新する。
-        // （set-admin 直後は古いキャッシュトークンに claim が乗っていないため）
-        if (token.claims.admin !== true && !sessionStorage.getItem("yah_claim_refreshed")) {
-          sessionStorage.setItem("yah_claim_refreshed", "1");
-          token = await fbUser.getIdTokenResult(true);
+        const token = await fbUser.getIdTokenResult();
+        let isAdmin = token.claims.admin === true;
+        // カスタムクレームが無ければ admin_whitelist に自分のメールがあるか確認する。
+        // （whitelist はトークン更新を待たず追加即時反映される）
+        if (!isAdmin && fbUser.email) {
+          try {
+            const snap = await getDoc(doc(db, "admin_whitelist", fbUser.email.toLowerCase()));
+            isAdmin = snap.exists();
+          } catch {
+            /* 未登録 = 権限なし */
+          }
         }
         setUser({
           uid: fbUser.uid,
           name: fbUser.displayName,
           email: fbUser.email,
           avatarUrl: fbUser.photoURL,
-          role: token.claims.admin === true ? "admin" : "user",
+          role: isAdmin ? "admin" : "user",
         });
       } catch {
         setUser(null);

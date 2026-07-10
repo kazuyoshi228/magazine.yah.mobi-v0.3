@@ -4,7 +4,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { listAllArticlesAdmin, deleteArticle as deleteArticleDoc } from "@/lib/db";
 import { useAuth } from "@/_core/hooks/useAuth";
 
-import { Plus, Edit2, Trash2, FileText, Eye } from "lucide-react";
+import { Plus, Edit2, Trash2, FileText, Eye, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import SeoHead from "@/components/SeoHead";
 
@@ -76,9 +76,15 @@ export default function CmsAdmin() {
               <p className="label-section" style={{ color: "rgba(255,255,255,0.4)", marginBottom: "0.25rem" }}>yah.magazine</p>
               <h1 style={{ fontSize: "1.25rem", fontWeight: 500, color: "#FFFFFF", margin: 0, letterSpacing: "-0.02em" }}>CMS管理</h1>
             </div>
-            <Link href="/" style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
-              サイトを見る →
-            </Link>
+            <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+              <Link href="/admin/whitelist" style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "0.375rem" }}>
+                <ShieldCheck size={13} strokeWidth={1.5} />
+                管理者
+              </Link>
+              <Link href="/" style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                サイトを見る →
+              </Link>
+            </div>
           </div>
         </div>
 
