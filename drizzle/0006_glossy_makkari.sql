@@ -1,1 +1,0 @@
-ALTER TABLE `ai_writers` ADD `writerType` enum('human','ai') DEFAULT 'ai' NOT NULL;

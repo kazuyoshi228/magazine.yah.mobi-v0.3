@@ -1,6 +1,14 @@
-import { trpc } from "@/lib/trpc";
-import { signInWithGoogle, signOutFirebase } from "@/lib/firebase";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { auth, signInWithGoogle, signOutFirebase, onAuthStateChanged } from "@/lib/firebase";
+
+export interface AuthUser {
+  uid: string;
+  name: string | null;
+  email: string | null;
+  avatarUrl: string | null;
+  /** admin カスタムクレームで判定（scripts/set-admin.mjs で付与） */
+  role: "admin" | "user";
+}
 
 type UseAuthOptions = {
   redirectOnUnauthenticated?: boolean;
@@ -8,62 +16,72 @@ type UseAuthOptions = {
 };
 
 export function useAuth(options?: UseAuthOptions) {
-  const { redirectOnUnauthenticated = false, redirectPath = "/login" } =
-    options ?? {};
-  const utils = trpc.useUtils();
+  const { redirectOnUnauthenticated = false, redirectPath = "/login" } = options ?? {};
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
   const [signingIn, setSigningIn] = useState(false);
 
-  const meQuery = trpc.auth.me.useQuery(undefined, {
-    retry: false,
-    refetchOnWindowFocus: false,
-  });
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (fbUser) => {
+      if (!fbUser) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+      try {
+        const token = await fbUser.getIdTokenResult();
+        setUser({
+          uid: fbUser.uid,
+          name: fbUser.displayName,
+          email: fbUser.email,
+          avatarUrl: fbUser.photoURL,
+          role: token.claims.admin === true ? "admin" : "user",
+        });
+      } catch {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    });
+    return unsub;
+  }, []);
 
   const login = useCallback(async () => {
     setSigningIn(true);
     try {
       await signInWithGoogle();
-      await utils.auth.me.invalidate();
     } finally {
       setSigningIn(false);
     }
-  }, [utils]);
+  }, []);
 
   const logout = useCallback(async () => {
-    try {
-      await signOutFirebase();
-    } finally {
-      utils.auth.me.setData(undefined, null);
-      await utils.auth.me.invalidate();
-    }
-  }, [utils]);
+    await signOutFirebase();
+    setUser(null);
+  }, []);
 
-  const state = useMemo(() => {
-    return {
-      user: meQuery.data ?? null,
-      loading: meQuery.isLoading || signingIn,
-      error: meQuery.error ?? null,
-      isAuthenticated: Boolean(meQuery.data),
-    };
-  }, [meQuery.data, meQuery.error, meQuery.isLoading, signingIn]);
+  const state = useMemo(
+    () => ({
+      user,
+      loading: loading || signingIn,
+      error: null as Error | null,
+      isAuthenticated: Boolean(user),
+    }),
+    [user, loading, signingIn],
+  );
 
   useEffect(() => {
     if (!redirectOnUnauthenticated) return;
-    if (meQuery.isLoading || signingIn) return;
+    if (loading || signingIn) return;
     if (state.user) return;
     if (typeof window === "undefined") return;
     if (window.location.pathname === redirectPath) return;
     window.location.href = redirectPath;
-  }, [
-    redirectOnUnauthenticated,
-    redirectPath,
-    signingIn,
-    meQuery.isLoading,
-    state.user,
-  ]);
+  }, [redirectOnUnauthenticated, redirectPath, signingIn, loading, state.user]);
 
   return {
     ...state,
-    refresh: () => meQuery.refetch(),
+    refresh: async () => auth.currentUser?.getIdToken(true),
     login,
     logout,
   };

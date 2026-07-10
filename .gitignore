@@ -116,3 +116,12 @@ client/public/__manus__/version.json
 # Secrets — apphosting.yaml contains leaked credentials (rotate & move to Secret Manager)
 apphosting.yaml
 service-account*.json
+
+# Functions build artifacts
+functions/lib/
+functions/assets/index.html
+functions/node_modules/
+
+# Manus logs (legacy)
+.manus-logs/
+.manus/

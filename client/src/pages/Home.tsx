@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { ArrowRight, Wifi, UtensilsCrossed, MapPin, Cpu } from "lucide-react";
-import { trpc } from "@/lib/trpc";
+import { useQuery } from "@tanstack/react-query";
+import { listPublishedArticles } from "@/lib/db";
 import SeoHead from "@/components/SeoHead";
 import type { Lang } from "@/components/Header";
-import SubscribeForm from "@/components/SubscribeForm";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
 interface HomeProps {
@@ -236,10 +236,22 @@ export default function Home({ lang }: HomeProps) {
 
   const { trackCtaClick } = useAnalytics();
 
-  const { data: esimArticles } = trpc.articles.list.useQuery({ categorySlug: "esim", lang, limit: 3 });
-  const { data: gourmetArticles } = trpc.articles.list.useQuery({ categorySlug: "gourmet", lang, limit: 3 });
-  const { data: travelArticles } = trpc.articles.list.useQuery({ categorySlug: "travel", lang, limit: 3 });
-  const { data: latestArticles } = trpc.articles.list.useQuery({ lang, limit: 6 });
+  const { data: esimArticles } = useQuery({
+    queryKey: ["articles", "esim", lang],
+    queryFn: () => listPublishedArticles({ categorySlug: "esim", lang, limit: 3 }),
+  });
+  const { data: gourmetArticles } = useQuery({
+    queryKey: ["articles", "gourmet", lang],
+    queryFn: () => listPublishedArticles({ categorySlug: "gourmet", lang, limit: 3 }),
+  });
+  const { data: travelArticles } = useQuery({
+    queryKey: ["articles", "travel", lang],
+    queryFn: () => listPublishedArticles({ categorySlug: "travel", lang, limit: 3 }),
+  });
+  const { data: latestArticles } = useQuery({
+    queryKey: ["articles", "latest", lang],
+    queryFn: () => listPublishedArticles({ lang, limit: 6 }),
+  });
 
   const siteSchema = {
     "@context": "https://schema.org",
@@ -426,7 +438,7 @@ export default function Home({ lang }: HomeProps) {
               }}
             >
               {latestArticles.map((a, i) => (
-                <div key={a.translationId} className={`animate-fade-in-up stagger-${Math.min(i + 1, 4)}`}>
+                <div key={a.id} className={`animate-fade-in-up stagger-${Math.min(i + 1, 4)}`}>
                   <ArticleCard article={a} lang={lang} />
                 </div>
               ))}
@@ -451,7 +463,7 @@ export default function Home({ lang }: HomeProps) {
               </Link>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))", gap: "1.5rem" }}>
-              {esimArticles.map((a) => <ArticleCard key={a.translationId} article={a} lang={lang} />)}
+              {esimArticles.map((a) => <ArticleCard key={a.id} article={a} lang={lang} />)}
             </div>
           </div>
         </section>
@@ -578,7 +590,7 @@ export default function Home({ lang }: HomeProps) {
           >
             {latestArticles && latestArticles.length > 0
               ? latestArticles.slice(0, 2).map((a, i) => (
-                  <div key={a.translationId} className={`animate-fade-in-up stagger-${i + 1}`}>
+                  <div key={a.id} className={`animate-fade-in-up stagger-${i + 1}`}>
                     <ArticleCard article={a} lang={lang} />
                   </div>
                 ))
@@ -654,7 +666,7 @@ export default function Home({ lang }: HomeProps) {
               </Link>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))", gap: "1.5rem" }}>
-              {gourmetArticles.map((a) => <ArticleCard key={a.translationId} article={a} lang={lang} />)}
+              {gourmetArticles.map((a) => <ArticleCard key={a.id} article={a} lang={lang} />)}
             </div>
           </div>
         </section>
@@ -671,7 +683,7 @@ export default function Home({ lang }: HomeProps) {
               </Link>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))", gap: "1.5rem" }}>
-              {travelArticles.map((a) => <ArticleCard key={a.translationId} article={a} lang={lang} />)}
+              {travelArticles.map((a) => <ArticleCard key={a.id} article={a} lang={lang} />)}
             </div>
           </div>
         </section>

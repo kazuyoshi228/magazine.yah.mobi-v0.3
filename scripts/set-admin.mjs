@@ -1,26 +1,25 @@
-import { drizzle } from 'drizzle-orm/mysql2';
-import mysql from 'mysql2/promise';
-import { eq } from 'drizzle-orm';
+/**
+ * 管理者権限（custom claim: admin=true）を付与する。
+ *
+ * 前提: 対象ユーザーが一度 Google ログイン済みであること。
+ * 認証: GOOGLE_APPLICATION_CREDENTIALS にサービスアカウントJSONのパスを設定するか、
+ *       gcloud ADC（application-default login）を利用。
+ *
+ * 実行: node scripts/set-admin.mjs kazuyoshi.yamada@bonfire.co.jp
+ */
+import { initializeApp, applicationDefault } from "firebase-admin/app";
+import { getAuth } from "firebase-admin/auth";
 
-const { users } = await import('../drizzle/schema.ts');
-
-const conn = await mysql.createConnection(process.env.DATABASE_URL);
-const db = drizzle(conn);
-
-// Check current state
-const existing = await db.select().from(users).where(eq(users.email, 'kazuyoshi.yamada@bonfire.co.jp'));
-console.log('Current user record:', JSON.stringify(existing, null, 2));
-
-if (existing.length === 0) {
-  console.log('User not found in DB. They need to log in first to create a record.');
-} else {
-  // Update role to admin
-  await db.update(users)
-    .set({ role: 'admin' })
-    .where(eq(users.email, 'kazuyoshi.yamada@bonfire.co.jp'));
-  
-  const updated = await db.select().from(users).where(eq(users.email, 'kazuyoshi.yamada@bonfire.co.jp'));
-  console.log('Updated user record:', JSON.stringify(updated, null, 2));
+const email = process.argv[2];
+if (!email) {
+  console.error("使い方: node scripts/set-admin.mjs <email>");
+  process.exit(1);
 }
 
-await conn.end();
+initializeApp({ credential: applicationDefault(), projectId: "magazine-yah-mobi" });
+const auth = getAuth();
+
+const user = await auth.getUserByEmail(email);
+await auth.setCustomUserClaims(user.uid, { admin: true });
+console.log(`✅ ${email} (uid=${user.uid}) に admin クレームを付与しました。`);
+console.log("   反映にはユーザーの再ログイン（またはトークン更新）が必要です。");

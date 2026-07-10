@@ -6,13 +6,17 @@ import {
   signOut,
   onAuthStateChanged,
   onIdTokenChanged,
+  connectAuthEmulator,
   type User as FirebaseUser,
 } from "firebase/auth";
+import { getFirestore, connectFirestoreEmulator, type Firestore } from "firebase/firestore";
+import { getStorage, connectStorageEmulator, type FirebaseStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
 };
 
 // Prevent duplicate initialization during HMR
@@ -24,68 +28,28 @@ if (getApps().length === 0) {
 }
 
 export const auth = getAuth(app);
+export const db: Firestore = getFirestore(app);
+export const storage: FirebaseStorage = getStorage(app);
+
+// ローカル開発: VITE_USE_EMULATORS=1 でエミュレータに接続
+if (import.meta.env.DEV && import.meta.env.VITE_USE_EMULATORS === "1") {
+  connectAuthEmulator(auth, "http://127.0.0.1:9099", { disableWarnings: true });
+  connectFirestoreEmulator(db, "127.0.0.1", 8080);
+  connectStorageEmulator(storage, "127.0.0.1", 9199);
+}
+
 export const googleProvider = new GoogleAuthProvider();
 googleProvider.addScope("email");
 googleProvider.addScope("profile");
 
-/**
- * Exchange a Firebase ID token for a server session cookie.
- * Called on initial login and whenever the token is refreshed.
- */
-async function exchangeIdTokenForSession(idToken: string): Promise<void> {
-  const res = await fetch("/api/auth/firebase/session", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ idToken }),
-    credentials: "include",
-  });
-  if (!res.ok) {
-    throw new Error("Failed to create server session");
-  }
-}
-
-/**
- * Sign in with Google popup and create a server session cookie.
- */
+/** Google ポップアップでサインイン（サーバーセッションは廃止・Firebase Auth のみ） */
 export async function signInWithGoogle(): Promise<FirebaseUser> {
   const result = await signInWithPopup(auth, googleProvider);
-  const idToken = await result.user.getIdToken();
-  await exchangeIdTokenForSession(idToken);
   return result.user;
 }
 
-/**
- * Start listening for Firebase ID token changes and automatically
- * refresh the server session cookie when the token is renewed.
- *
- * Firebase ID tokens expire after 1 hour. The Firebase SDK silently
- * refreshes them; this listener propagates the new token to the server
- * so the httpOnly session cookie stays valid.
- *
- * Returns an unsubscribe function.
- */
-export function startTokenAutoRefresh(): () => void {
-  return onIdTokenChanged(auth, async (user) => {
-    if (!user) return; // Not signed in — no refresh needed
-    try {
-      const idToken = await user.getIdToken();
-      await exchangeIdTokenForSession(idToken);
-    } catch (err) {
-      // Non-fatal: the user will be asked to re-login on the next 401
-      console.warn("[Firebase] Token auto-refresh failed:", err);
-    }
-  });
-}
-
-/**
- * Sign out from Firebase and clear the server session cookie.
- */
 export async function signOutFirebase(): Promise<void> {
   await signOut(auth);
-  await fetch("/api/auth/firebase/logout", {
-    method: "POST",
-    credentials: "include",
-  });
 }
 
 export { onAuthStateChanged, onIdTokenChanged, type FirebaseUser };

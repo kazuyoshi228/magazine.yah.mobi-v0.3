@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Redirect } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Header, { type Lang } from "./components/Header";
@@ -15,12 +15,6 @@ import ArticleList from "./pages/ArticleList";
 import ArticleDetail from "./pages/ArticleDetail";
 import CmsAdmin from "./pages/CmsAdmin";
 import CmsArticleEdit from "./pages/CmsArticleEdit";
-import AdminDashboard from "./pages/AdminDashboard";
-import AdminBrandGuidelines from "./pages/AdminBrandGuidelines";
-import AdminCurators from "./pages/AdminCurators";
-import AdminAiWriters from "./pages/AdminAiWriters";
-import AdminMenu from "./pages/AdminMenu";
-import Writers from "./pages/Writers";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
@@ -34,15 +28,10 @@ function Router({ lang, onLangChange }: { lang: Lang; onLangChange: (l: Lang) =>
           <Route path="/" component={() => <Home lang={lang} />} />
           <Route path="/articles" component={() => <ArticleList lang={lang} />} />
           <Route path="/articles/:slug" component={({ params }) => <ArticleDetail slug={params.slug} lang={lang} />} />
-          <Route path="/admin" component={AdminDashboard} />
+          <Route path="/admin"><Redirect to="/admin/cms" /></Route>
           <Route path="/admin/cms" component={CmsAdmin} />
           <Route path="/admin/cms/new" component={() => <CmsArticleEdit articleId={null} />} />
-          <Route path="/admin/cms/:id" component={({ params }) => <CmsArticleEdit articleId={Number(params.id)} />} />
-          <Route path="/admin/brand-guidelines" component={AdminBrandGuidelines} />
-          <Route path="/admin/curators" component={AdminCurators} />
-          <Route path="/admin/ai-writers" component={AdminAiWriters} />
-          <Route path="/admin/menu" component={AdminMenu} />
-          <Route path="/writers" component={Writers} />
+          <Route path="/admin/cms/:id" component={({ params }) => <CmsArticleEdit articleId={params.id} />} />
           <Route path="/login" component={Login} />
           <Route path="/404" component={NotFound} />
           <Route component={NotFound} />

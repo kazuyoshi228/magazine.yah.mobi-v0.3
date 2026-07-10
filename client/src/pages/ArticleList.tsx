@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useSearch } from "wouter";
-import { trpc } from "@/lib/trpc";
+import { useQuery } from "@tanstack/react-query";
+import { listPublishedArticles } from "@/lib/db";
 import SeoHead from "@/components/SeoHead";
 import type { Lang } from "@/components/Header";
 import { Wifi, UtensilsCrossed, MapPin, Cpu } from "lucide-react";
@@ -161,11 +162,14 @@ export default function ArticleList({ lang }: ArticleListProps) {
 
   const copy = PAGE_COPY[lang];
 
-  const { data: articles, isLoading } = trpc.articles.list.useQuery({
-    categorySlug: categoryFilter || undefined,
-    lang: langFilter,
-    limit: 50,
-    offset: 0,
+  const { data: articles, isLoading } = useQuery({
+    queryKey: ["articles", "list", categoryFilter, langFilter],
+    queryFn: () =>
+      listPublishedArticles({
+        categorySlug: categoryFilter || undefined,
+        lang: langFilter,
+        limit: 50,
+      }),
   });
 
   const categories = [
@@ -313,7 +317,7 @@ export default function ArticleList({ lang }: ArticleListProps) {
           ) : articles && articles.length > 0 ? (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))", gap: "1.5rem" }}>
               {articles.map((a, i) => (
-                <div key={a.translationId} className={`animate-fade-in-up stagger-${Math.min((i % 4) + 1, 4)}`}>
+                <div key={a.id} className={`animate-fade-in-up stagger-${Math.min((i % 4) + 1, 4)}`}>
                   <ArticleCard article={a} lang={lang} />
                 </div>
               ))}

@@ -1,20 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
-import { trpc } from "@/lib/trpc";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import {
+  getArticleForEdit,
+  createArticle as createArticleDoc,
+  updateArticleMeta,
+  upsertTranslation as upsertTranslationDoc,
+  uploadImageFile,
+} from "@/lib/db";
+import { CATEGORIES, LANGS as ALL_LANGS, type Lang, type SchemaType, type ArticleStatus, type CategorySlug, type ArticleTranslation } from "@shared/types";
 import { useAuth } from "@/_core/hooks/useAuth";
 
 import { ArrowLeft, Save, Eye, Upload, X, ImagePlus } from "lucide-react";
 import { toast } from "sonner";
-import { useRef } from "react";
 import SeoHead from "@/components/SeoHead";
 
 interface CmsArticleEditProps {
-  articleId: number | null;
+  /** 記事slug（docId）。新規作成時は null */
+  articleId: string | null;
 }
 
-type Lang = "ja" | "en" | "ko" | "zh-TW";
-const LANGS: Lang[] = ["ja", "en", "ko", "zh-TW"];
+const LANGS = ALL_LANGS as readonly Lang[];
 const LANG_LABELS: Record<Lang, string> = { ja: "日本語", en: "English", ko: "한국어", "zh-TW": "繁體中文" };
+
+const emptyTranslation = (): ArticleTranslation => ({
+  title: "", excerpt: "", body: "", directAnswer: "", metaTitle: "", metaDescription: "",
+});
 
 export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
   const { user, loading } = useAuth();
@@ -24,9 +35,9 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
 
   // Article meta
   const [slug, setSlug] = useState("");
-  const [categoryId, setCategoryId] = useState<number>(1);
-  const [schemaType, setSchemaType] = useState<"Article" | "HowTo" | "FAQPage">("Article");
-  const [status, setStatus] = useState<"draft" | "published" | "archived">("draft");
+  const [categorySlug, setCategorySlug] = useState<CategorySlug>("gourmet");
+  const [schemaType, setSchemaType] = useState<SchemaType>("Article");
+  const [status, setStatus] = useState<ArticleStatus>("draft");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadingInlineImage, setUploadingInlineImage] = useState(false);
@@ -34,102 +45,76 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Translations per lang
-  const [translations, setTranslations] = useState<Record<Lang, {
-    title: string;
-    excerpt: string;
-    body: string;
-    directAnswer: string;
-    metaTitle: string;
-    metaDescription: string;
-  }>>({
-    ja: { title: "", excerpt: "", body: "", directAnswer: "", metaTitle: "", metaDescription: "" },
-    en: { title: "", excerpt: "", body: "", directAnswer: "", metaTitle: "", metaDescription: "" },
-    ko: { title: "", excerpt: "", body: "", directAnswer: "", metaTitle: "", metaDescription: "" },
-    "zh-TW": { title: "", excerpt: "", body: "", directAnswer: "", metaTitle: "", metaDescription: "" },
+  const [translations, setTranslations] = useState<Record<Lang, ArticleTranslation>>({
+    ja: emptyTranslation(), en: emptyTranslation(), ko: emptyTranslation(), "zh-TW": emptyTranslation(),
   });
 
-  const { data: categories } = trpc.categories.list.useQuery();
-  const { data: existingData } = trpc.cms.getById.useQuery(
-    { id: articleId! },
-    { enabled: articleId !== null && !!user && ['admin', 'writer'].includes(user.role) }
-  );
+  const isAdmin = !!user && user.role === "admin";
+
+  const { data: existingData } = useQuery({
+    queryKey: ["cms", "article", articleId],
+    queryFn: () => getArticleForEdit(articleId!),
+    enabled: articleId !== null && isAdmin,
+  });
 
   // Populate form when editing
   useEffect(() => {
     if (existingData) {
-      const { article, translations: existingTranslations } = existingData;
-      setSlug(article.slug);
-      setCategoryId(article.categoryId);
-      setSchemaType(article.schemaType as any);
-      setStatus(article.status as any);
-      setThumbnailUrl(article.thumbnailUrl ?? "");
-
-      const newTranslations = { ...translations };
-      existingTranslations.forEach((t) => {
-        if (LANGS.includes(t.lang as Lang)) {
-          newTranslations[t.lang as Lang] = {
-            title: t.title,
-            excerpt: t.excerpt ?? "",
-            body: t.body,
-            directAnswer: t.directAnswer ?? "",
-            metaTitle: t.metaTitle ?? "",
-            metaDescription: t.metaDescription ?? "",
-          };
+      setSlug(existingData.slug);
+      setCategorySlug(existingData.categorySlug);
+      setSchemaType(existingData.schemaType);
+      setStatus(existingData.status);
+      setThumbnailUrl(existingData.thumbnailUrl ?? "");
+      setTranslations((prev) => {
+        const next = { ...prev };
+        for (const l of LANGS) {
+          const t = existingData.translations[l];
+          if (t) next[l] = { ...emptyTranslation(), ...t };
         }
+        return next;
       });
-      setTranslations(newTranslations);
     }
   }, [existingData]);
 
-  const createArticle = trpc.cms.create.useMutation({
+  const createArticle = useMutation({
+    mutationFn: () => createArticleDoc({ slug, categorySlug, schemaType, status, thumbnailUrl: thumbnailUrl || null }),
     onSuccess: (data) => {
       toast.success("記事を作成しました。");
       navigate(`/admin/cms/${data.id}`);
     },
-    onError: () => toast.error("作成に失敗しました。"),
+    onError: (e: Error) => toast.error(e.message || "作成に失敗しました。"),
   });
 
-  const updateArticle = trpc.cms.update.useMutation({
+  const updateArticle = useMutation({
+    mutationFn: () => updateArticleMeta(articleId!, { categorySlug, schemaType, status, thumbnailUrl: thumbnailUrl || null }),
     onSuccess: () => toast.success("記事を更新しました。"),
     onError: () => toast.error("更新に失敗しました。"),
   });
 
-  const upsertTranslation = trpc.cms.upsertTranslation.useMutation({
+  const upsertTranslation = useMutation({
+    mutationFn: (input: { lang: Lang; t: ArticleTranslation }) => upsertTranslationDoc(articleId!, input.lang, input.t),
     onSuccess: () => toast.success(`${LANG_LABELS[activeLang]}の翻訳を保存しました。`),
     onError: () => toast.error("保存に失敗しました。"),
   });
 
-  const uploadThumbnail = trpc.cms.uploadThumbnail.useMutation({
-    onSuccess: (data) => {
-      setThumbnailUrl(data.url);
-      toast.success("画像をアップロードしました。");
-    },
-    onError: () => toast.error("画像のアップロードに失敗しました。"),
-  });
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    e.target.value = "";
     if (!file) return;
     if (!articleId) { toast.error("先に記事を作成してください。"); return; }
     if (file.size > 5 * 1024 * 1024) { toast.error("画像は5MB以内にしてください。"); return; }
     setUploadingImage(true);
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const result = ev.target?.result as string;
-      const base64 = result.split(",")[1];
-      uploadThumbnail.mutate(
-        { articleId, base64, mimeType: file.type, filename: file.name },
-        { onSettled: () => setUploadingImage(false) }
-      );
-    };
-    reader.readAsDataURL(file);
-    // Reset input so same file can be re-selected
-    e.target.value = "";
+    try {
+      const url = await uploadImageFile(file, "thumbnails");
+      setThumbnailUrl(url);
+      await updateArticleMeta(articleId, { thumbnailUrl: url });
+      toast.success("画像をアップロードしました。");
+    } catch {
+      toast.error("画像のアップロードに失敗しました。");
+    } finally {
+      setUploadingImage(false);
+    }
   };
-
-  const uploadImage = trpc.cms.uploadImage.useMutation({
-    onError: () => toast.error("画像のアップロードに失敗しました。"),
-  });
 
   // Insert markdown image at cursor position in the textarea
   const insertImageMarkdown = (url: string, filename: string) => {
@@ -141,7 +126,6 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
       const current = translations[activeLang].body;
       const newBody = current.slice(0, start) + markdown + current.slice(end);
       updateTranslation("body", newBody);
-      // Restore cursor after inserted text
       requestAnimationFrame(() => {
         ta.focus();
         ta.setSelectionRange(start + markdown.length, start + markdown.length);
@@ -151,32 +135,25 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     }
   };
 
-  const processInlineImageFile = (file: File) => {
+  const processInlineImageFile = async (file: File) => {
     if (file.size > 8 * 1024 * 1024) { toast.error("画像は8MB以内にしてください。"); return; }
     const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif"];
     if (!allowed.includes(file.type)) { toast.error("JPEG・PNG・WebP・GIF のみ対応しています。"); return; }
     setUploadingInlineImage(true);
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const result = ev.target?.result as string;
-      const base64 = result.split(",")[1];
-      uploadImage.mutate(
-        { base64, mimeType: file.type, filename: file.name },
-        {
-          onSuccess: (data) => {
-            insertImageMarkdown(data.url, file.name.replace(/\.[^.]+$/, ""));
-            toast.success("画像を挿入しました。");
-          },
-          onSettled: () => setUploadingInlineImage(false),
-        }
-      );
-    };
-    reader.readAsDataURL(file);
+    try {
+      const url = await uploadImageFile(file, "images");
+      insertImageMarkdown(url, file.name.replace(/\.[^.]+$/, ""));
+      toast.success("画像を挿入しました。");
+    } catch {
+      toast.error("画像のアップロードに失敗しました。");
+    } finally {
+      setUploadingInlineImage(false);
+    }
   };
 
   const handleInlineImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) processInlineImageFile(file);
+    if (file) void processInlineImageFile(file);
     e.target.value = "";
   };
 
@@ -184,15 +161,15 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     e.preventDefault();
     setIsDraggingOver(false);
     const file = e.dataTransfer.files?.[0];
-    if (file && file.type.startsWith("image/")) processInlineImageFile(file);
+    if (file && file.type.startsWith("image/")) void processInlineImageFile(file);
   };
 
   const handleSaveMeta = () => {
     if (!slug.trim()) { toast.error("スラッグを入力してください。"); return; }
     if (articleId === null) {
-      createArticle.mutate({ slug, categoryId, schemaType, status, thumbnailUrl: thumbnailUrl || undefined });
+      createArticle.mutate();
     } else {
-      updateArticle.mutate({ id: articleId, slug, categoryId, schemaType, status, thumbnailUrl: thumbnailUrl || null });
+      updateArticle.mutate();
     }
   };
 
@@ -201,10 +178,10 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     const t = translations[activeLang];
     if (!t.title.trim()) { toast.error("タイトルを入力してください。"); return; }
     if (!t.body.trim()) { toast.error("本文を入力してください。"); return; }
-    upsertTranslation.mutate({ articleId, lang: activeLang, ...t });
+    upsertTranslation.mutate({ lang: activeLang, t });
   };
 
-  const updateTranslation = (field: string, value: string) => {
+  const updateTranslation = (field: keyof ArticleTranslation, value: string) => {
     setTranslations((prev) => ({
       ...prev,
       [activeLang]: { ...prev[activeLang], [field]: value },
@@ -219,8 +196,8 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     return <div style={{ minHeight: "60vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.5rem" }}><p>管理者ログインが必要です。</p><a href="/login" className="btn-primary">ログイン</a></div>;
   }
 
-  if (!['admin', 'writer'].includes(user.role)) {
-    return <div style={{ minHeight: "60vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.5rem" }}><p>CMSへのアクセスには writer 以上の権限が必要です。</p><Link href="/" className="btn-outline">ホームへ戻る</Link></div>;
+  if (!isAdmin) {
+    return <div style={{ minHeight: "60vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.5rem" }}><p>CMSへのアクセスには管理者権限が必要です。</p><Link href="/" className="btn-outline">ホームへ戻る</Link></div>;
   }
 
   const currentTranslation = translations[activeLang];
@@ -325,7 +302,6 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
                     <label style={{ ...labelStyle, marginBottom: 0 }}>本文（Markdown） *</label>
                     <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                      {/* Inline image upload button */}
                       {!preview && (
                         <>
                           <input
@@ -422,21 +398,29 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
 
             <div>
               <label style={labelStyle}>スラッグ *</label>
-              <input type="text" value={slug} onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/\s+/g, "-"))} style={inputStyle} placeholder="article-slug" />
+              <input
+                type="text"
+                value={slug}
+                onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/\s+/g, "-"))}
+                style={{ ...inputStyle, backgroundColor: articleId ? "#F5F5F5" : "#FFFFFF" }}
+                placeholder="article-slug"
+                disabled={articleId !== null}
+              />
+              {articleId !== null && <p style={{ fontSize: "0.6875rem", color: "#999", marginTop: "0.375rem" }}>スラッグは作成後に変更できません。</p>}
             </div>
 
             <div>
               <label style={labelStyle}>カテゴリ</label>
-              <select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.value))} style={{ ...inputStyle, appearance: "none" }}>
-                {categories?.map((c) => (
-                  <option key={c.id} value={c.id}>{c.nameJa} ({c.slug})</option>
+              <select value={categorySlug} onChange={(e) => setCategorySlug(e.target.value as CategorySlug)} style={{ ...inputStyle, appearance: "none" }}>
+                {CATEGORIES.map((c) => (
+                  <option key={c.slug} value={c.slug}>{c.nameJa} ({c.slug})</option>
                 ))}
               </select>
             </div>
 
             <div>
               <label style={labelStyle}>Schema Type</label>
-              <select value={schemaType} onChange={(e) => setSchemaType(e.target.value as any)} style={{ ...inputStyle, appearance: "none" }}>
+              <select value={schemaType} onChange={(e) => setSchemaType(e.target.value as SchemaType)} style={{ ...inputStyle, appearance: "none" }}>
                 <option value="Article">Article</option>
                 <option value="HowTo">HowTo</option>
                 <option value="FAQPage">FAQPage</option>
@@ -445,7 +429,7 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
 
             <div>
               <label style={labelStyle}>ステータス</label>
-              <select value={status} onChange={(e) => setStatus(e.target.value as any)} style={{ ...inputStyle, appearance: "none" }}>
+              <select value={status} onChange={(e) => setStatus(e.target.value as ArticleStatus)} style={{ ...inputStyle, appearance: "none" }}>
                 <option value="draft">下書き (draft)</option>
                 <option value="published">公開 (published)</option>
                 <option value="archived">アーカイブ (archived)</option>
@@ -454,7 +438,6 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
 
             <div>
               <label style={labelStyle}>アイキャッチ画像</label>
-              {/* Image preview */}
               {thumbnailUrl && (
                 <div style={{ position: "relative", marginBottom: "0.75rem" }}>
                   <img src={thumbnailUrl} alt="thumbnail" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", border: "1px solid #D7D7D7" }} />
@@ -468,7 +451,6 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                   </button>
                 </div>
               )}
-              {/* Upload button */}
               <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: articleId ? "pointer" : "not-allowed", opacity: articleId ? 1 : 0.5 }}>
                 <input
                   type="file"
@@ -485,7 +467,6 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                 </span>
               </label>
               {!articleId && <p style={{ fontSize: "0.75rem", color: "#999", marginTop: "0.375rem" }}>先に記事を作成すると画像をアップロードできます。</p>}
-              {/* Manual URL fallback */}
               <input type="url" value={thumbnailUrl} onChange={(e) => setThumbnailUrl(e.target.value)} style={{ ...inputStyle, marginTop: "0.5rem", fontSize: "0.8125rem" }} placeholder="URLを直接入力する場合はこちらに記入..." />
             </div>
 
@@ -513,6 +494,7 @@ function renderMarkdown(md: string): string {
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>")
     .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" loading="lazy" />')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
     .replace(/^\- (.+)$/gm, "<li>$1</li>")
     .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")

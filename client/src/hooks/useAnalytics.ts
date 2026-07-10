@@ -1,11 +1,13 @@
 import { useEffect, useRef, useCallback } from "react";
-import { trpc } from "@/lib/trpc";
 import { nanoid } from "nanoid";
+import { trackEvent } from "@/lib/db";
+import type { CtaTarget } from "@shared/types";
 
 // ─── AI Crawler User-Agent patterns ──────────────────────────────────────────
 const AI_CRAWLER_PATTERNS: { pattern: RegExp; name: string }[] = [
   { pattern: /GPTBot/i, name: "GPTBot" },
   { pattern: /ChatGPT-User/i, name: "ChatGPT-User" },
+  { pattern: /OAI-SearchBot/i, name: "OAI-SearchBot" },
   { pattern: /ClaudeBot/i, name: "ClaudeBot" },
   { pattern: /Claude-Web/i, name: "Claude-Web" },
   { pattern: /anthropic-ai/i, name: "Anthropic" },
@@ -23,8 +25,6 @@ const AI_CRAWLER_PATTERNS: { pattern: RegExp; name: string }[] = [
   { pattern: /DuckAssistBot/i, name: "DuckAssistBot" },
   { pattern: /Bytespider/i, name: "Bytespider" },
   { pattern: /PetalBot/i, name: "PetalBot" },
-  { pattern: /SemrushBot/i, name: "SemrushBot" },
-  { pattern: /AhrefsBot/i, name: "AhrefsBot" },
 ];
 
 function detectAiCrawler(ua: string): { isAi: boolean; name?: string } {
@@ -49,7 +49,6 @@ function getSessionId(): string {
   }
 }
 
-// ─── Language from URL or localStorage ───────────────────────────────────────
 function getCurrentLang(): string {
   try {
     return localStorage.getItem("yah_lang") ?? "ja";
@@ -58,24 +57,14 @@ function getCurrentLang(): string {
   }
 }
 
-// ─── Country from Accept-Language header (client-side approximation) ──────────
 function getCountryFromBrowser(): string {
   try {
     const langs = navigator.languages ?? [navigator.language];
     const primary = langs[0] ?? "";
-    // Extract region code: "ja-JP" → "JP", "ko-KR" → "KR", "zh-TW" → "TW"
     const parts = primary.split("-");
     if (parts.length >= 2) return parts[parts.length - 1].toUpperCase();
-    // Fallback: map language to likely country
     const langMap: Record<string, string> = {
-      ja: "JP",
-      ko: "KR",
-      zh: "TW",
-      en: "US",
-      de: "DE",
-      fr: "FR",
-      th: "TH",
-      vi: "VN",
+      ja: "JP", ko: "KR", zh: "TW", en: "US", de: "DE", fr: "FR", th: "TH", vi: "VN",
     };
     return langMap[parts[0]] ?? "XX";
   } catch {
@@ -84,9 +73,7 @@ function getCountryFromBrowser(): string {
 }
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────
-export function useAnalytics(opts?: { articleId?: number }) {
-  const trackPv = trpc.analytics.trackPageView.useMutation();
-  const trackCta = trpc.analytics.trackCtaClick.useMutation();
+export function useAnalytics(opts?: { articleId?: string }) {
   const trackedRef = useRef(false);
 
   // Track page view on mount
@@ -96,41 +83,34 @@ export function useAnalytics(opts?: { articleId?: number }) {
 
     const ua = navigator.userAgent;
     const { isAi, name: crawlerName } = detectAiCrawler(ua);
-    const sessionId = getSessionId();
-    const lang = getCurrentLang();
-    const country = getCountryFromBrowser();
 
-    trackPv.mutate({
+    trackEvent({
+      type: isAi ? "ai_crawl" : "pageview",
       path: window.location.pathname,
-      articleId: opts?.articleId,
-      sessionId,
-      lang,
+      articleSlug: opts?.articleId,
+      sessionId: getSessionId(),
+      lang: getCurrentLang(),
+      country: getCountryFromBrowser(),
       referrer: document.referrer.slice(0, 512) || undefined,
       userAgent: ua.slice(0, 256),
-      isAiCrawler: isAi,
-      crawlerName: crawlerName,
-      country,
+      crawlerName,
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // CTA click tracker
   const trackCtaClick = useCallback(
-    (
-      target: "yah_mobile" | "yah_homes" | "esim_buy" | "esim_hero" | "esim_article",
-      articleId?: number
-    ) => {
-      const sessionId = getSessionId();
-      const lang = getCurrentLang();
-      trackCta.mutate({
+    (target: CtaTarget, articleId?: string) => {
+      trackEvent({
+        type: "cta_click",
+        path: window.location.pathname,
         target,
-        sourcePath: window.location.pathname,
-        articleId: articleId ?? opts?.articleId,
-        sessionId,
-        lang,
+        articleSlug: articleId ?? opts?.articleId,
+        sessionId: getSessionId(),
+        lang: getCurrentLang(),
         referrer: document.referrer.slice(0, 512) || undefined,
       });
     },
-    [opts?.articleId, trackCta]
+    [opts?.articleId],
   );
 
   return { trackCtaClick };

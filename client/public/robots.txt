@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://magazine.yah.mobi/sitemap.xml
+
+# Content marketing site — yah.magazine
+# Powered by yah. (https://yah.mobi)

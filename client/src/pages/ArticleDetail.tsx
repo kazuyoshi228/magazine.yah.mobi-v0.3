@@ -1,9 +1,9 @@
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Wifi, UtensilsCrossed, MapPin } from "lucide-react";
-import { trpc } from "@/lib/trpc";
+import { useQuery } from "@tanstack/react-query";
+import { getArticleBySlug } from "@/lib/db";
 import SeoHead from "@/components/SeoHead";
 import type { Lang } from "@/components/Header";
-import SubscribeForm from "@/components/SubscribeForm";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
 interface ArticleDetailProps {
@@ -58,14 +58,14 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
 
 function buildArticleSchema(article: any, translation: any, lang: string) {
   const schemaType = article.articles?.schemaType ?? "Article";
-  const base = {
+  return {
     "@context": "https://schema.org",
     "@type": schemaType,
     headline: translation?.title ?? "",
     description: translation?.excerpt ?? translation?.metaDescription ?? "",
     image: article.articles?.thumbnailUrl ?? undefined,
-    datePublished: article.articles?.publishedAt ?? undefined,
-    dateModified: article.articles?.updatedAt ?? undefined,
+    datePublished: article.articles?.publishedAt ? new Date(article.articles.publishedAt).toISOString() : undefined,
+    dateModified: article.articles?.updatedAt ? new Date(article.articles.updatedAt).toISOString() : undefined,
     inLanguage: lang,
     publisher: {
       "@type": "Organization",
@@ -74,28 +74,15 @@ function buildArticleSchema(article: any, translation: any, lang: string) {
     },
     url: `https://magazine.yah.mobi/articles/${article.articles?.slug}`,
   };
-
-  if (schemaType === "FAQPage" && translation?.schemaData) {
-    return {
-      ...base,
-      mainEntity: translation.schemaData,
-    };
-  }
-
-  if (schemaType === "HowTo" && translation?.schemaData) {
-    return {
-      ...base,
-      ...translation.schemaData,
-    };
-  }
-
-  return base;
 }
 
 export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
   const cta = CTA_COPY[lang];
 
-  const { data, isLoading, error } = trpc.articles.bySlug.useQuery({ slug, lang });
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["article", slug, lang],
+    queryFn: () => getArticleBySlug(slug, lang),
+  });
   const articleId = data?.article?.articles?.id;
   const { trackCtaClick } = useAnalytics({ articleId });
 
@@ -327,94 +314,6 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
             </a>
           </div>
 
-          {/* Author Section */}
-          {article.ai_writers && (
-            <div
-              style={{
-                marginTop: "3rem",
-                paddingTop: "2rem",
-                borderTop: "1px solid #D7D7D7",
-              }}
-            >
-              <p className="label-section" style={{ marginBottom: "1.25rem" }}>
-                {lang === "ja" ? "この記事を書いた人" :
-                 lang === "ko" ? "이 기사를 쓴 사람" :
-                 lang === "zh-TW" ? "撰文者" :
-                 "About the Author"}
-              </p>
-              <div style={{ display: "flex", gap: "1.25rem", alignItems: "flex-start" }}>
-                {/* Avatar */}
-                {article.ai_writers.avatarUrl ? (
-                  <img
-                    src={article.ai_writers.avatarUrl}
-                    alt={article.ai_writers.name}
-                    style={{
-                      width: "64px",
-                      height: "64px",
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                      flexShrink: 0,
-                      border: "1px solid #D7D7D7",
-                    }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      width: "64px",
-                      height: "64px",
-                      borderRadius: "50%",
-                      backgroundColor: "#000000",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                      color: "#FFFFFF",
-                      fontSize: "1.25rem",
-                      fontWeight: 600,
-                      letterSpacing: "-0.02em",
-                    }}
-                  >
-                    {article.ai_writers.name.charAt(0).toUpperCase()}
-                  </div>
-                )}
-                {/* Info */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontSize: "1rem", fontWeight: 600, letterSpacing: "-0.02em", marginBottom: "0.25rem" }}>
-                    {article.ai_writers.name}
-                  </p>
-                  {article.ai_writers.tone && (
-                    <p style={{ fontSize: "0.75rem", color: "#999999", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "0.625rem" }}>
-                      {article.ai_writers.tone}
-                    </p>
-                  )}
-                  {article.ai_writers.bio && (
-                    <p style={{ fontSize: "0.9375rem", lineHeight: 1.7, color: "#555555" }}>
-                      {article.ai_writers.bio}
-                    </p>
-                  )}
-                  {article.ai_writers.languages && (
-                    <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.75rem" }}>
-                      {article.ai_writers.languages.split(",").map((l: string) => (
-                        <span
-                          key={l.trim()}
-                          style={{
-                            fontSize: "0.6875rem",
-                            letterSpacing: "0.08em",
-                            textTransform: "uppercase",
-                            padding: "0.25rem 0.625rem",
-                            border: "1px solid #D7D7D7",
-                            color: "#555555",
-                          }}
-                        >
-                          {l.trim()}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
 
         </div>
       </div>
