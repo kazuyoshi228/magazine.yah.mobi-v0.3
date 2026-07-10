@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 
 export default function Login() {
-  const { user, loading, login } = useAuth();
+  const { user, loading, login, logout, refresh } = useAuth();
   const [error, setError] = useState<string | null>(null);
 
-  // Redirect if already logged in
+  // 管理者としてログイン済みなら CMS へ。非管理者はこのページに留めて案内を出す。
   useEffect(() => {
-    if (user) {
-      window.location.href = "/admin";
+    if (user?.role === "admin") {
+      window.location.href = "/admin/cms";
     }
   }, [user]);
 
@@ -24,10 +24,42 @@ export default function Login() {
     }
   };
 
+  const handleRetryClaims = async () => {
+    // トークンを強制更新して admin クレームを再取得（付与直後の反映用）
+    sessionStorage.removeItem("yah_claim_refreshed");
+    await refresh();
+    window.location.reload();
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Spinner />
+      </div>
+    );
+  }
+
+  // ログイン済みだが管理者権限が無い場合
+  if (user && user.role !== "admin") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="w-full max-w-sm p-8 rounded-2xl border border-border bg-card shadow-lg flex flex-col items-center gap-6">
+          <div className="flex flex-col items-center gap-2 text-center">
+            <h1 className="text-xl font-bold text-foreground">管理者権限がありません</h1>
+            <p className="text-sm text-muted-foreground">
+              {user.email} でログイン中です。<br />
+              権限を付与済みの場合は、下のボタンでトークンを更新してください。
+            </p>
+          </div>
+          <div className="w-full flex flex-col gap-3">
+            <Button onClick={handleRetryClaims} className="w-full">
+              権限を再確認する
+            </Button>
+            <Button onClick={() => logout()} variant="outline" className="w-full">
+              ログアウトして別アカウントで試す
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }

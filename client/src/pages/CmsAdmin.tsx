@@ -56,7 +56,10 @@ export default function CmsAdmin() {
     return (
       <div style={{ minHeight: "60vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.5rem" }}>
         <p style={{ fontSize: "1.125rem", color: "#555555" }}>CMS へのアクセスには管理者権限が必要です。</p>
-        <Link href="/" className="btn-outline">ホームへ戻る</Link>
+        <div style={{ display: "flex", gap: "0.75rem" }}>
+          <a href="/login" className="btn-primary">ログイン画面へ</a>
+          <Link href="/" className="btn-outline">ホームへ戻る</Link>
+        </div>
       </div>
     );
   }

@@ -29,7 +29,13 @@ export function useAuth(options?: UseAuthOptions) {
         return;
       }
       try {
-        const token = await fbUser.getIdTokenResult();
+        let token = await fbUser.getIdTokenResult();
+        // admin クレームが未反映の場合、セッション内で一度だけトークンを強制更新する。
+        // （set-admin 直後は古いキャッシュトークンに claim が乗っていないため）
+        if (token.claims.admin !== true && !sessionStorage.getItem("yah_claim_refreshed")) {
+          sessionStorage.setItem("yah_claim_refreshed", "1");
+          token = await fbUser.getIdTokenResult(true);
+        }
         setUser({
           uid: fbUser.uid,
           name: fbUser.displayName,
