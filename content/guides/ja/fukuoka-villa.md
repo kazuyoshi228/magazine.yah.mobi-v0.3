@@ -55,7 +55,7 @@ faq:
 
 ## 都心の一棟貸しヴィラが向く人
 
-![福岡・都心の一棟貸しヴィラのダイニング（yah.homes 清川）](https://yah.homes/manus-storage/hero-dining-006-opt_1d801c69.webp)
+![福岡・都心の一棟貸しヴィラのダイニング（yah.homes 清川）](https://yah.homes/manus-storage/hero-dining-768_41dc6825.webp)
 
 一方、**「福岡の街そのものを楽しみたい」なら都心一択**です。天神・博多・中洲へ徒歩や短いタクシーで出られ、朝は柳橋連合市場、夜は屋台、と1日の密度が上がります。荷物を置いてすぐ観光に出られるのが、郊外にはない価値です。
 
@@ -106,10 +106,10 @@ faq:
 
 当サイト yah.homes は、**福岡・中央区の都心一棟貸しに特化**した新築ヴィラを2棟運営しています。「街歩きの拠点としての一棟貸し」をお探しなら、こちらが選択肢になります。
 
-![yah.homes 清川 — 福岡市中央区・那珂川沿いの新築一棟貸しヴィラ外観](https://yah.homes/manus-storage/kiyokawa-exterior_18a3409b.webp)
+![yah.homes 清川 — 福岡市中央区・那珂川沿いの新築一棟貸しヴィラ外観](https://yah.homes/manus-storage/kiyokawa-exterior_18a3409b-768.webp)
 
 - **[清川（最大7名）](/booking/kiyokawa)** — 那珂川沿い・寝室3室・専用駐車場つき。天神まで車で約8分、中洲・キャナルシティ博多・柳橋連合市場へ徒歩圏。7名まで泊まれる都心ヴィラを探している方に。
-![yah.homes 高砂 — 渡辺通駅徒歩5〜10分の一棟貸し外観](https://yah.homes/manus-storage/takasago-exterior_d4f7ccff.webp)
+![yah.homes 高砂 — 渡辺通駅徒歩5〜10分の一棟貸し外観](https://yah.homes/manus-storage/takasago-exterior_d4f7ccff-768.webp)
 
 - **[高砂（最大6名）](/booking/takasago)** — 渡辺通駅から徒歩5〜10分・薬院も徒歩圏。大型車も停められる駐車場つき。洗面台3つで朝の支度が渋滞しません。
 
