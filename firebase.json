@@ -29,6 +29,13 @@
         }
       },
       {
+        "source": "/feeds/**",
+        "function": {
+          "functionId": "seoserver",
+          "region": "asia-northeast1"
+        }
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

@@ -45,6 +45,23 @@ interface ArticleDoc {
   languages: Lang[];
   translations: Partial<Record<Lang, Translation>>;
   priceBindings?: string[];
+  // v9 配信面（design_guides_pipeline.md）
+  distribution?: string[];
+  layer?: string;
+  hesitation?: string | null;
+  handoff?: string[];
+  primaryQuery?: string;
+  confirmedDate?: string | null;
+}
+
+/**
+ * homes専用記事（distributionにhomesを含み、esim/guidesを含まない）。
+ * magazineの表示面（記事ページ・sitemap・llms.txt）には載せず、
+ * /feeds/homes.json 経由で yah.homes だけに配信する（canonical混乱の根絶）。
+ */
+function isHomesOnly(a: ArticleDoc): boolean {
+  const d = a.distribution ?? [];
+  return d.includes("homes") && !d.includes("esim") && !d.includes("guides");
 }
 
 interface Plan {
@@ -223,9 +240,28 @@ async function getPublishedArticles(): Promise<ArticleDoc[]> {
   return snap.docs.map((d) => d.data() as ArticleDoc);
 }
 
+// ─── /feeds/homes.json（yah.homes 配信用フィード・design_guides_pipeline.md） ────
+async function renderHomesFeed(): Promise<string> {
+  const articles = (await getPublishedArticles()).filter((a) => (a.distribution ?? []).includes("homes"));
+  const feed = articles.map((a) => ({
+    slug: a.slug,
+    layer: a.layer ?? null,
+    hesitation: a.hesitation ?? null,
+    handoff: a.handoff ?? [],
+    primaryQuery: a.primaryQuery ?? null,
+    confirmedDate: a.confirmedDate ?? null,
+    publishedAt: a.publishedAt,
+    updatedAt: a.updatedAt,
+    thumbnailUrl: a.thumbnailUrl,
+    languages: a.languages ?? [],
+    translations: a.translations,
+  }));
+  return JSON.stringify(feed);
+}
+
 // ─── llms.txt ─────────────────────────────────────────────────────────────────
 async function renderLlmsTxt(): Promise<string> {
-  const articles = await getPublishedArticles();
+  const articles = (await getPublishedArticles()).filter((a) => !isHomesOnly(a));
   const lines = articles
     .map((a) => {
       const t = a.translations.en ?? a.translations.ja;
@@ -272,7 +308,7 @@ Full sitemap: ${BASE_URL}/sitemap.xml
 
 // ─── sitemap.xml ──────────────────────────────────────────────────────────────
 async function renderSitemap(): Promise<string> {
-  const articles = await getPublishedArticles();
+  const articles = (await getPublishedArticles()).filter((a) => !isHomesOnly(a));
   const staticUrls = [
     { loc: `${BASE_URL}/`, priority: "1.0" },
     { loc: `${BASE_URL}/articles`, priority: "0.9" },
@@ -366,7 +402,8 @@ async function renderArticlePage(slug: string, lang: Lang): Promise<{ status: nu
   const template = getTemplate();
   const snap = await db.collection("articles").doc(slug).get();
   const a = snap.exists ? (snap.data() as ArticleDoc) : null;
-  if (!a || a.status !== "published") {
+  if (!a || a.status !== "published" || isHomesOnly(a)) {
+    // homes専用記事はmagazine側では配信しない（正規URLはyah.homes/guides/）
     return { status: 404, html: template };
   }
   const t = a.translations[lang] ?? a.translations.ja ?? Object.values(a.translations)[0];
@@ -402,6 +439,13 @@ export const seoserver = onRequest(
         res.set("Content-Type", "application/xml; charset=utf-8");
         res.set("Cache-Control", "public, max-age=300, s-maxage=600");
         res.send(await renderSitemap());
+        return;
+      }
+      if (reqPath === "/feeds/homes.json") {
+        res.set("Content-Type", "application/json; charset=utf-8");
+        res.set("Cache-Control", "public, max-age=300, s-maxage=600");
+        res.set("Access-Control-Allow-Origin", "*");
+        res.send(await renderHomesFeed());
         return;
       }
       const m = reqPath.match(/^\/articles\/([a-z0-9-]+)\/?$/);
