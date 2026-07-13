@@ -9,7 +9,11 @@
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "test": "vitest run --passWithNoTests",
-    "emulators": "firebase emulators:start"
+    "emulators": "firebase emulators:start",
+    "md": "node scripts/import-md.mjs",
+    "md:write": "node scripts/import-md.mjs --write",
+    "md:emu": "FIRESTORE_EMULATOR_HOST=localhost:8080 node scripts/import-md.mjs --write",
+    "md:preview": "FIRESTORE_EMULATOR_HOST=localhost:8080 node scripts/import-md.mjs --write --as-published"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

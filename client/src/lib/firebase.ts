@@ -9,7 +9,7 @@ import {
   connectAuthEmulator,
   type User as FirebaseUser,
 } from "firebase/auth";
-import { getFirestore, connectFirestoreEmulator, type Firestore } from "firebase/firestore";
+import { initializeFirestore, getFirestore, connectFirestoreEmulator, type Firestore } from "firebase/firestore";
 import { getStorage, connectStorageEmulator, type FirebaseStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -28,7 +28,15 @@ if (getApps().length === 0) {
 }
 
 export const auth = getAuth(app);
-export const db: Firestore = getFirestore(app);
+// ignoreUndefinedProperties: v9 の任意フィールドが未設定でも write が落ちないように。
+// initializeFirestore は app あたり1回のみ（HMR 再評価時は getFirestore にフォールバック）。
+export const db: Firestore = (() => {
+  try {
+    return initializeFirestore(app, { ignoreUndefinedProperties: true });
+  } catch {
+    return getFirestore(app);
+  }
+})();
 export const storage: FirebaseStorage = getStorage(app);
 
 // ローカル開発: VITE_USE_EMULATORS=1 でエミュレータに接続

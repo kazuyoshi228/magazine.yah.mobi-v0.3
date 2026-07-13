@@ -125,3 +125,6 @@ functions/node_modules/
 # Manus logs (legacy)
 .manus-logs/
 .manus/
+
+# Browser/MCP test artifacts
+.playwright-mcp/

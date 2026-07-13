@@ -8,7 +8,7 @@ import {
   upsertTranslation as upsertTranslationDoc,
   uploadImageFile,
 } from "@/lib/db";
-import { CATEGORIES, LANGS as ALL_LANGS, type Lang, type SchemaType, type ArticleStatus, type CategorySlug, type ArticleTranslation } from "@shared/types";
+import { CATEGORIES, LANGS as ALL_LANGS, type Lang, type SchemaType, type ArticleStatus, type CategorySlug, type ArticleTranslation, type Layer, type PageType, type Hesitation, type DistributionSurface } from "@shared/types";
 import { useAuth } from "@/_core/hooks/useAuth";
 
 import { ArrowLeft, Save, Eye, Upload, X, ImagePlus } from "lucide-react";
@@ -44,6 +44,17 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // v9 戦略フィールド（記事レベル）。配列系はカンマ区切り文字列で保持し保存時に配列化。
+  const [layer, setLayer] = useState<Layer | "">("");
+  const [pageType, setPageType] = useState<PageType>("article");
+  const [hesitation, setHesitation] = useState<Hesitation | "">("");
+  const [handoff, setHandoff] = useState("");
+  const [primaryQuery, setPrimaryQuery] = useState("");
+  const [secondaryQueries, setSecondaryQueries] = useState("");
+  const [confirmedDate, setConfirmedDate] = useState("");
+  const [distribution, setDistribution] = useState("esim");
+  const [market, setMarket] = useState("");
+
   // Translations per lang
   const [translations, setTranslations] = useState<Record<Lang, ArticleTranslation>>({
     ja: emptyTranslation(), en: emptyTranslation(), ko: emptyTranslation(), "zh-TW": emptyTranslation(),
@@ -65,6 +76,15 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
       setSchemaType(existingData.schemaType);
       setStatus(existingData.status);
       setThumbnailUrl(existingData.thumbnailUrl ?? "");
+      setLayer(existingData.layer ?? "");
+      setPageType(existingData.pageType ?? "article");
+      setHesitation(existingData.hesitation ?? "");
+      setHandoff((existingData.handoff ?? []).join(", "));
+      setPrimaryQuery(existingData.primaryQuery ?? "");
+      setSecondaryQueries((existingData.secondaryQueries ?? []).join(", "));
+      setConfirmedDate(existingData.confirmedDate ?? "");
+      setDistribution((existingData.distribution ?? ["esim"]).join(", "));
+      setMarket((existingData.market ?? []).join(", "));
       setTranslations((prev) => {
         const next = { ...prev };
         for (const l of LANGS) {
@@ -76,8 +96,21 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     }
   }, [existingData]);
 
+  const parseList = (s: string) => s.split(",").map((x) => x.trim()).filter(Boolean);
+  const v9Fields = () => ({
+    layer: layer || undefined,
+    pageType,
+    hesitation: hesitation || null,
+    handoff: parseList(handoff),
+    primaryQuery: primaryQuery || undefined,
+    secondaryQueries: parseList(secondaryQueries),
+    confirmedDate: confirmedDate || null,
+    distribution: parseList(distribution) as DistributionSurface[],
+    market: parseList(market),
+  });
+
   const createArticle = useMutation({
-    mutationFn: () => createArticleDoc({ slug, categorySlug, schemaType, status, thumbnailUrl: thumbnailUrl || null }),
+    mutationFn: () => createArticleDoc({ slug, categorySlug, schemaType, status, thumbnailUrl: thumbnailUrl || null, ...v9Fields() }),
     onSuccess: (data) => {
       toast.success("記事を作成しました。");
       navigate(`/admin/cms/${data.id}`);
@@ -86,7 +119,7 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
   });
 
   const updateArticle = useMutation({
-    mutationFn: () => updateArticleMeta(articleId!, { categorySlug, schemaType, status, thumbnailUrl: thumbnailUrl || null }),
+    mutationFn: () => updateArticleMeta(articleId!, { categorySlug, schemaType, status, thumbnailUrl: thumbnailUrl || null, ...v9Fields() }),
     onSuccess: () => toast.success("記事を更新しました。"),
     onError: () => toast.error("更新に失敗しました。"),
   });
@@ -201,6 +234,15 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
   }
 
   const currentTranslation = translations[activeLang];
+
+  // FAQ（翻訳レベル・FAQPage Schema 用）
+  const faqItems = currentTranslation.faq ?? [];
+  const setFaqItems = (next: Array<{ q: string; a: string }>) =>
+    setTranslations((prev) => ({ ...prev, [activeLang]: { ...prev[activeLang], faq: next } }));
+  const addFaq = () => setFaqItems([...faqItems, { q: "", a: "" }]);
+  const updateFaqItem = (i: number, key: "q" | "a", value: string) =>
+    setFaqItems(faqItems.map((f, idx) => (idx === i ? { ...f, [key]: value } : f)));
+  const removeFaq = (i: number) => setFaqItems(faqItems.filter((_, idx) => idx !== i));
 
   const inputStyle = {
     width: "100%",
@@ -379,6 +421,22 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                     <input type="text" value={currentTranslation.metaDescription} onChange={(e) => updateTranslation("metaDescription", e.target.value)} style={inputStyle} placeholder="SEO用説明文（省略可）" />
                   </div>
                 </div>
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                    <label style={{ ...labelStyle, marginBottom: 0 }}>FAQ（FAQPage Schema）</label>
+                    <button onClick={addFaq} type="button" style={{ fontSize: "0.6875rem", color: "#333", background: "none", border: "1px solid #D7D7D7", padding: "0.25rem 0.625rem", cursor: "pointer" }}>+ 質問を追加</button>
+                  </div>
+                  {faqItems.length === 0 && <p style={{ fontSize: "0.75rem", color: "#999", margin: 0 }}>質問はまだありません。冒頭3行の直接回答とセットでGEO引用に効きます。</p>}
+                  {faqItems.map((f, i) => (
+                    <div key={i} style={{ border: "1px solid #E5E5E5", padding: "0.75rem", marginBottom: "0.5rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                      <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                        <input type="text" value={f.q} onChange={(e) => updateFaqItem(i, "q", e.target.value)} style={{ ...inputStyle, flex: 1 }} placeholder="質問" />
+                        <button onClick={() => removeFaq(i)} type="button" style={{ background: "none", border: "1px solid #D7D7D7", padding: "0.5rem", cursor: "pointer", color: "#999" }} title="削除"><X size={13} /></button>
+                      </div>
+                      <textarea value={f.a} onChange={(e) => updateFaqItem(i, "a", e.target.value)} style={{ ...inputStyle, height: "60px", resize: "vertical" }} placeholder="回答" />
+                    </div>
+                  ))}
+                </div>
                 <button
                   onClick={handleSaveTranslation}
                   disabled={upsertTranslation.isPending || !articleId}
@@ -434,6 +492,63 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                 <option value="published">公開 (published)</option>
                 <option value="archived">アーカイブ (archived)</option>
               </select>
+            </div>
+
+            <div style={{ borderTop: "1px solid #E5E5E5", paddingTop: "1.25rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <p style={{ fontSize: "0.6875rem", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", color: "#555555", margin: 0 }}>戦略設定（v9・迷わせない）</p>
+              <div>
+                <label style={labelStyle}>層 Layer *</label>
+                <select value={layer} onChange={(e) => setLayer(e.target.value as Layer | "")} style={{ ...inputStyle, appearance: "none" }}>
+                  <option value="">— 選択 —</option>
+                  <option value="M">M: 王道（マネーページ）</option>
+                  <option value="0">0: eSIMグリッド</option>
+                  <option value="1">1: ローミング比較</option>
+                  <option value="1.5">1.5: 旅のハウツー</option>
+                  <option value="3">3: 福岡実測データ</option>
+                  <option value="season">季節</option>
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>ページ種別</label>
+                <select value={pageType} onChange={(e) => setPageType(e.target.value as PageType)} style={{ ...inputStyle, appearance: "none" }}>
+                  <option value="article">記事</option>
+                  <option value="landing">受けページ</option>
+                  <option value="grid">格子</option>
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>消す離脱理由</label>
+                <select value={hesitation} onChange={(e) => setHesitation(e.target.value as Hesitation | "")} style={{ ...inputStyle, appearance: "none" }}>
+                  <option value="">— なし（集客/権威）—</option>
+                  <option value="price">高いかも</option>
+                  <option value="hassle">面倒</option>
+                  <option value="anxiety">自分に合うか不安</option>
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>確認日</label>
+                <input type="date" value={confirmedDate} onChange={(e) => setConfirmedDate(e.target.value)} style={inputStyle} />
+              </div>
+              <div>
+                <label style={labelStyle}>受け先 handoff（カンマ区切り）</label>
+                <input type="text" value={handoff} onChange={(e) => setHandoff(e.target.value)} style={inputStyle} placeholder="gb-diagnosis, /buy?ref=..." />
+              </div>
+              <div>
+                <label style={labelStyle}>主クエリ</label>
+                <input type="text" value={primaryQuery} onChange={(e) => setPrimaryQuery(e.target.value)} style={inputStyle} placeholder="일본 이심 카카오톡 인증" />
+              </div>
+              <div>
+                <label style={labelStyle}>従クエリ（カンマ区切り）</label>
+                <input type="text" value={secondaryQueries} onChange={(e) => setSecondaryQueries(e.target.value)} style={inputStyle} placeholder="query1, query2" />
+              </div>
+              <div>
+                <label style={labelStyle}>配信面（カンマ区切り）</label>
+                <input type="text" value={distribution} onChange={(e) => setDistribution(e.target.value)} style={inputStyle} placeholder="esim, guides, homes" />
+              </div>
+              <div>
+                <label style={labelStyle}>対象市場（カンマ区切り）</label>
+                <input type="text" value={market} onChange={(e) => setMarket(e.target.value)} style={inputStyle} placeholder="KO, TW, TH" />
+              </div>
             </div>
 
             <div>

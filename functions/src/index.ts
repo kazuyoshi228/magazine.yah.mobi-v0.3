@@ -32,6 +32,7 @@ interface Translation {
   directAnswer: string;
   metaTitle: string;
   metaDescription: string;
+  faq?: Array<{ q: string; a: string }>;
 }
 interface ArticleDoc {
   slug: string;
@@ -215,6 +216,18 @@ function buildHeadTags(a: ArticleDoc, t: Translation, lang: Lang): string {
   const hreflang = (a.languages ?? [])
     .map((l) => `<link rel="alternate" hreflang="${l}" href="${url}?lang=${l}" />`)
     .join("\n    ");
+  const faqScript =
+    t.faq && t.faq.length
+      ? `<script type="application/ld+json">${JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: t.faq.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        })}</script>`
+      : "";
   const fullTitle = /yah\.(magazine|mobi)/i.test(title) ? title : `${title} | yah.magazine`;
   return [
     `<title>${esc(fullTitle)}</title>`,
@@ -227,6 +240,7 @@ function buildHeadTags(a: ArticleDoc, t: Translation, lang: Lang): string {
     a.thumbnailUrl ? `<meta property="og:image" content="${esc(a.thumbnailUrl)}" />` : "",
     hreflang,
     `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`,
+    faqScript,
   ]
     .filter(Boolean)
     .join("\n    ");
@@ -240,6 +254,13 @@ function buildSeoContent(a: ArticleDoc, t: Translation, lang: Lang): string {
 ${date ? `<p><time datetime="${date}">${date}</time> · ${esc(a.categorySlug)} · yah.magazine</p>` : ""}
 ${t.directAnswer ? `<section><h2>${lang === "ja" ? "直接回答" : "Direct Answer"}</h2><p>${esc(t.directAnswer)}</p></section>` : ""}
 ${renderMarkdown(t.body)}
+${
+  t.faq && t.faq.length
+    ? `<section><h2>${lang === "ja" ? "よくある質問" : "FAQ"}</h2>${t.faq
+        .map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`)
+        .join("\n")}</section>`
+    : ""
+}
 <footer><p><a href="https://yah.mobi/app">Get a Japan eSIM at yah.mobile</a> · <a href="https://yah.homes">Stay in Fukuoka with yah.homes</a></p></footer>
 </article>
 </div>`;

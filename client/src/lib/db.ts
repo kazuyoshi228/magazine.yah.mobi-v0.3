@@ -32,6 +32,10 @@ import {
   type SchemaType,
   type EventDoc,
   type Lang,
+  type Layer,
+  type PageType,
+  type Hesitation,
+  type DistributionSurface,
   LANGS,
   getCategory,
 } from "@shared/types";
@@ -151,6 +155,16 @@ export interface ArticleMetaInput {
   schemaType: SchemaType;
   status: ArticleStatus;
   thumbnailUrl: string | null;
+  // v9 戦略フィールド（任意）
+  layer?: Layer;
+  pageType?: PageType;
+  hesitation?: Hesitation | null;
+  handoff?: string[];
+  primaryQuery?: string;
+  secondaryQueries?: string[];
+  confirmedDate?: string | null;
+  distribution?: DistributionSurface[];
+  market?: string[];
 }
 
 /** 新規作成。docId = slug。既存 slug は拒否 */
@@ -159,6 +173,7 @@ export async function createArticle(meta: ArticleMetaInput): Promise<{ id: strin
   const existing = await getDoc(refDoc);
   if (existing.exists()) throw new Error(`slug "${meta.slug}" は既に使われています。`);
   const now = Date.now();
+  // 未設定の任意フィールドは ignoreUndefinedProperties により自動的に落ちる（firebase.ts）
   const data: ArticleDoc = {
     slug: meta.slug,
     categorySlug: meta.categorySlug,
@@ -170,6 +185,15 @@ export async function createArticle(meta: ArticleMetaInput): Promise<{ id: strin
     updatedAt: now,
     languages: [],
     translations: {},
+    layer: meta.layer,
+    pageType: meta.pageType ?? "article",
+    hesitation: meta.hesitation ?? null,
+    handoff: meta.handoff ?? [],
+    primaryQuery: meta.primaryQuery,
+    secondaryQueries: meta.secondaryQueries ?? [],
+    confirmedDate: meta.confirmedDate ?? null,
+    distribution: meta.distribution ?? ["esim"],
+    market: meta.market ?? [],
   };
   await setDoc(refDoc, data);
   return { id: meta.slug };
