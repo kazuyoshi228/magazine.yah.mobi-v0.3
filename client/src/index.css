@@ -352,8 +352,12 @@
   }
 
   .prose-yah img {
-    width: 100%;
+    /* 写真は画角そのまま・コラム幅を上限に（引き伸ばさない・2026-07-14 仕様変更） */
+    display: block;
+    max-width: 100%;
+    width: auto;
     height: auto;
+    border-radius: 4px;
     margin: 2rem 0;
   }
 

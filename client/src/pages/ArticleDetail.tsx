@@ -208,13 +208,14 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
         </div>
       </div>
 
-      {/* Thumbnail */}
+      {/* Thumbnail — 全幅ヒーローにせず、本文コラム幅・画角そのままで表示（2026-07-14 仕様変更） */}
       {article.articles?.thumbnailUrl && (
-        <div style={{ backgroundColor: "#EBEBEB", width: "100%", maxHeight: "480px", overflow: "hidden" }}>
+        <div className="container" style={{ maxWidth: "800px", paddingTop: "2rem" }}>
           <img
             src={article.articles.thumbnailUrl}
             alt={translation?.title ?? slug}
-            style={{ width: "100%", height: "100%", objectFit: "cover", maxHeight: "480px" }}
+            style={{ display: "block", maxWidth: "100%", height: "auto", borderRadius: "4px" }}
+            loading="lazy"
           />
         </div>
       )}
