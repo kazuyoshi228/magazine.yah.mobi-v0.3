@@ -1,7 +1,8 @@
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Wifi, UtensilsCrossed, MapPin } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { getArticleBySlug } from "@/lib/db";
+import { getArticleBySlug, listPlans } from "@/lib/db";
+import { renderCompareBody, substitutePlaceholders, computePriceMeta } from "@/lib/compareGrid";
 import SeoHead from "@/components/SeoHead";
 import type { Lang } from "@/components/Header";
 import { useAnalytics } from "@/hooks/useAnalytics";
@@ -83,6 +84,8 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
     queryKey: ["article", slug, lang],
     queryFn: () => getArticleBySlug(slug, lang),
   });
+  // 価格プラン（CompareGrid・{{price}} 焼き込み）。価格を持たない記事でも実害はない。
+  const { data: plans = [] } = useQuery({ queryKey: ["plans"], queryFn: listPlans, staleTime: 5 * 60_000 });
   const articleId = data?.article?.articles?.id;
   const { trackCtaClick } = useAnalytics({ articleId });
 
@@ -227,7 +230,7 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
                 {lang === "ja" ? "直接回答" : lang === "ko" ? "직접 답변" : lang === "zh-TW" ? "直接回答" : "Direct Answer"}
               </p>
               <p style={{ margin: 0, fontSize: "1.0625rem", lineHeight: 1.75 }}>
-                {translation.directAnswer}
+                {substitutePlaceholders(translation.directAnswer, plans, computePriceMeta(plans))}
               </p>
             </div>
           )}
@@ -236,7 +239,7 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
           {translation?.body ? (
             <div
               className="prose-yah"
-              dangerouslySetInnerHTML={{ __html: renderMarkdown(translation.body) }}
+              dangerouslySetInnerHTML={{ __html: renderCompareBody(translation.body, plans, renderMarkdown) }}
             />
           ) : (
             <div style={{ padding: "3rem 0", textAlign: "center", color: "#999999" }}>

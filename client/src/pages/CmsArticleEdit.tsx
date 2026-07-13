@@ -7,7 +7,9 @@ import {
   updateArticleMeta,
   upsertTranslation as upsertTranslationDoc,
   uploadImageFile,
+  listPlans,
 } from "@/lib/db";
+import { renderCompareBody } from "@/lib/compareGrid";
 import { CATEGORIES, LANGS as ALL_LANGS, type Lang, type SchemaType, type ArticleStatus, type CategorySlug, type ArticleTranslation, type Layer, type PageType, type Hesitation, type DistributionSurface } from "@shared/types";
 import { useAuth } from "@/_core/hooks/useAuth";
 
@@ -23,9 +25,113 @@ interface CmsArticleEditProps {
 const LANGS = ALL_LANGS as readonly Lang[];
 const LANG_LABELS: Record<Lang, string> = { ja: "日本語", en: "English", ko: "한국어", "zh-TW": "繁體中文" };
 
+// 選択肢が固定の戦略フィールド（チップ式チェックボックスで選ぶ）
+const DISTRIBUTION_OPTIONS: { value: DistributionSurface; label: string }[] = [
+  { value: "esim", label: "eSIM" },
+  { value: "guides", label: "ガイド" },
+  { value: "homes", label: "宿泊（homes）" },
+];
+const MARKET_OPTIONS: { value: string; label: string }[] = [
+  { value: "KO", label: "韓国 KO" },
+  { value: "TW", label: "台湾 TW" },
+  { value: "TH", label: "タイ TH" },
+  { value: "HK", label: "香港 HK" },
+  { value: "SG", label: "シンガポール SG" },
+  { value: "ID", label: "インドネシア ID" },
+];
+// 既知の受け先ツール（これ以外に /buy?ref=… 等は自由入力欄で追加）
+const HANDOFF_TOOLS: { value: string; label: string }[] = [
+  { value: "gb-diagnosis", label: "GB診断" },
+  { value: "carrier-roaming", label: "ローミング比較" },
+  { value: "device-checker", label: "機種チェッカー" },
+];
+
+// カンマ区切り文字列（既存のstate形）を配列として扱うヘルパー
+const csvItems = (csv: string): string[] => csv.split(",").map((s) => s.trim()).filter(Boolean);
+const csvHas = (csv: string, v: string): boolean => csvItems(csv).includes(v);
+const toggleCsv = (csv: string, v: string): string => {
+  const items = csvItems(csv);
+  return (items.includes(v) ? items.filter((i) => i !== v) : [...items, v]).join(", ");
+};
+
 const emptyTranslation = (): ArticleTranslation => ({
   title: "", excerpt: "", body: "", directAnswer: "", metaTitle: "", metaDescription: "",
 });
+
+/** 固定選択肢をチップ式で選ぶ（値は既存のカンマ区切り文字列を維持）。 */
+function ChipToggles({ options, csv, onChange }: {
+  options: { value: string; label: string }[];
+  csv: string;
+  onChange: (next: string) => void;
+}) {
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+      {options.map((o) => {
+        const checked = csvHas(csv, o.value);
+        return (
+          <label
+            key={o.value}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.375rem",
+              fontSize: "0.8125rem",
+              border: `1px solid ${checked ? "#000000" : "#D7D7D7"}`,
+              background: checked ? "#000000" : "#FFFFFF",
+              color: checked ? "#FFFFFF" : "#333333",
+              padding: "0.375rem 0.625rem",
+              cursor: "pointer",
+              userSelect: "none",
+            }}
+          >
+            <input type="checkbox" checked={checked} onChange={() => onChange(toggleCsv(csv, o.value))} style={{ display: "none" }} />
+            {o.label}
+          </label>
+        );
+      })}
+    </div>
+  );
+}
+
+/** 自由入力のタグ欄（1語1チップ・Enter/カンマで確定・✕で削除）。値はカンマ区切り文字列を維持。 */
+function TagInput({ csv, onChange, placeholder }: {
+  csv: string;
+  onChange: (next: string) => void;
+  placeholder?: string;
+}) {
+  const [draft, setDraft] = useState("");
+  const items = csvItems(csv);
+  const add = (raw: string) => {
+    const v = raw.trim();
+    setDraft("");
+    if (!v || items.includes(v)) return;
+    onChange([...items, v].join(", "));
+  };
+  const removeAt = (i: number) => onChange(items.filter((_, idx) => idx !== i).join(", "));
+  return (
+    <div style={{ border: "1px solid #D7D7D7", background: "#FFFFFF", padding: "0.4rem", display: "flex", flexWrap: "wrap", gap: "0.375rem", alignItems: "center" }}>
+      {items.map((it, i) => (
+        <span key={i} style={{ display: "flex", alignItems: "center", gap: "0.375rem", background: "#F0F0F0", border: "1px solid #D7D7D7", padding: "0.25rem 0.5rem", fontSize: "0.8125rem" }}>
+          {it}
+          <button type="button" onClick={() => removeAt(i)} style={{ background: "none", border: "none", cursor: "pointer", color: "#999", padding: 0, lineHeight: 1, display: "flex" }} title="削除">
+            <X size={12} />
+          </button>
+        </span>
+      ))}
+      <input
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === ",") { e.preventDefault(); add(draft); }
+          else if (e.key === "Backspace" && draft === "" && items.length) { removeAt(items.length - 1); }
+        }}
+        onBlur={() => add(draft)}
+        placeholder={items.length ? "" : placeholder}
+        style={{ border: "none", outline: "none", flex: 1, minWidth: "120px", fontSize: "0.875rem", padding: "0.25rem", fontFamily: "inherit", background: "transparent" }}
+      />
+    </div>
+  );
+}
 
 export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
   const { user, loading } = useAuth();
@@ -67,6 +173,8 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     queryFn: () => getArticleForEdit(articleId!),
     enabled: articleId !== null && isAdmin,
   });
+  // 価格プラン（プレビューで {{price}} 焼き込み・CompareGrid 表を実値表示）
+  const { data: plans = [] } = useQuery({ queryKey: ["plans"], queryFn: listPlans, staleTime: 5 * 60_000, enabled: isAdmin });
 
   // Populate form when editing
   useEffect(() => {
@@ -344,52 +452,43 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
                     <label style={{ ...labelStyle, marginBottom: 0 }}>本文（Markdown） *</label>
                     <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                      {!preview && (
-                        <>
-                          <input
-                            id="inline-image-input"
-                            type="file"
-                            accept="image/jpeg,image/png,image/webp,image/gif"
-                            style={{ display: "none" }}
-                            onChange={handleInlineImageSelect}
-                          />
-                          <label
-                            htmlFor="inline-image-input"
-                            style={{
-                              fontSize: "0.6875rem",
-                              color: uploadingInlineImage ? "#999" : "#333",
-                              background: "none",
-                              border: "1px solid #D7D7D7",
-                              padding: "0.25rem 0.625rem",
-                              cursor: uploadingInlineImage ? "not-allowed" : "pointer",
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "0.375rem",
-                              pointerEvents: uploadingInlineImage ? "none" : "auto",
-                            }}
-                            title="画像をアップロードして本文に挿入"
-                          >
-                            <ImagePlus size={11} strokeWidth={1.5} />
-                            {uploadingInlineImage ? "アップロード中..." : "画像を挿入"}
-                          </label>
-                        </>
-                      )}
+                      <input
+                        id="inline-image-input"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/gif"
+                        style={{ display: "none" }}
+                        onChange={handleInlineImageSelect}
+                      />
+                      <label
+                        htmlFor="inline-image-input"
+                        style={{
+                          fontSize: "0.6875rem",
+                          color: uploadingInlineImage ? "#999" : "#333",
+                          background: "none",
+                          border: "1px solid #D7D7D7",
+                          padding: "0.25rem 0.625rem",
+                          cursor: uploadingInlineImage ? "not-allowed" : "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.375rem",
+                          pointerEvents: uploadingInlineImage ? "none" : "auto",
+                        }}
+                        title="画像をアップロードして本文に挿入"
+                      >
+                        <ImagePlus size={11} strokeWidth={1.5} />
+                        {uploadingInlineImage ? "アップロード中..." : "画像を挿入"}
+                      </label>
                       <button
                         onClick={() => setPreview((v) => !v)}
-                        style={{ fontSize: "0.6875rem", color: "#555555", background: "none", border: "1px solid #D7D7D7", padding: "0.25rem 0.625rem", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.375rem" }}
+                        style={{ fontSize: "0.6875rem", color: preview ? "#000000" : "#555555", fontWeight: preview ? 600 : 400, background: preview ? "#F0F0F0" : "none", border: "1px solid #D7D7D7", padding: "0.25rem 0.625rem", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.375rem" }}
+                        title="入力の右側に表示結果を並べます"
                       >
                         <Eye size={11} strokeWidth={1.5} />
-                        {preview ? "編集" : "プレビュー"}
+                        {preview ? "プレビューを閉じる" : "プレビュー"}
                       </button>
                     </div>
                   </div>
-                  {preview ? (
-                    <div
-                      className="prose-yah"
-                      style={{ minHeight: "400px", padding: "1rem", backgroundColor: "#F7F7F7", border: "1px solid #D7D7D7" }}
-                      dangerouslySetInnerHTML={{ __html: renderMarkdown(currentTranslation.body) }}
-                    />
-                  ) : (
+                  <div style={{ display: "grid", gridTemplateColumns: preview ? "1fr 1fr" : "1fr", gap: "1rem", alignItems: "stretch" }}>
                     <textarea
                       ref={textareaRef}
                       value={currentTranslation.body}
@@ -399,7 +498,7 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                       onDragLeave={() => setIsDraggingOver(false)}
                       style={{
                         ...inputStyle,
-                        height: "400px",
+                        height: "500px",
                         resize: "vertical",
                         fontFamily: "monospace",
                         fontSize: "0.875rem",
@@ -409,7 +508,14 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                       }}
                       placeholder="# 見出し&#10;&#10;本文をMarkdown形式で入力してください。&#10;画像はドラッグ&amp;ドロップまたは「画像を挿入」ボタンでアップロードできます。"
                     />
-                  )}
+                    {preview && (
+                      <div
+                        className="prose-yah"
+                        style={{ height: "500px", overflowY: "auto", padding: "1rem 1.25rem", backgroundColor: "#F7F7F7", border: "1px solid #D7D7D7" }}
+                        dangerouslySetInnerHTML={{ __html: renderCompareBody(currentTranslation.body, plans, renderMarkdown) }}
+                      />
+                    )}
+                  </div>
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
                   <div>
@@ -530,24 +636,33 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                 <input type="date" value={confirmedDate} onChange={(e) => setConfirmedDate(e.target.value)} style={inputStyle} />
               </div>
               <div>
-                <label style={labelStyle}>受け先 handoff（カンマ区切り）</label>
-                <input type="text" value={handoff} onChange={(e) => setHandoff(e.target.value)} style={inputStyle} placeholder="gb-diagnosis, /buy?ref=..." />
+                <label style={labelStyle}>受け先 handoff</label>
+                <ChipToggles options={HANDOFF_TOOLS} csv={handoff} onChange={setHandoff} />
+                <input
+                  type="text"
+                  value={handoff}
+                  onChange={(e) => setHandoff(e.target.value)}
+                  style={{ ...inputStyle, marginTop: "0.5rem", fontSize: "0.8125rem" }}
+                  placeholder="/buy?ref=compare など（カンマ区切り・チップ選択もここに反映）"
+                />
+                <p style={{ fontSize: "0.6875rem", color: "#999", marginTop: "0.375rem" }}>上のツールはクリックで追加/解除。/buy?ref= 等はこの欄に直接記入。</p>
               </div>
               <div>
                 <label style={labelStyle}>主クエリ</label>
                 <input type="text" value={primaryQuery} onChange={(e) => setPrimaryQuery(e.target.value)} style={inputStyle} placeholder="일본 이심 카카오톡 인증" />
               </div>
               <div>
-                <label style={labelStyle}>従クエリ（カンマ区切り）</label>
-                <input type="text" value={secondaryQueries} onChange={(e) => setSecondaryQueries(e.target.value)} style={inputStyle} placeholder="query1, query2" />
+                <label style={labelStyle}>従クエリ</label>
+                <TagInput csv={secondaryQueries} onChange={setSecondaryQueries} placeholder="語句を入力して Enter" />
+                <p style={{ fontSize: "0.6875rem", color: "#999", marginTop: "0.375rem" }}>1語ずつ入力して Enter（またはカンマ）でタグ化。✕で削除。</p>
               </div>
               <div>
-                <label style={labelStyle}>配信面（カンマ区切り）</label>
-                <input type="text" value={distribution} onChange={(e) => setDistribution(e.target.value)} style={inputStyle} placeholder="esim, guides, homes" />
+                <label style={labelStyle}>配信面</label>
+                <ChipToggles options={DISTRIBUTION_OPTIONS} csv={distribution} onChange={setDistribution} />
               </div>
               <div>
-                <label style={labelStyle}>対象市場（カンマ区切り）</label>
-                <input type="text" value={market} onChange={(e) => setMarket(e.target.value)} style={inputStyle} placeholder="KO, TW, TH" />
+                <label style={labelStyle}>対象市場</label>
+                <ChipToggles options={MARKET_OPTIONS} csv={market} onChange={setMarket} />
               </div>
             </div>
 
@@ -601,20 +716,130 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
   );
 }
 
-function renderMarkdown(md: string): string {
-  let html = md
-    .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-    .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-    .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.+?)\*/g, "<em>$1</em>")
-    .replace(/`([^`]+)`/g, "<code>$1</code>")
+/** 本文プレビュー用の簡易 Markdown → HTML 変換（ブロック単位・表/箇条書き/引用対応）。
+ * 依存追加なし。CMS プレビューと同等の見た目は .prose-yah（index.css）が担う。
+ * 生成した本文HTMLは admin 専用プレビューでのみ dangerouslySetInnerHTML される。 */
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function renderInline(text: string): string {
+  return text
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" loading="lazy" />')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-    .replace(/^\- (.+)$/gm, "<li>$1</li>")
-    .replace(/^\d+\. (.+)$/gm, "<li>$1</li>")
-    .replace(/^> (.+)$/gm, "<blockquote>$1</blockquote>")
-    .replace(/^---$/gm, "<hr>")
-    .replace(/\n\n/g, "</p><p>");
-  return `<p>${html}</p>`;
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g, "<em>$1</em>")
+    .replace(/`([^`]+)`/g, "<code>$1</code>");
+}
+
+function splitTableRow(line: string): string[] {
+  let s = line.trim();
+  if (s.startsWith("|")) s = s.slice(1);
+  if (s.endsWith("|")) s = s.slice(0, -1);
+  return s.split("|").map((c) => c.trim());
+}
+
+function renderMarkdown(md: string): string {
+  const lines = escapeHtml(md).replace(/\r\n/g, "\n").split("\n");
+  const out: string[] = [];
+  let paragraph: string[] = [];
+  const flushPara = () => {
+    if (paragraph.length) {
+      out.push(`<p>${renderInline(paragraph.join(" "))}</p>`);
+      paragraph = [];
+    }
+  };
+
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (trimmed === "") {
+      flushPara();
+      i++;
+      continue;
+    }
+
+    // 表: 現在行に | があり、次行が区切り（|---|---|）
+    if (
+      line.includes("|") &&
+      i + 1 < lines.length &&
+      lines[i + 1].includes("-") &&
+      /^\s*\|?[\s:|-]+\|?\s*$/.test(lines[i + 1])
+    ) {
+      flushPara();
+      const header = splitTableRow(line);
+      i += 2; // ヘッダ行＋区切り行を消費
+      const rows: string[][] = [];
+      while (i < lines.length && lines[i].includes("|") && lines[i].trim() !== "") {
+        rows.push(splitTableRow(lines[i]));
+        i++;
+      }
+      let t = "<table><thead><tr>" + header.map((h) => `<th>${renderInline(h)}</th>`).join("") + "</tr></thead><tbody>";
+      for (const r of rows) t += "<tr>" + r.map((c) => `<td>${renderInline(c)}</td>`).join("") + "</tr>";
+      t += "</tbody></table>";
+      out.push(t);
+      continue;
+    }
+
+    // 見出し
+    const h = /^(#{1,4})\s+(.+)$/.exec(trimmed);
+    if (h) {
+      flushPara();
+      out.push(`<h${h[1].length}>${renderInline(h[2])}</h${h[1].length}>`);
+      i++;
+      continue;
+    }
+
+    // 水平線
+    if (/^(-{3,}|\*{3,})$/.test(trimmed)) {
+      flushPara();
+      out.push("<hr />");
+      i++;
+      continue;
+    }
+
+    // 引用
+    if (/^>\s?/.test(trimmed)) {
+      flushPara();
+      const quote: string[] = [];
+      while (i < lines.length && /^>\s?/.test(lines[i].trim())) {
+        quote.push(lines[i].trim().replace(/^>\s?/, ""));
+        i++;
+      }
+      out.push(`<blockquote>${renderInline(quote.join(" "))}</blockquote>`);
+      continue;
+    }
+
+    // 箇条書き（・）
+    if (/^[-*]\s+/.test(trimmed)) {
+      flushPara();
+      const items: string[] = [];
+      while (i < lines.length && /^[-*]\s+/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^[-*]\s+/, ""));
+        i++;
+      }
+      out.push("<ul>" + items.map((it) => `<li>${renderInline(it)}</li>`).join("") + "</ul>");
+      continue;
+    }
+
+    // 番号付きリスト
+    if (/^\d+\.\s+/.test(trimmed)) {
+      flushPara();
+      const items: string[] = [];
+      while (i < lines.length && /^\d+\.\s+/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^\d+\.\s+/, ""));
+        i++;
+      }
+      out.push("<ol>" + items.map((it) => `<li>${renderInline(it)}</li>`).join("") + "</ol>");
+      continue;
+    }
+
+    // 段落
+    paragraph.push(trimmed);
+    i++;
+  }
+  flushPara();
+  return out.join("\n");
 }

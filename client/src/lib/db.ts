@@ -36,11 +36,19 @@ import {
   type PageType,
   type Hesitation,
   type DistributionSurface,
+  type Plan,
   LANGS,
   getCategory,
 } from "@shared/types";
 
 const articlesCol = collection(db, "articles");
+const plansCol = collection(db, "plans");
+
+/** 価格プラン全件（CompareGrid・{{price}} 焼き込み用）。読み取りは公開（firestore.rules）。 */
+export async function listPlans(): Promise<Plan[]> {
+  const snap = await getDocs(plansCol);
+  return snap.docs.map((d) => d.data() as Plan);
+}
 
 // ─── Public reads ─────────────────────────────────────────────────────────────
 

@@ -102,6 +102,36 @@ export interface ArticleDoc {
   market?: string[];
 }
 
+/** 価格プランの提供形態（v9 §5-2・CompareGrid） */
+export type PlanProviderType = "esim" | "wifi" | "sim" | "roaming";
+
+/**
+ * 価格プラン（`plans` コレクション・価格の単一ソース＝鉄則③）。
+ * docId = key（例: "yah_7d_3gb"）。記事の priceBindings がこの key を指す。
+ * SSR/クライアントで {{key}} → priceJpy を焼き込み、CompareGrid 表を描画する。
+ * source: "live"=決済と同一Firestore由来 / "manual"=競合の手動更新 / "placeholder"=要差し替えサンプル。
+ */
+export interface Plan {
+  key: string;
+  provider: string;
+  providerType: PlanProviderType;
+  /** 有効日数 */
+  days: number;
+  /** 容量表示（"3GB" / "5GB" / "10GB" / "無制限"） */
+  data: string;
+  /** 価格（円・税込） */
+  priceJpy: number;
+  source: "live" | "manual" | "placeholder";
+  /** 競合の出典URL（provenance・GEO/E-E-A-T） */
+  sourceUrl?: string | null;
+  /** 確認日（ISO 8601 date） */
+  confirmedDate?: string | null;
+  /** 更新時刻（ms） */
+  updatedAt: number;
+  /** 補足（"要差し替え" など） */
+  note?: string | null;
+}
+
 /** 一覧表示用のフラット行（旧 tRPC articles.list 互換） */
 export interface ArticleListRow {
   id: string; // = slug

@@ -33,6 +33,14 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // ─── 価格プラン（CompareGrid・価格の単一ソース） ─────────────────────────
+    // 価格は公開情報。誰でも読める（記事の {{price}} 焼き込み・比較表）。
+    // 書き込みは admin のみ（実運用は seed-plans.mjs / 将来のCMS価格エディタ）。
+    match /plans/{key} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // ─── 計測イベント ──────────────────────────────────────────────────────
     // 匿名クライアントからの create のみ許可（形状を検証）。読み取りは admin のみ。
     match /events/{eventId} {

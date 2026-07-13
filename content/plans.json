@@ -1,0 +1,20 @@
+{
+  "_note": "価格の単一ソース（Firestore plans コレクションのseed元）。ここに載っている priceJpy は【すべて要差し替えのサンプル値】です。実勢価格を確認して置き換え、`node scripts/seed-plans.mjs --write`（人間が実行）で plans コレクションへ反映してください。source が 'placeholder' の行は本番公開前に 'live'（自社・決済と同一ソース）/ 'manual'（競合・出典URL併記）へ更新すること。",
+  "confirmedDate": "2026-07-13",
+  "plans": [
+    { "key": "yah_7d_3gb",  "provider": "yah.mobile", "providerType": "esim", "days": 7, "data": "3GB",   "priceJpy": 980,  "source": "placeholder", "note": "要差し替え（自社・決済と同一ソースに）" },
+    { "key": "yah_7d_5gb",  "provider": "yah.mobile", "providerType": "esim", "days": 7, "data": "5GB",   "priceJpy": 1280, "source": "placeholder", "note": "要差し替え" },
+    { "key": "yah_7d_10gb", "provider": "yah.mobile", "providerType": "esim", "days": 7, "data": "10GB",  "priceJpy": 1780, "source": "placeholder", "note": "要差し替え" },
+    { "key": "yah_7d_unl",  "provider": "yah.mobile", "providerType": "esim", "days": 7, "data": "無制限", "priceJpy": 2480, "source": "placeholder", "note": "要差し替え" },
+
+    { "key": "airalo_7d_3gb",  "provider": "Airalo",  "providerType": "esim", "days": 7, "data": "3GB",   "priceJpy": 1200, "source": "placeholder", "sourceUrl": "", "note": "要差し替え（出典URL併記）" },
+    { "key": "airalo_7d_5gb",  "provider": "Airalo",  "providerType": "esim", "days": 7, "data": "5GB",   "priceJpy": 1650, "source": "placeholder", "sourceUrl": "", "note": "要差し替え" },
+    { "key": "airalo_7d_10gb", "provider": "Airalo",  "providerType": "esim", "days": 7, "data": "10GB",  "priceJpy": 2300, "source": "placeholder", "sourceUrl": "", "note": "要差し替え" },
+
+    { "key": "holafly_unl", "provider": "Holafly", "providerType": "esim", "days": 7, "data": "無制限", "priceJpy": 2900, "source": "placeholder", "sourceUrl": "", "note": "要差し替え" },
+
+    { "key": "wifi_7d", "provider": "ポケットWiFi", "providerType": "wifi", "days": 7, "data": "無制限", "priceJpy": 3900, "source": "placeholder", "sourceUrl": "", "note": "要差し替え（受取返却/空港カウンター込みの実勢）" },
+
+    { "key": "airportsim_7d_3gb", "provider": "空港SIM", "providerType": "sim", "days": 7, "data": "3GB", "priceJpy": 1500, "source": "placeholder", "sourceUrl": "", "note": "要差し替え" }
+  ]
+}

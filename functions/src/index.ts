@@ -44,6 +44,21 @@ interface ArticleDoc {
   updatedAt: number;
   languages: Lang[];
   translations: Partial<Record<Lang, Translation>>;
+  priceBindings?: string[];
+}
+
+interface Plan {
+  key: string;
+  provider: string;
+  providerType: string;
+  days: number;
+  data: string;
+  priceJpy: number;
+  source: string;
+  sourceUrl?: string | null;
+  confirmedDate?: string | null;
+  updatedAt: number;
+  note?: string | null;
 }
 
 // ─── SPA テンプレート ─────────────────────────────────────────────────────────
@@ -88,6 +103,85 @@ function renderMarkdown(md: string): string {
     .replace(/^---$/gm, "<hr>")
     .replace(/\n\n/g, "</p><p>");
   return `<p>${html}</p>`;
+}
+
+// ─── CompareGrid / 動的価格の焼き込み ───────────────────────────────────────────
+// client/src/lib/compareGrid.ts と同一仕様（別パッケージのため複製）。片方を変えたら両方揃える。
+const COMPARE_SENTINEL = "%%COMPAREGRID%%";
+const PLAN_TYPE_LABEL: Record<string, string> = { esim: "eSIM", wifi: "レンタルWiFi", sim: "空港SIM", roaming: "ローミング" };
+
+function fmtJpy(n: number): string {
+  return n.toLocaleString("ja-JP");
+}
+
+function computePriceMeta(plans: Plan[]): { date: string; time: string } {
+  const latestMs = plans.reduce((m, p) => Math.max(m, p.updatedAt ?? 0), 0) || Date.now();
+  const d = new Date(latestMs);
+  const dates = plans.map((p) => p.confirmedDate).filter((x): x is string => !!x).sort();
+  const date = dates.length ? dates[dates.length - 1] : d.toLocaleDateString("sv-SE", { timeZone: "Asia/Tokyo" });
+  const time = d.toLocaleTimeString("ja-JP", { timeZone: "Asia/Tokyo", hour: "2-digit", minute: "2-digit", hour12: false });
+  return { date, time };
+}
+
+function substitutePlaceholders(text: string, plans: Plan[], meta: { date: string; time: string }): string {
+  if (!text) return text;
+  const map = new Map(plans.map((p) => [p.key, p]));
+  return text.replace(/\{\{([a-z0-9_]+)\}\}/gi, (_m, key: string) => {
+    if (key === "updated_date") return meta.date;
+    if (key === "updated_time") return meta.time;
+    const p = map.get(key);
+    return p ? fmtJpy(p.priceJpy) : "—";
+  });
+}
+
+function buildCompareTableHtml(bindings: string[], plans: Plan[], meta: { date: string; time: string }): string {
+  const map = new Map(plans.map((p) => [p.key, p]));
+  const rows = bindings.map((k) => map.get(k)).filter((p): p is Plan => !!p);
+  if (!rows.length) return "";
+  const min = Math.min(...rows.map((r) => r.priceJpy));
+  const hasPlaceholder = rows.some((r) => r.source === "placeholder");
+  const bodyHtml = rows
+    .map((r) => {
+      const cheapest = r.priceJpy === min;
+      const priceStyle = `text-align:right;${cheapest ? "font-weight:700;background:#EAF7EE;" : ""}`;
+      const badge = cheapest ? ' <span style="font-size:0.75em;color:#1a7f37;">最安</span>' : "";
+      return `<tr><td>${esc(r.provider)}</td><td>${esc(`${r.days}日 / ${r.data}`)}</td><td style="${priceStyle}">¥${fmtJpy(r.priceJpy)}${badge}</td><td>${PLAN_TYPE_LABEL[r.providerType] ?? esc(r.providerType)}</td></tr>`;
+    })
+    .join("");
+  const caption = `${meta.date} ${meta.time} 取得（yah.mobile は決済と同一 Firestore・他社は手動更新）${hasPlaceholder ? "／※サンプル価格・要差し替え" : ""}`;
+  return (
+    `<table class="compare-grid">` +
+    `<caption style="caption-side:top;text-align:left;font-size:0.8em;color:#666;padding-bottom:0.4em;">${esc(caption)}</caption>` +
+    `<thead><tr><th>事業者</th><th>プラン</th><th style="text-align:right;">価格</th><th>種別</th></tr></thead>` +
+    `<tbody>${bodyHtml}</tbody></table>`
+  );
+}
+
+function renderCompareBody(body: string, plans: Plan[]): string {
+  const meta = computePriceMeta(plans);
+  let bindings: string[] = [];
+  let b = body.replace(/^>?[ \t]*〔動的コンポーネント[：:][\s\S]*?〕[^\n]*$/gm, (block) => {
+    if (/CompareGrid/.test(block)) {
+      const m = block.match(/bindings="([^"]*)"/);
+      if (m) bindings = m[1].split(",").map((s) => s.trim()).filter(Boolean);
+      return `\n\n${COMPARE_SENTINEL}\n\n`;
+    }
+    return block.replace(/^>?[ \t]*〔動的コンポーネント[：:][\s\S]*?〕/, "").trim();
+  });
+  b = substitutePlaceholders(b, plans, meta);
+  let html = renderMarkdown(b);
+  const table = bindings.length ? buildCompareTableHtml(bindings, plans, meta) : "";
+  html = html.split(`<p>${COMPARE_SENTINEL}</p>`).join(table).split(COMPARE_SENTINEL).join(table);
+  return html;
+}
+
+async function getPlans(): Promise<Plan[]> {
+  try {
+    const snap = await db.collection("plans").get();
+    return snap.docs.map((d) => d.data() as Plan);
+  } catch {
+    return [];
+  }
 }
 
 const AI_CRAWLERS: Array<[RegExp, string]> = [
@@ -197,15 +291,16 @@ async function renderSitemap(): Promise<string> {
 }
 
 // ─── 記事ページ（メタ + JSON-LD + クローラー向け本文の注入） ────────────────────
-function buildHeadTags(a: ArticleDoc, t: Translation, lang: Lang): string {
-  const title = t.metaTitle || t.title;
-  const desc = t.metaDescription || t.excerpt || "";
+function buildHeadTags(a: ArticleDoc, t: Translation, lang: Lang, plans: Plan[], meta: { date: string; time: string }): string {
+  const sub = (s: string) => substitutePlaceholders(s, plans, meta);
+  const title = sub(t.metaTitle || t.title);
+  const desc = sub(t.metaDescription || t.excerpt || "");
   const url = `${BASE_URL}/articles/${a.slug}`;
   const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": a.schemaType || "Article",
-    headline: t.title,
-    description: t.excerpt || desc,
+    headline: sub(t.title),
+    description: sub(t.excerpt || desc),
     image: a.thumbnailUrl || undefined,
     datePublished: a.publishedAt ? new Date(a.publishedAt).toISOString() : undefined,
     dateModified: a.updatedAt ? new Date(a.updatedAt).toISOString() : undefined,
@@ -223,8 +318,8 @@ function buildHeadTags(a: ArticleDoc, t: Translation, lang: Lang): string {
           "@type": "FAQPage",
           mainEntity: t.faq.map((f) => ({
             "@type": "Question",
-            name: f.q,
-            acceptedAnswer: { "@type": "Answer", text: f.a },
+            name: sub(f.q),
+            acceptedAnswer: { "@type": "Answer", text: sub(f.a) },
           })),
         })}</script>`
       : "";
@@ -246,18 +341,19 @@ function buildHeadTags(a: ArticleDoc, t: Translation, lang: Lang): string {
     .join("\n    ");
 }
 
-function buildSeoContent(a: ArticleDoc, t: Translation, lang: Lang): string {
+function buildSeoContent(a: ArticleDoc, t: Translation, lang: Lang, plans: Plan[], meta: { date: string; time: string }): string {
   const date = a.publishedAt ? new Date(a.publishedAt).toISOString().split("T")[0] : "";
+  const sub = (s: string) => substitutePlaceholders(s, plans, meta);
   return `<div id="seo-content">
 <article>
-<h1>${esc(t.title)}</h1>
+<h1>${esc(sub(t.title))}</h1>
 ${date ? `<p><time datetime="${date}">${date}</time> · ${esc(a.categorySlug)} · yah.magazine</p>` : ""}
-${t.directAnswer ? `<section><h2>${lang === "ja" ? "直接回答" : "Direct Answer"}</h2><p>${esc(t.directAnswer)}</p></section>` : ""}
-${renderMarkdown(t.body)}
+${t.directAnswer ? `<section><h2>${lang === "ja" ? "直接回答" : "Direct Answer"}</h2><p>${esc(sub(t.directAnswer))}</p></section>` : ""}
+${renderCompareBody(t.body, plans)}
 ${
   t.faq && t.faq.length
     ? `<section><h2>${lang === "ja" ? "よくある質問" : "FAQ"}</h2>${t.faq
-        .map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`)
+        .map((f) => `<h3>${esc(sub(f.q))}</h3><p>${esc(sub(f.a))}</p>`)
         .join("\n")}</section>`
     : ""
 }
@@ -276,10 +372,14 @@ async function renderArticlePage(slug: string, lang: Lang): Promise<{ status: nu
   const t = a.translations[lang] ?? a.translations.ja ?? Object.values(a.translations)[0];
   if (!t) return { status: 404, html: template };
 
+  // 価格プランを読み込み、{{price}} / CompareGrid を SSR で焼き込む（GEO: クローラーに数値を見せる）
+  const plans = a.priceBindings && a.priceBindings.length ? await getPlans() : [];
+  const meta = computePriceMeta(plans);
+
   // <title> をテンプレートから除去してから head タグ群を注入（重複防止）
   let html = template.replace(/<title>[\s\S]*?<\/title>/, "");
-  html = html.replace("</head>", `    ${buildHeadTags(a, t, lang)}\n  </head>`);
-  html = html.replace(/(<body[^>]*>)/, `$1\n${buildSeoContent(a, t, lang)}`);
+  html = html.replace("</head>", `    ${buildHeadTags(a, t, lang, plans, meta)}\n  </head>`);
+  html = html.replace(/(<body[^>]*>)/, `$1\n${buildSeoContent(a, t, lang, plans, meta)}`);
   return { status: 200, html };
 }
 
