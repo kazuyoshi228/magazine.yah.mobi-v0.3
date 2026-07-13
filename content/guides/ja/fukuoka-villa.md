@@ -10,7 +10,7 @@ primaryQuery: 福岡 ヴィラ
 secondaryQueries: ["福岡 一棟貸し ヴィラ", "福岡 ヴィラ 貸切", "福岡 ヴィラ 大人数", "福岡 都心 ヴィラ", "福岡 貸別荘 街中", "博多 ヴィラ", "天神 ヴィラ", "福岡 ヴィラ 6人"]
 handoff: ["/booking/kiyokawa", "/booking/takasago"]
 confirmedDate: 2026-07-14
-sources: ["https://ubusuna.net/", "https://itotoi-group.com/bettei/", "https://trigon.seven-garden.com/", "https://www.nan-ei.com/irodori/", "https://coco-conne.com/", "https://travel.kakaku.com/"]
+sources: ["https://ubusuna.net/", "https://itotoi-group.com/bettei/", "https://jp.trip.com/hotels/fukuoka-hotel-detail-80407170/luxury-villa-in-marina-town/", "https://trigon.seven-garden.com/", "https://www.nan-ei.com/irodori/", "https://coco-conne.com/", "https://travel.kakaku.com/"]
 distribution: [homes]
 canonical: /guides/ja/fukuoka-villa
 market: [JP]
@@ -46,8 +46,9 @@ faq:
 
 - **[ubusuna空火海](https://ubusuna.net/)**（糸島） — 1日1組限定・オーシャンビューのプライベートプール付きヴィラ。プールサイドでBBQやサンセットのドリンクを楽しめる、糸島らしさの象徴のような一棟。素泊まり5万円台〜が目安。
 - **[itotoi別邸](https://itotoi-group.com/bettei/)**（糸島） — 最大16名対応の大型一棟貸し。プール・バレルサウナ・カラオケ・トランポリン・焚き火スペースまで揃い、大人数のレジャー滞在向き。
+- **[AIRSTAR Atagohama-House](https://jp.trip.com/hotels/fukuoka-hotel-detail-80407170/luxury-villa-in-marina-town/)**（西区・愛宕浜） — マリノアシティ近くのマリーナエリアに建つセルフチェックイン制の一棟貸し。姪浜駅から徒歩約21分、福岡空港まで車で約26分と、糸島ほど遠くない「海沿い」の選択肢。コンパクトな一棟でカップル〜少人数向き。
 
-このほか、海まで徒歩数分の古民家リノベ系（全天候型BBQハウスや五右衛門風呂を備える施設）など、選択肢は豊富です。ただし共通するのは、**観光地やグルメスポットへは都度クルマで移動が前提**という点。糸島の海や自然そのものを目的にするなら最高ですが、「福岡の街を楽しむ」旅には遠くなります。**レンタカーの予定がない方には向きません。**
+このほか、海まで徒歩数分の古民家リノベ系（全天候型BBQハウスや五右衛門風呂を備える施設）など、選択肢は豊富です。ただし共通するのは、**観光地やグルメスポットへは都度クルマで移動が前提**という点。糸島や愛宕浜の海や自然そのものを目的にするなら最高ですが、「福岡の街を楽しむ」旅には遠くなります。**レンタカーの予定がない方には向きません。**
 
 〔※要確認・現地/編集: 掲載施設の料金・定員は2026年7月のWeb情報ベース。公開前に公式サイトで最新を確認し、確認日を更新〕
 
