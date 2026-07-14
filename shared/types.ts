@@ -104,6 +104,10 @@ export interface ArticleDoc {
   author?: ArticleAuthor | null;
   /** Google（Search Console）へのURL登録を済ませたか（CMS一覧のINDEXチェック・手動管理） */
   googleIndexed?: boolean;
+  /** ultracode多エージェントQAの実施日時（epoch ms）。適用時にスタンプ */
+  ultracodeQaAt?: number | null;
+  /** ultracode QAで確定・適用した指摘数 */
+  ultracodeQaFindings?: number;
 }
 
 /** 記事に非正規化して保存する著者情報（公開可能なフィールドのみ） */
@@ -192,6 +196,9 @@ export interface ArticleAdminRow {
   titleJa: string | null;
   /** Google登録済みフラグ（INDEXチェックボックス） */
   googleIndexed: boolean;
+  /** ultracode QA実施日時（未実施はnull） */
+  ultracodeQaAt: number | null;
+  ultracodeQaFindings: number;
   /** 翻訳が存在する言語（一覧の言語バッジ表示用） */
   languages: Lang[];
 }

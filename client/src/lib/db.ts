@@ -165,6 +165,8 @@ export async function listAllArticlesAdmin(): Promise<ArticleAdminRow[]> {
       categoryNameJa: getCategory(a.categorySlug).nameJa,
       titleJa,
       googleIndexed: a.googleIndexed ?? false,
+      ultracodeQaAt: a.ultracodeQaAt ?? null,
+      ultracodeQaFindings: a.ultracodeQaFindings ?? 0,
       languages: langs,
     };
   });

@@ -232,6 +232,7 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
                         { label: "カテゴリ", key: "category" as SortKey },
                         { label: "ステータス", key: "status" as SortKey },
                         { label: "公開日", key: "publishedAt" as SortKey },
+                        { label: "QA", key: null },
                         { label: "INDEX", key: null },
                         { label: "操作", key: null },
                       ]).map((h) => (
@@ -300,6 +301,18 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
                           <span style={{ fontSize: "0.75rem", color: "#999999" }}>
                             {a.publishedAt ? new Date(a.publishedAt).toLocaleDateString("ja-JP") : "—"}
                           </span>
+                        </td>
+                        <td style={{ padding: "1rem 1.25rem" }}>
+                          {a.ultracodeQaAt ? (
+                            <span
+                              title={`ultracode QA実施: ${new Date(a.ultracodeQaAt).toLocaleDateString("ja-JP")}・適用${a.ultracodeQaFindings}件`}
+                              style={{ fontSize: "0.625rem", fontWeight: 600, letterSpacing: "0.05em", border: "1px solid #000000", color: "#000000", padding: "0.125rem 0.5rem", whiteSpace: "nowrap" }}
+                            >
+                              UC ✓
+                            </span>
+                          ) : (
+                            <span style={{ fontSize: "0.75rem", color: "#D7D7D7" }}>—</span>
+                          )}
                         </td>
                         <td style={{ padding: "1rem 1.25rem" }}>
                           <label title="GoogleにURL登録済みならチェック（手動管理）" style={{ display: "inline-flex", alignItems: "center", cursor: "pointer" }}>
