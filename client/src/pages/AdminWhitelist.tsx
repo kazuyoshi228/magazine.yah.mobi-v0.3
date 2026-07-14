@@ -13,6 +13,9 @@ export default function AdminWhitelist() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   const isAdmin = !!user && user.role === "admin";
+  // ホワイトリストの編集（追加・削除）はオーナーのみ。他の管理者は閲覧のみ
+  const OWNER_EMAIL = "kazuyoshi.yamada@bonfire.co.jp";
+  const isOwner = user?.email?.toLowerCase() === OWNER_EMAIL;
 
   const { data: entries, refetch } = useQuery({
     queryKey: ["whitelist"],
@@ -106,7 +109,14 @@ export default function AdminWhitelist() {
             追加は即時に反映されます（ログイン中のユーザーは次回のページ読み込みで有効）。
           </p>
 
-          {/* Add form */}
+          {!isOwner && (
+            <p style={{ fontSize: "0.8125rem", color: "#999999", marginBottom: "1.5rem" }}>
+              管理者の追加・削除はオーナー（{OWNER_EMAIL}）のみ行えます。この画面は閲覧のみです。
+            </p>
+          )}
+
+          {/* Add form（オーナーのみ） */}
+          {isOwner && (
           <div style={{ display: "flex", gap: "0.5rem", marginBottom: "2rem" }}>
             <input
               type="email"
@@ -126,6 +136,7 @@ export default function AdminWhitelist() {
               追加
             </button>
           </div>
+          )}
 
           {/* List */}
           <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #D7D7D7" }}>
@@ -161,7 +172,7 @@ export default function AdminWhitelist() {
                           {new Date(e.addedAt).toLocaleDateString("ja-JP")}
                         </td>
                         <td style={{ padding: "1rem 1.25rem", textAlign: "right" }}>
-                          {deleteConfirm === e.email ? (
+                          {!isOwner ? null : deleteConfirm === e.email ? (
                             <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
                               <button
                                 onClick={() => removeMutation.mutate(e.email)}

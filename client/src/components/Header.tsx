@@ -18,30 +18,8 @@ const LANG_LABELS: Record<Lang, string> = {
 };
 
 const NAV_ITEMS: Record<Lang, { label: string; href: string }[]> = {
-  ja: [
-    { label: "通信", href: "/articles?category=esim" },
-    { label: "ガジェット", href: "/articles?category=gadget" },
-    { label: "グルメ", href: "/articles?category=gourmet" },
-    { label: "旅行", href: "/articles?category=travel" },
-  ],
-  en: [
-    { label: "eSIM", href: "/articles?category=esim" },
-    { label: "Gadgets", href: "/articles?category=gadget" },
-    { label: "Gourmet", href: "/articles?category=gourmet" },
-    { label: "Travel", href: "/articles?category=travel" },
-  ],
-  ko: [
-    { label: "eSIM", href: "/articles?category=esim" },
-    { label: "가젯", href: "/articles?category=gadget" },
-    { label: "맛식", href: "/articles?category=gourmet" },
-    { label: "여행", href: "/articles?category=travel" },
-  ],
-  "zh-TW": [
-    { label: "eSIM", href: "/articles?category=esim" },
-    { label: "數位裝置", href: "/articles?category=gadget" },
-    { label: "美食", href: "/articles?category=gourmet" },
-    { label: "旅遊", href: "/articles?category=travel" },
-  ],
+  // 公開ホーム・一覧ページの削除（2026-07-14）に伴いナビ項目は空。記事ページのヘッダーはロゴのみ
+  ja: [], en: [], ko: [], "zh-TW": [],
 };
 
 const CTA_LABEL: Record<Lang, string> = {

@@ -10,8 +10,6 @@ import ScrollToTop from "./components/ScrollToTop";
 import BackToTop from "./components/BackToTop";
 
 // Pages
-import Home from "./pages/Home";
-import ArticleList from "./pages/ArticleList";
 import ArticleDetail from "./pages/ArticleDetail";
 import CmsAdmin from "./pages/CmsAdmin";
 import CmsArticleEdit from "./pages/CmsArticleEdit";
@@ -31,8 +29,8 @@ function Router({ lang, onLangChange }: { lang: Lang; onLangChange: (l: Lang) =>
       {!isAdminPage && <Header lang={lang} onLangChange={onLangChange} />}
       <main style={{ minHeight: "calc(100vh - 56px)" }}>
         <Switch>
-          <Route path="/" component={() => <Home lang={lang} />} />
-          <Route path="/articles" component={() => <ArticleList lang={lang} />} />
+          {/* 公開ホーム・記事一覧は2026-07-14に削除（magazineは胴体＝CMS本体のみ）。/ はCMSへ */}
+          <Route path="/"><Redirect to="/admin/cms" /></Route>
           <Route path="/articles/:slug" component={({ params }) => <ArticleDetail slug={params.slug} lang={lang} />} />
           <Route path="/admin"><Redirect to="/admin/cms" /></Route>
           <Route path="/admin/cms" component={() => <CmsAdmin />} />

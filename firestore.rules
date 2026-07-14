@@ -14,11 +14,15 @@ service cloud.firestore {
     }
 
     // ─── 管理者ホワイトリスト（email をドキュメントIDに使用） ───────────────
+    // 書き込み（管理者の追加・削除）はオーナーのみ（2026-07-14 制限強化）
+    function isOwner() {
+      return request.auth != null && request.auth.token.email == "kazuyoshi.yamada@bonfire.co.jp";
+    }
     match /admin_whitelist/{email} {
       // 自分のエントリの存在確認は本人が可能（UIの権限判定用）。一覧は admin のみ。
       allow read: if request.auth != null
         && (request.auth.token.email == email || isAdmin());
-      allow write: if isAdmin();
+      allow write: if isOwner();
     }
 
     // ─── 記事 ──────────────────────────────────────────────────────────────

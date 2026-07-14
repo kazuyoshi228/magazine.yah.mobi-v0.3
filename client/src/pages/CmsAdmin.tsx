@@ -255,10 +255,16 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
                     {sortRows(articles).map((a) => (
                       <tr key={a.id} style={{ borderBottom: "1px solid #EBEBEB" }}>
                         <td style={{ padding: "1rem 1.25rem" }}>
-                          <p style={{ fontSize: "0.9375rem", fontWeight: 500, margin: 0, lineHeight: 1.4 }}>
-                            {a.titleJa ?? <span style={{ color: "#999999" }}>（タイトル未入力）</span>}
-                          </p>
-                          <p style={{ fontSize: "0.6875rem", color: "#999999", margin: "0.25rem 0 0", fontFamily: "monospace" }}>{a.slug}</p>
+                          <Link href={`/admin/cms/${a.id}`} style={{ display: "block" }}>
+                            <p
+                              style={{ fontSize: "0.9375rem", fontWeight: 500, margin: 0, lineHeight: 1.4, transition: "color 150ms" }}
+                              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#555555")}
+                              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#000000")}
+                            >
+                              {a.titleJa ?? <span style={{ color: "#999999" }}>（タイトル未入力）</span>}
+                            </p>
+                            <p style={{ fontSize: "0.6875rem", color: "#999999", margin: "0.25rem 0 0", fontFamily: "monospace" }}>{a.slug}</p>
+                          </Link>
                         </td>
                         <td style={{ padding: "1rem 1.25rem" }}>
                           <div style={{ display: "flex", gap: "0.25rem", flexWrap: "wrap" }}>
