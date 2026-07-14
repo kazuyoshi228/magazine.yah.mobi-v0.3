@@ -307,6 +307,21 @@ export async function deleteAuthor(id: string): Promise<void> {
   await deleteDoc(doc(authorsCol, id));
 }
 
+/** 直近30日のユニークビジター数（pageview の distinct sessionId・admin専用）。
+    複合インデックス不要にするため createdAt 範囲のみで引き、type/クローラーはクライアント側で除外。 */
+export async function countUniqueVisitors30d(): Promise<number> {
+  const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
+  const snap = await getDocs(
+    query(collection(db, "events"), where("createdAt", ">=", cutoff), qLimit(10000)),
+  );
+  const sids = new Set<string>();
+  for (const d of snap.docs) {
+    const e = d.data() as EventDoc;
+    if (e.type === "pageview" && e.sessionId && !e.crawlerName) sids.add(e.sessionId);
+  }
+  return sids.size;
+}
+
 // ─── 管理者ホワイトリスト（email をドキュメントIDに使用） ─────────────────────
 
 const whitelistCol = collection(db, "admin_whitelist");

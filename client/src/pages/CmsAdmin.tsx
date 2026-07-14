@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { listAllArticlesAdmin, deleteArticle as deleteArticleDoc } from "@/lib/db";
+import { listAllArticlesAdmin, deleteArticle as deleteArticleDoc, countUniqueVisitors30d } from "@/lib/db";
 import { useAuth } from "@/_core/hooks/useAuth";
 
-import { Plus, Edit2, Trash2, FileText, Eye, ShieldCheck, PenLine, Users, ChevronUp, ChevronDown } from "lucide-react";
+import { Plus, Edit2, Trash2, FileText, Eye, ShieldCheck, PenLine, Users, ChevronUp, ChevronDown, Languages, UserRound } from "lucide-react";
 import type { ArticleAdminRow } from "@shared/types";
 import { toast } from "sonner";
 import SeoHead from "@/components/SeoHead";
@@ -51,6 +51,14 @@ export default function CmsAdmin() {
   const { data: articles, refetch: refetchArticles } = useQuery({
     queryKey: ["cms", "articles"],
     queryFn: listAllArticlesAdmin,
+    enabled: isAdmin,
+  });
+
+  // ユニークビジター（直近30日・pageviewのdistinct sessionId・クローラー除外）
+  const { data: uniqueVisitors } = useQuery({
+    queryKey: ["cms", "visitors30d"],
+    queryFn: countUniqueVisitors30d,
+    staleTime: 10 * 60_000,
     enabled: isAdmin,
   });
 
@@ -125,28 +133,24 @@ export default function CmsAdmin() {
           </div>
         </div>
 
-        {/* Stats */}
-        <div style={{ backgroundColor: "#FFFFFF", borderBottom: "1px solid #D7D7D7", padding: "1.5rem 0" }}>
+        {/* Stats（カード形式） */}
+        <div style={{ padding: "1.5rem 0", borderBottom: "1px solid #D7D7D7" }}>
           <div className="container">
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1.5rem" }}>
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
-                  <FileText size={14} strokeWidth={1.5} color="#555555" />
-                  <span className="label-section">記事数</span>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
+              {([
+                { icon: <FileText size={14} strokeWidth={1.5} color="#555555" />, label: "記事数", value: articles?.length ?? 0 },
+                { icon: <Eye size={14} strokeWidth={1.5} color="#555555" />, label: "公開中", value: articles?.filter((a) => a.status === "published").length ?? 0 },
+                { icon: <Languages size={14} strokeWidth={1.5} color="#555555" />, label: "全記事数（言語計）", value: articles?.reduce((n, a) => n + a.languages.length, 0) ?? 0 },
+                { icon: <UserRound size={14} strokeWidth={1.5} color="#555555" />, label: "ユニークビジター（30日）", value: uniqueVisitors ?? "—" },
+              ] as { icon: React.ReactNode; label: string; value: React.ReactNode }[]).map((c) => (
+                <div key={c.label} style={{ backgroundColor: "#FFFFFF", border: "1px solid #D7D7D7", borderRadius: "4px", padding: "1.25rem 1.5rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                    {c.icon}
+                    <span className="label-section">{c.label}</span>
+                  </div>
+                  <p style={{ fontSize: "2rem", fontWeight: 500, margin: 0, letterSpacing: "-0.03em" }}>{c.value}</p>
                 </div>
-                <p style={{ fontSize: "2rem", fontWeight: 500, margin: 0, letterSpacing: "-0.03em" }}>
-                  {articles?.length ?? 0}
-                </p>
-              </div>
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
-                  <Eye size={14} strokeWidth={1.5} color="#555555" />
-                  <span className="label-section">公開中</span>
-                </div>
-                <p style={{ fontSize: "2rem", fontWeight: 500, margin: 0, letterSpacing: "-0.03em" }}>
-                  {articles?.filter((a) => a.status === "published").length ?? 0}
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </div>
