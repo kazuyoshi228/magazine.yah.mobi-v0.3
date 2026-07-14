@@ -100,6 +100,30 @@ export interface ArticleDoc {
   canonical?: string | null;
   /** 対象市場（KO/TW/TH/HK/SG/ID） */
   market?: string[];
+  /** 著者（選択時に authors からスナップショット保存。email は含めない＝公開面に出る） */
+  author?: ArticleAuthor | null;
+}
+
+/** 記事に非正規化して保存する著者情報（公開可能なフィールドのみ） */
+export interface ArticleAuthor {
+  id: string;
+  name: string;
+  title: string;
+  photoUrl: string | null;
+}
+
+/** 著者（authors/{id}）。email は Firebase Auth のログインメールと突き合わせる */
+export interface AuthorDoc {
+  id: string;
+  name: string;
+  /** ログインメール（Auth連携・記事編集時のデフォルト著者判定に使用） */
+  email: string;
+  /** 属性・肩書き（例: 調査できる編集者 / yah.homes 運営） */
+  title: string;
+  /** 顔写真URL（Storage authors/） */
+  photoUrl: string | null;
+  createdAt: number;
+  updatedAt: number;
 }
 
 /** 価格プランの提供形態（v9 §5-2・CompareGrid） */
@@ -176,6 +200,7 @@ export interface ArticleDetailData {
       publishedAt: number | null;
       updatedAt: number;
       categorySlug: CategorySlug;
+      author?: ArticleAuthor | null;
     };
     categories: Category;
     ai_writers: null; // v1 では著者機能なし

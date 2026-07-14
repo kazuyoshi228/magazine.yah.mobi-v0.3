@@ -37,6 +37,8 @@ import {
   type Hesitation,
   type DistributionSurface,
   type Plan,
+  type AuthorDoc,
+  type ArticleAuthor,
   LANGS,
   getCategory,
 } from "@shared/types";
@@ -122,6 +124,7 @@ export async function getArticleBySlug(slug: string, lang: Lang): Promise<Articl
         publishedAt: a.publishedAt ?? null,
         updatedAt: a.updatedAt,
         categorySlug: a.categorySlug,
+        author: a.author ?? null,
       },
       categories: getCategory(a.categorySlug),
       ai_writers: null,
@@ -173,6 +176,7 @@ export interface ArticleMetaInput {
   confirmedDate?: string | null;
   distribution?: DistributionSurface[];
   market?: string[];
+  author?: ArticleAuthor | null;
 }
 
 /** 新規作成。docId = slug。既存 slug は拒否 */
@@ -202,6 +206,7 @@ export async function createArticle(meta: ArticleMetaInput): Promise<{ id: strin
     confirmedDate: meta.confirmedDate ?? null,
     distribution: meta.distribution ?? ["esim"],
     market: meta.market ?? [],
+    author: meta.author ?? null,
   };
   await setDoc(refDoc, data);
   return { id: meta.slug };
@@ -233,7 +238,7 @@ export async function deleteArticle(slug: string): Promise<void> {
 }
 
 /** 画像アップロード（Firebase Storage）→ 公開URLを返す */
-export async function uploadImageFile(file: File, folder: "thumbnails" | "images"): Promise<string> {
+export async function uploadImageFile(file: File, folder: "thumbnails" | "images" | "authors"): Promise<string> {
   const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
   const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${safeName}`;
   const r = storageRef(storage, path);
@@ -250,6 +255,41 @@ export function trackEvent(ev: Omit<EventDoc, "createdAt">): void {
   addDoc(collection(db, "events"), clean).catch(() => {
     /* 計測失敗は無視 */
   });
+}
+
+// ─── 著者マスタ（authors/{id}・admin のみ） ──────────────────────────────────
+
+const authorsCol = collection(db, "authors");
+
+export async function listAuthors(): Promise<AuthorDoc[]> {
+  const snap = await getDocs(query(authorsCol, orderBy("createdAt", "asc")));
+  return snap.docs.map((d) => d.data() as AuthorDoc);
+}
+
+/** 作成/更新（id 指定で upsert）。email は小文字正規化して Auth と突き合わせる */
+export async function saveAuthor(input: { id?: string; name: string; email: string; title: string; photoUrl: string | null }): Promise<string> {
+  const email = input.email.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("メールアドレスの形式が正しくありません。");
+  if (!input.name.trim()) throw new Error("名前を入力してください。");
+  const now = Date.now();
+  const id = input.id ?? doc(authorsCol).id;
+  const refDoc = doc(authorsCol, id);
+  const existing = input.id ? await getDoc(refDoc) : null;
+  const data: AuthorDoc = {
+    id,
+    name: input.name.trim(),
+    email,
+    title: input.title.trim(),
+    photoUrl: input.photoUrl,
+    createdAt: existing?.exists() ? (existing.data() as AuthorDoc).createdAt : now,
+    updatedAt: now,
+  };
+  await setDoc(refDoc, data);
+  return id;
+}
+
+export async function deleteAuthor(id: string): Promise<void> {
+  await deleteDoc(doc(authorsCol, id));
 }
 
 // ─── 管理者ホワイトリスト（email をドキュメントIDに使用） ─────────────────────

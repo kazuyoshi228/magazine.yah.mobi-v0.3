@@ -8,6 +8,7 @@ import {
   upsertTranslation as upsertTranslationDoc,
   uploadImageFile,
   listPlans,
+  listAuthors,
 } from "@/lib/db";
 import { renderCompareBody } from "@/lib/compareGrid";
 import { CATEGORIES, LANGS as ALL_LANGS, type Lang, type SchemaType, type ArticleStatus, type CategorySlug, type ArticleTranslation, type Layer, type PageType, type Hesitation, type DistributionSurface } from "@shared/types";
@@ -160,6 +161,7 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
   const [confirmedDate, setConfirmedDate] = useState("");
   const [distribution, setDistribution] = useState("esim");
   const [market, setMarket] = useState("");
+  const [authorId, setAuthorId] = useState("");
 
   // Translations per lang
   const [translations, setTranslations] = useState<Record<Lang, ArticleTranslation>>({
@@ -175,6 +177,14 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
   });
   // 価格プラン（プレビューで {{price}} 焼き込み・CompareGrid 表を実値表示）
   const { data: plans = [] } = useQuery({ queryKey: ["plans"], queryFn: listPlans, staleTime: 5 * 60_000, enabled: isAdmin });
+  // 著者マスタ。新規記事ではログインメールと一致する著者をデフォルト選択（Auth連携）
+  const { data: authors = [] } = useQuery({ queryKey: ["cms", "authors"], queryFn: listAuthors, staleTime: 5 * 60_000, enabled: isAdmin });
+  useEffect(() => {
+    if (articleId === null && !authorId && user?.email) {
+      const mine = authors.find((a) => a.email === user.email!.toLowerCase());
+      if (mine) setAuthorId(mine.id);
+    }
+  }, [authors, articleId, authorId, user?.email]);
 
   // Populate form when editing
   useEffect(() => {
@@ -193,6 +203,7 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
       setConfirmedDate(existingData.confirmedDate ?? "");
       setDistribution((existingData.distribution ?? ["esim"]).join(", "));
       setMarket((existingData.market ?? []).join(", "));
+      setAuthorId(existingData.author?.id ?? "");
       setTranslations((prev) => {
         const next = { ...prev };
         for (const l of LANGS) {
@@ -215,6 +226,10 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     confirmedDate: confirmedDate || null,
     distribution: parseList(distribution) as DistributionSurface[],
     market: parseList(market),
+    author: (() => {
+      const a = authors.find((x) => x.id === authorId);
+      return a ? { id: a.id, name: a.name, title: a.title, photoUrl: a.photoUrl } : null;
+    })(),
   });
 
   const createArticle = useMutation({
@@ -647,6 +662,16 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                   <option value="hassle">面倒</option>
                   <option value="anxiety">自分に合うか不安</option>
                 </select>
+              </div>
+              <div>
+                <label style={labelStyle}>著者</label>
+                <select value={authorId} onChange={(e) => setAuthorId(e.target.value)} style={{ ...inputStyle, appearance: "none" }}>
+                  <option value="">— 未設定 —</option>
+                  {authors.map((a) => (
+                    <option key={a.id} value={a.id}>{a.name}{a.title ? `（${a.title}）` : ""}</option>
+                  ))}
+                </select>
+                <p style={{ fontSize: "0.625rem", color: "#999999", margin: "0.25rem 0 0" }}>登録は「Author管理」から。保存すると記事ページ・配信feedの署名に反映されます。</p>
               </div>
               <div>
                 <label style={labelStyle}>確認日</label>

@@ -66,6 +66,9 @@ function buildArticleSchema(article: any, translation: any, lang: string) {
     description: translation?.excerpt ?? translation?.metaDescription ?? "",
     image: article.articles?.thumbnailUrl ?? undefined,
     datePublished: article.articles?.publishedAt ? new Date(article.articles.publishedAt).toISOString() : undefined,
+    author: article.articles?.author
+      ? { "@type": "Person", name: article.articles.author.name, ...(article.articles.author.title ? { jobTitle: article.articles.author.title } : {}) }
+      : undefined,
     dateModified: article.articles?.updatedAt ? new Date(article.articles.updatedAt).toISOString() : undefined,
     inLanguage: lang,
     publisher: {
@@ -181,6 +184,26 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
             <p style={{ fontSize: "1.125rem", lineHeight: 1.7, color: "#555555", marginBottom: "0" }}>
               {translation.excerpt}
             </p>
+          )}
+
+          {/* Byline（著者・CMSで選択すると自動反映） */}
+          {article.articles?.author && (
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "1.5rem" }}>
+              {article.articles.author.photoUrl && (
+                <img
+                  src={article.articles.author.photoUrl}
+                  alt={article.articles.author.name}
+                  style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover" }}
+                  loading="lazy"
+                />
+              )}
+              <div>
+                <p style={{ margin: 0, fontSize: "0.8125rem", fontWeight: 600, color: "#111111" }}>{article.articles.author.name}</p>
+                {article.articles.author.title && (
+                  <p style={{ margin: 0, fontSize: "0.6875rem", color: "#999999" }}>{article.articles.author.title}</p>
+                )}
+              </div>
+            </div>
           )}
 
           {/* Language variants */}

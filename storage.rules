@@ -9,9 +9,9 @@ service firebase.storage {
 
     // 記事用画像（thumbnails/ と images/）: 公開読み取り・admin のみ書き込み
     match /{folder}/{fileName} {
-      allow read: if folder in ["thumbnails", "images"];
+      allow read: if folder in ["thumbnails", "images", "authors"];
       allow write: if isAdmin()
-        && folder in ["thumbnails", "images"]
+        && folder in ["thumbnails", "images", "authors"]
         && request.resource.size < 10 * 1024 * 1024
         && request.resource.contentType.matches("image/.*");
     }

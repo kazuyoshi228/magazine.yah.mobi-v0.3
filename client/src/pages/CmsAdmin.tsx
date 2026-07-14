@@ -4,7 +4,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { listAllArticlesAdmin, deleteArticle as deleteArticleDoc } from "@/lib/db";
 import { useAuth } from "@/_core/hooks/useAuth";
 
-import { Plus, Edit2, Trash2, FileText, Eye, ShieldCheck, PenLine } from "lucide-react";
+import { Plus, Edit2, Trash2, FileText, Eye, ShieldCheck, PenLine, Users } from "lucide-react";
 import { toast } from "sonner";
 import SeoHead from "@/components/SeoHead";
 
@@ -77,6 +77,10 @@ export default function CmsAdmin() {
               <h1 style={{ fontSize: "1.25rem", fontWeight: 500, color: "#FFFFFF", margin: 0, letterSpacing: "-0.02em" }}>CMS管理</h1>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+              <Link href="/admin/authors" style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "0.375rem" }}>
+                <Users size={13} strokeWidth={1.5} />
+                Author
+              </Link>
               <Link href="/admin/writer" style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "0.375rem" }}>
                 <PenLine size={13} strokeWidth={1.5} />
                 Writer

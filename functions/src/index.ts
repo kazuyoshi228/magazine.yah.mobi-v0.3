@@ -52,6 +52,8 @@ interface ArticleDoc {
   handoff?: string[];
   primaryQuery?: string;
   confirmedDate?: string | null;
+  /** 著者スナップショット（CMSで選択時に保存・email は含まない） */
+  author?: { id: string; name: string; title: string; photoUrl: string | null } | null;
 }
 
 /**
@@ -271,6 +273,7 @@ async function renderHomesFeed(): Promise<string> {
     publishedAt: a.publishedAt,
     updatedAt: a.updatedAt,
     thumbnailUrl: a.thumbnailUrl,
+    author: a.author ?? null,
     languages: a.languages ?? [],
     translations: a.translations,
   }));
@@ -360,6 +363,9 @@ function buildHeadTags(a: ArticleDoc, t: Translation, lang: Lang, plans: Plan[],
     dateModified: a.updatedAt ? new Date(a.updatedAt).toISOString() : undefined,
     inLanguage: lang,
     publisher: { "@type": "Organization", name: "yah.magazine", url: BASE_URL },
+    author: a.author
+      ? { "@type": "Person", name: a.author.name, ...(a.author.title ? { jobTitle: a.author.title } : {}), ...(a.author.photoUrl ? { image: a.author.photoUrl } : {}) }
+      : undefined,
     url,
   };
   const hreflang = (a.languages ?? [])

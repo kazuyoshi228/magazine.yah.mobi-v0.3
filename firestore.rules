@@ -33,6 +33,12 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // ─── 著者マスタ（email を含むため admin のみ）──────────────────────────
+    // 公開面（記事・feed）へは記事ドキュメントへのスナップショット（author）で反映。
+    match /authors/{id} {
+      allow read, write: if isAdmin();
+    }
+
     // ─── 価格プラン（CompareGrid・価格の単一ソース） ─────────────────────────
     // 価格は公開情報。誰でも読める（記事の {{price}} 焼き込み・比較表）。
     // 書き込みは admin のみ（実運用は seed-plans.mjs / 将来のCMS価格エディタ）。
