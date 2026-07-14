@@ -44,6 +44,13 @@ import {
 } from "@shared/types";
 
 const articlesCol = collection(db, "articles");
+
+/** homes専売記事（distributionにhomesを含みesim/guidesを含まない）。
+    magazineには載せず /feeds/homes.json 経由でyah.homesのみに配信（seoserverと同一仕様）。 */
+function isHomesOnly(a: ArticleDoc): boolean {
+  const d = a.distribution ?? [];
+  return d.includes("homes") && !d.includes("esim") && !d.includes("guides");
+}
 const plansCol = collection(db, "plans");
 
 /** 価格プラン全件（CompareGrid・{{price}} 焼き込み用）。読み取りは公開（firestore.rules）。 */
@@ -69,6 +76,7 @@ export async function listPublishedArticles(opts: {
   const rows: ArticleListRow[] = [];
   for (const d of snap.docs) {
     const a = d.data() as ArticleDoc;
+    if (isHomesOnly(a)) continue; // homes専売記事はmagazineの表示面に出さない（seoserverと同一仕様）
     if (opts.categorySlug && a.categorySlug !== opts.categorySlug) continue;
     const lang = opts.lang ?? "ja";
     const t = a.translations[lang];
@@ -103,6 +111,7 @@ export async function getArticleBySlug(slug: string, lang: Lang): Promise<Articl
     const snap = await getDoc(doc(articlesCol, slug));
     if (!snap.exists()) return null;
     a = snap.data() as ArticleDoc;
+    if (isHomesOnly(a)) return null; // homes専売はmagazineでは404（canonicalはyah.homes側）
   } catch {
     // 非公開記事への一般アクセスは rules で permission-denied になる
     return null;
