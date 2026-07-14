@@ -102,6 +102,8 @@ export interface ArticleDoc {
   market?: string[];
   /** 著者（選択時に authors からスナップショット保存。email は含めない＝公開面に出る） */
   author?: ArticleAuthor | null;
+  /** Google（Search Console）へのURL登録を済ませたか（CMS一覧のINDEXチェック・手動管理） */
+  googleIndexed?: boolean;
 }
 
 /** 記事に非正規化して保存する著者情報（公開可能なフィールドのみ） */
@@ -188,6 +190,8 @@ export interface ArticleAdminRow {
   categoryNameJa: string;
   /** 日本語タイトル（ja翻訳が無い場合は他言語のタイトルで代替） */
   titleJa: string | null;
+  /** Google登録済みフラグ（INDEXチェックボックス） */
+  googleIndexed: boolean;
   /** 翻訳が存在する言語（一覧の言語バッジ表示用） */
   languages: Lang[];
 }

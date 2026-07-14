@@ -164,6 +164,7 @@ export async function listAllArticlesAdmin(): Promise<ArticleAdminRow[]> {
       categorySlug: a.categorySlug,
       categoryNameJa: getCategory(a.categorySlug).nameJa,
       titleJa,
+      googleIndexed: a.googleIndexed ?? false,
       languages: langs,
     };
   });
@@ -246,6 +247,11 @@ export async function upsertTranslation(slug: string, lang: Lang, t: ArticleTran
     languages: arrayUnion(lang),
     updatedAt: Date.now(),
   });
+}
+
+/** INDEXチェック（Google登録済みフラグ）の切替 */
+export async function setArticleIndexed(slug: string, v: boolean): Promise<void> {
+  await updateDoc(doc(articlesCol, slug), { googleIndexed: v });
 }
 
 export async function deleteArticle(slug: string): Promise<void> {

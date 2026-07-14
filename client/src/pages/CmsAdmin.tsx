@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { listAllArticlesAdmin, deleteArticle as deleteArticleDoc } from "@/lib/db";
+import { listAllArticlesAdmin, setArticleIndexed } from "@/lib/db";
 import { useAuth } from "@/_core/hooks/useAuth";
 
-import { Plus, Edit2, Trash2, FileText, Eye, ShieldCheck, PenLine, Users, ChevronUp, ChevronDown, Languages, UserRound } from "lucide-react";
+import { Plus, Edit2, FileText, Eye, ShieldCheck, PenLine, Users, ChevronUp, ChevronDown, Languages, UserRound } from "lucide-react";
 import { CATEGORIES, type ArticleAdminRow, type CategorySlug } from "@shared/types";
 import { toast } from "sonner";
 import SeoHead from "@/components/SeoHead";
@@ -30,7 +30,7 @@ interface CmsAdminProps {
 
 export default function CmsAdmin({ category }: CmsAdminProps) {
   const { user, loading } = useAuth();
-  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortAsc, setSortAsc] = useState(true);
 
@@ -64,14 +64,11 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
   // カテゴリ絞り込み（URL /admin/cms/{category}）。統計カード・一覧の両方に効く
   const articles = category ? allArticles?.filter((a) => a.categorySlug === category) : allArticles;
 
-  const deleteArticle = useMutation({
-    mutationFn: (slug: string) => deleteArticleDoc(slug),
-    onSuccess: () => {
-      toast.success("記事を削除しました。");
-      setDeleteConfirm(null);
-      refetchArticles();
-    },
-    onError: () => toast.error("削除に失敗しました。"),
+  // INDEXチェック: Search ConsoleへURL登録した記事に手動で印をつける
+  const toggleIndexed = useMutation({
+    mutationFn: ({ slug, v }: { slug: string; v: boolean }) => setArticleIndexed(slug, v),
+    onSuccess: () => refetchArticles(),
+    onError: () => toast.error("更新に失敗しました。"),
   });
 
   if (loading) {
@@ -235,6 +232,7 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
                         { label: "カテゴリ", key: "category" as SortKey },
                         { label: "ステータス", key: "status" as SortKey },
                         { label: "公開日", key: "publishedAt" as SortKey },
+                        { label: "INDEX", key: null },
                         { label: "操作", key: null },
                       ]).map((h) => (
                         <th
@@ -304,43 +302,25 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
                           </span>
                         </td>
                         <td style={{ padding: "1rem 1.25rem" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                            <Link
-                              href={`/admin/cms/${a.id}`}
-                              style={{ color: "#555555", display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.75rem", transition: "color 150ms" }}
-                              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#000000")}
-                              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#555555")}
-                            >
-                              <Edit2 size={13} strokeWidth={1.5} />
-                              編集
-                            </Link>
-                            {deleteConfirm === a.id ? (
-                              <div style={{ display: "flex", gap: "0.5rem" }}>
-                                <button
-                                  onClick={() => deleteArticle.mutate(a.id)}
-                                  style={{ fontSize: "0.75rem", color: "#FFFFFF", backgroundColor: "#000000", border: "none", padding: "0.25rem 0.625rem", cursor: "pointer" }}
-                                >
-                                  確認
-                                </button>
-                                <button
-                                  onClick={() => setDeleteConfirm(null)}
-                                  style={{ fontSize: "0.75rem", color: "#555555", backgroundColor: "transparent", border: "1px solid #D7D7D7", padding: "0.25rem 0.625rem", cursor: "pointer" }}
-                                >
-                                  キャンセル
-                                </button>
-                              </div>
-                            ) : (
-                              <button
-                                onClick={() => setDeleteConfirm(a.id)}
-                                style={{ color: "#D7D7D7", display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.75rem", background: "none", border: "none", cursor: "pointer", transition: "color 150ms" }}
-                                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#999999")}
-                                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#D7D7D7")}
-                              >
-                                <Trash2 size={13} strokeWidth={1.5} />
-                                削除
-                              </button>
-                            )}
-                          </div>
+                          <label title="GoogleにURL登録済みならチェック（手動管理）" style={{ display: "inline-flex", alignItems: "center", cursor: "pointer" }}>
+                            <input
+                              type="checkbox"
+                              checked={a.googleIndexed}
+                              onChange={(e) => toggleIndexed.mutate({ slug: a.id, v: e.target.checked })}
+                              style={{ width: "16px", height: "16px", accentColor: "#000000", cursor: "pointer" }}
+                            />
+                          </label>
+                        </td>
+                        <td style={{ padding: "1rem 1.25rem" }}>
+                          <Link
+                            href={`/admin/cms/${a.id}`}
+                            style={{ color: "#555555", display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.75rem", transition: "color 150ms" }}
+                            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#000000")}
+                            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#555555")}
+                          >
+                            <Edit2 size={13} strokeWidth={1.5} />
+                            編集
+                          </Link>
                         </td>
                       </tr>
                     ))}
