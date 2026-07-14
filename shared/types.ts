@@ -186,6 +186,10 @@ export interface ArticleAdminRow {
   updatedAt: number;
   categorySlug: CategorySlug;
   categoryNameJa: string;
+  /** 日本語タイトル（ja翻訳が無い場合は他言語のタイトルで代替） */
+  titleJa: string | null;
+  /** 翻訳が存在する言語（一覧の言語バッジ表示用） */
+  languages: Lang[];
 }
 
 /** 記事詳細の返却形（旧 articles.bySlug 互換） */

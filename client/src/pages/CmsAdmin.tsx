@@ -4,7 +4,8 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { listAllArticlesAdmin, deleteArticle as deleteArticleDoc } from "@/lib/db";
 import { useAuth } from "@/_core/hooks/useAuth";
 
-import { Plus, Edit2, Trash2, FileText, Eye, ShieldCheck, PenLine, Users } from "lucide-react";
+import { Plus, Edit2, Trash2, FileText, Eye, ShieldCheck, PenLine, Users, ChevronUp, ChevronDown } from "lucide-react";
+import type { ArticleAdminRow } from "@shared/types";
 import { toast } from "sonner";
 import SeoHead from "@/components/SeoHead";
 
@@ -14,9 +15,37 @@ const STATUS_COLORS: Record<string, string> = {
   archived: "#D7D7D7",
 };
 
+type SortKey = "category" | "status" | "publishedAt";
+
+// ステータスの表示順（公開中→下書き→アーカイブ）
+const STATUS_ORDER: Record<string, number> = { published: 0, draft: 1, archived: 2 };
+
 export default function CmsAdmin() {
   const { user, loading } = useAuth();
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [sortKey, setSortKey] = useState<SortKey | null>(null);
+  const [sortAsc, setSortAsc] = useState(true);
+
+  const toggleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortAsc((v) => !v);
+    } else {
+      setSortKey(key);
+      setSortAsc(true);
+    }
+  };
+
+  const sortRows = (rows: ArticleAdminRow[]): ArticleAdminRow[] => {
+    if (!sortKey) return rows;
+    const sorted = [...rows].sort((a, b) => {
+      let cmp = 0;
+      if (sortKey === "category") cmp = a.categorySlug.localeCompare(b.categorySlug);
+      else if (sortKey === "status") cmp = (STATUS_ORDER[a.status] ?? 9) - (STATUS_ORDER[b.status] ?? 9);
+      else if (sortKey === "publishedAt") cmp = (a.publishedAt ?? 0) - (b.publishedAt ?? 0); // 未公開(null)は最古扱い
+      return sortAsc ? cmp : -cmp;
+    });
+    return sorted;
+  };
 
   const isAdmin = !!user && user.role === "admin";
   const { data: articles, refetch: refetchArticles } = useQuery({
@@ -155,18 +184,60 @@ export default function CmsAdmin() {
                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                   <thead>
                     <tr style={{ borderBottom: "1px solid #D7D7D7" }}>
-                      {["スラッグ", "カテゴリ", "ステータス", "公開日", "操作"].map((h) => (
-                        <th key={h} style={{ padding: "0.875rem 1.25rem", textAlign: "left", fontSize: "0.625rem", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", color: "#999999", whiteSpace: "nowrap" }}>
-                          {h}
+                      {([
+                        { label: "記事", key: null },
+                        { label: "言語", key: null },
+                        { label: "カテゴリ", key: "category" as SortKey },
+                        { label: "ステータス", key: "status" as SortKey },
+                        { label: "公開日", key: "publishedAt" as SortKey },
+                        { label: "操作", key: null },
+                      ]).map((h) => (
+                        <th
+                          key={h.label}
+                          onClick={h.key ? () => toggleSort(h.key!) : undefined}
+                          title={h.key ? "クリックでソート（再クリックで昇順/降順切替）" : undefined}
+                          style={{
+                            padding: "0.875rem 1.25rem",
+                            textAlign: "left",
+                            fontSize: "0.625rem",
+                            fontWeight: 500,
+                            letterSpacing: "0.1em",
+                            textTransform: "uppercase",
+                            color: sortKey === h.key && h.key ? "#000000" : "#999999",
+                            whiteSpace: "nowrap",
+                            cursor: h.key ? "pointer" : "default",
+                            userSelect: "none",
+                          }}
+                        >
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem" }}>
+                            {h.label}
+                            {h.key && sortKey === h.key && (sortAsc ? <ChevronUp size={11} strokeWidth={2} /> : <ChevronDown size={11} strokeWidth={2} />)}
+                          </span>
                         </th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {articles.map((a) => (
+                    {sortRows(articles).map((a) => (
                       <tr key={a.id} style={{ borderBottom: "1px solid #EBEBEB" }}>
                         <td style={{ padding: "1rem 1.25rem" }}>
-                          <p style={{ fontSize: "0.9375rem", fontWeight: 500, margin: 0, fontFamily: "monospace" }}>{a.slug}</p>
+                          <p style={{ fontSize: "0.9375rem", fontWeight: 500, margin: 0, lineHeight: 1.4 }}>
+                            {a.titleJa ?? <span style={{ color: "#999999" }}>（タイトル未入力）</span>}
+                          </p>
+                          <p style={{ fontSize: "0.6875rem", color: "#999999", margin: "0.25rem 0 0", fontFamily: "monospace" }}>{a.slug}</p>
+                        </td>
+                        <td style={{ padding: "1rem 1.25rem" }}>
+                          <div style={{ display: "flex", gap: "0.25rem", flexWrap: "wrap" }}>
+                            {a.languages.length === 0 ? (
+                              <span style={{ fontSize: "0.6875rem", color: "#D7D7D7" }}>—</span>
+                            ) : (
+                              a.languages.map((l) => (
+                                <span key={l} style={{ fontSize: "0.625rem", fontWeight: 500, letterSpacing: "0.04em", border: "1px solid #D7D7D7", color: "#555555", padding: "0.125rem 0.375rem", whiteSpace: "nowrap" }}>
+                                  {l === "zh-TW" ? "繁中" : l.toUpperCase()}
+                                </span>
+                              ))
+                            )}
+                          </div>
                         </td>
                         <td style={{ padding: "1rem 1.25rem" }}>
                           <span style={{ fontSize: "0.75rem", color: "#555555" }}>{a.categoryNameJa} ({a.categorySlug})</span>

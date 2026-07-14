@@ -150,6 +150,9 @@ export async function listAllArticlesAdmin(): Promise<ArticleAdminRow[]> {
   const snap = await getDocs(query(articlesCol, orderBy("updatedAt", "desc")));
   return snap.docs.map((d) => {
     const a = d.data() as ArticleDoc;
+    // 翻訳の実在で言語を判定（languages フィールドは古い記事で欠けている場合がある）
+    const langs = LANGS.filter((l) => !!a.translations?.[l]?.title || !!a.translations?.[l]?.body);
+    const titleJa = a.translations?.ja?.title || langs.map((l) => a.translations[l]?.title).find(Boolean) || null;
     return {
       id: d.id,
       slug: a.slug,
@@ -160,6 +163,8 @@ export async function listAllArticlesAdmin(): Promise<ArticleAdminRow[]> {
       updatedAt: a.updatedAt,
       categorySlug: a.categorySlug,
       categoryNameJa: getCategory(a.categorySlug).nameJa,
+      titleJa,
+      languages: langs,
     };
   });
 }
