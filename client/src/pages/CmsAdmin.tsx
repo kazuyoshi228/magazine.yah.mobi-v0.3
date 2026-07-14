@@ -161,7 +161,7 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
               {([
                 { icon: <FileText size={14} strokeWidth={1.5} color="#555555" />, label: "記事数", value: articles?.length ?? 0 },
                 { icon: <Eye size={14} strokeWidth={1.5} color="#555555" />, label: "公開中", value: articles?.filter((a) => a.status === "published").length ?? 0 },
-                { icon: <Languages size={14} strokeWidth={1.5} color="#555555" />, label: "全記事数（言語計）", value: articles?.reduce((n, a) => n + a.languages.length, 0) ?? 0 },
+                { icon: <Languages size={14} strokeWidth={1.5} color="#555555" />, label: "ドラフト数", value: articles?.filter((a) => a.status === "draft").length ?? 0 },
                 { icon: <UserRound size={14} strokeWidth={1.5} color="#555555" />, label: "全公開記事数（言語計）", value: articles?.filter((a) => a.status === "published").reduce((n, a) => n + a.languages.length, 0) ?? 0 },
               ] as { icon: React.ReactNode; label: string; value: React.ReactNode }[]).map((c) => (
                 <div key={c.label} style={{ backgroundColor: "#FFFFFF", border: "1px solid #D7D7D7", borderRadius: "4px", padding: "1.25rem 1.5rem" }}>
