@@ -134,6 +134,7 @@ export async function getArticleBySlug(slug: string, lang: Lang): Promise<Articl
         categorySlug: a.categorySlug,
         author: a.author ?? null,
         homesOnly: isHomesOnly(a),
+        handoff: a.handoff ?? [],
       },
       categories: getCategory(a.categorySlug),
       ai_writers: null,

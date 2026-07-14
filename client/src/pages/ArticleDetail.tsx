@@ -143,6 +143,23 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
     tocItems.push({ id, text: inner.replace(/<[^>]+>/g, "").trim() });
     return `<h2${attrs} id="${id}">${inner}</h2>`;
   });
+  // 物件写真の自動リンク（テンプレート機能・seoserver と同一仕様）:
+  // handoff の /booking/{key} に対応する画像（アンカー外）を予約ページへのリンクで包む
+  const bookingTargets = (article.articles?.handoff ?? []).filter((h: string) => h.startsWith("/booking/"));
+  const linkedBodyHtml = !bookingTargets.length
+    ? bodyHtml
+    : bodyHtml
+        .split(/(<a\b[\s\S]*?<\/a>)/g)
+        .map((seg, i) => {
+          if (i % 2 === 1) return seg;
+          let out = seg;
+          for (const href of bookingTargets) {
+            const key = href.split("/").pop()!;
+            out = out.replace(new RegExp(`<img[^>]*src="[^"]*${key}[^"]*"[^>]*/?>`, "g"), (img) => `<a href="https://yah.homes${href}" target="_blank" rel="noopener noreferrer">${img}</a>`);
+          }
+          return out;
+        })
+        .join("");
   const showToc = tocItems.length >= 3;
   const tocLabel = lang === "ja" ? "目次" : lang === "ko" ? "목차" : lang === "zh-TW" ? "目錄" : "Contents";
   const faqLabel = lang === "ja" ? "よくある質問" : lang === "ko" ? "자주 묻는 질문" : lang === "zh-TW" ? "常見問題" : "FAQ";
@@ -297,7 +314,7 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
           {translation?.body ? (
             <div
               className="prose-yah"
-              dangerouslySetInnerHTML={{ __html: bodyHtml }}
+              dangerouslySetInnerHTML={{ __html: linkedBodyHtml }}
             />
           ) : (
             <div style={{ padding: "3rem 0", textAlign: "center", color: "#999999" }}>

@@ -122,6 +122,25 @@ function renderTables(md: string): string {
   });
 }
 
+/** 物件写真の自動リンク: handoff の /booking/{key} に対応する画像（アンカー外）を
+    yah.homes の予約ページへのリンクで包む（client と同一仕様） */
+function linkPropertyImages(html: string, handoff: string[]): string {
+  const targets = handoff.filter((h) => h.startsWith("/booking/"));
+  if (!targets.length) return html;
+  return html
+    .split(/(<a\b[\s\S]*?<\/a>)/g)
+    .map((seg, i) => {
+      if (i % 2 === 1) return seg;
+      let out = seg;
+      for (const href of targets) {
+        const key = href.split("/").pop() as string;
+        out = out.replace(new RegExp(`<img[^>]*src="[^"]*${key}[^"]*"[^>]*/?>`, "g"), (img) => `<a href="https://yah.homes${href}">${img}</a>`);
+      }
+      return out;
+    })
+    .join("");
+}
+
 /** 目次: 本文h2にidを振り、3本以上あれば先頭に目次を付ける（client と同一規約） */
 function withToc(html: string, lang: Lang): string {
   const items: { id: string; text: string }[] = [];
@@ -423,7 +442,7 @@ function buildSeoContent(a: ArticleDoc, t: Translation, lang: Lang, plans: Plan[
 <h1>${esc(sub(t.title))}</h1>
 ${date ? `<p><time datetime="${date}">${date}</time> · ${esc(a.categorySlug)} · yah.magazine</p>` : ""}
 ${t.directAnswer ? `<section><h2>Summary</h2><p>${esc(sub(t.directAnswer))}</p></section>` : ""}
-${withToc(renderCompareBody(t.body, plans), lang)}
+${withToc(linkPropertyImages(renderCompareBody(t.body, plans), a.handoff ?? []), lang)}
 ${
   t.faq && t.faq.length
     ? `<section><h2>${lang === "ja" ? "よくある質問" : "FAQ"}</h2>${t.faq

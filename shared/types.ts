@@ -203,6 +203,7 @@ export interface ArticleDetailData {
       author?: ArticleAuthor | null;
       /** homes専売（magazine表示面では管理者プレビューのみ許可） */
       homesOnly?: boolean;
+      handoff?: string[];
     };
     categories: Category;
     ai_writers: null; // v1 では著者機能なし

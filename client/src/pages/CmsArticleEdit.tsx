@@ -544,7 +544,7 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                       <div
                         className="prose-yah"
                         style={{ height: "500px", overflowY: "auto", padding: "1rem 1.25rem", backgroundColor: "#F7F7F7", border: "1px solid #D7D7D7" }}
-                        dangerouslySetInnerHTML={{ __html: renderCompareBody(currentTranslation.body, plans, renderMarkdown) }}
+                        dangerouslySetInnerHTML={{ __html: linkPropertyImages(renderCompareBody(currentTranslation.body, plans, renderMarkdown), parseList(handoff)) }}
                       />
                     )}
                   </div>
@@ -772,6 +772,24 @@ function renderInline(text: string): string {
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>")
     .replace(/`([^`]+)`/g, "<code>$1</code>");
+}
+
+/** 物件写真の自動リンク（ArticleDetail / seoserver と同一仕様） */
+function linkPropertyImages(html: string, handoff: string[]): string {
+  const targets = handoff.filter((h) => h.startsWith("/booking/"));
+  if (!targets.length) return html;
+  return html
+    .split(/(<a\b[\s\S]*?<\/a>)/g)
+    .map((seg, i) => {
+      if (i % 2 === 1) return seg;
+      let out = seg;
+      for (const href of targets) {
+        const key = href.split("/").pop()!;
+        out = out.replace(new RegExp(`<img[^>]*src="[^"]*${key}[^"]*"[^>]*/?>`, "g"), (img) => `<a href="https://yah.homes${href}" target="_blank" rel="noopener noreferrer">${img}</a>`);
+      }
+      return out;
+    })
+    .join("");
 }
 
 function splitTableRow(line: string): string[] {
