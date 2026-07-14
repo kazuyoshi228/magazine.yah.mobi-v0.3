@@ -16,6 +16,7 @@ import ArticleDetail from "./pages/ArticleDetail";
 import CmsAdmin from "./pages/CmsAdmin";
 import CmsArticleEdit from "./pages/CmsArticleEdit";
 import AdminWhitelist from "./pages/AdminWhitelist";
+import AdminWriter from "./pages/AdminWriter";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
@@ -34,6 +35,7 @@ function Router({ lang, onLangChange }: { lang: Lang; onLangChange: (l: Lang) =>
           <Route path="/admin/cms/new" component={() => <CmsArticleEdit articleId={null} />} />
           <Route path="/admin/cms/:id" component={({ params }) => <CmsArticleEdit articleId={params.id} />} />
           <Route path="/admin/whitelist" component={AdminWhitelist} />
+          <Route path="/admin/writer" component={AdminWriter} />
           <Route path="/login" component={Login} />
           <Route path="/404" component={NotFound} />
           <Route component={NotFound} />
