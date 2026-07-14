@@ -273,7 +273,7 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
           {translation?.directAnswer && (
             <div className="direct-answer-block" style={{ marginBottom: "2.5rem" }}>
               <p style={{ margin: 0, fontWeight: 500, fontSize: "0.6875rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#555555", marginBottom: "0.625rem" }}>
-                {lang === "ja" ? "直接回答" : lang === "ko" ? "직접 답변" : lang === "zh-TW" ? "直接回答" : "Direct Answer"}
+                Summary
               </p>
               <p style={{ margin: 0, fontSize: "1.0625rem", lineHeight: 1.75 }}>
                 {substitutePlaceholders(translation.directAnswer, plans, computePriceMeta(plans))}

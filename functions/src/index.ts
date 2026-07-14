@@ -422,7 +422,7 @@ function buildSeoContent(a: ArticleDoc, t: Translation, lang: Lang, plans: Plan[
 <article>
 <h1>${esc(sub(t.title))}</h1>
 ${date ? `<p><time datetime="${date}">${date}</time> · ${esc(a.categorySlug)} · yah.magazine</p>` : ""}
-${t.directAnswer ? `<section><h2>${lang === "ja" ? "直接回答" : "Direct Answer"}</h2><p>${esc(sub(t.directAnswer))}</p></section>` : ""}
+${t.directAnswer ? `<section><h2>Summary</h2><p>${esc(sub(t.directAnswer))}</p></section>` : ""}
 ${withToc(renderCompareBody(t.body, plans), lang)}
 ${
   t.faq && t.faq.length
