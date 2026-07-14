@@ -337,6 +337,8 @@ function renderMarkdown(md: string): string {
     .replace(/\*(.+?)\*/g, "<em>$1</em>")
     // Inline code
     .replace(/`([^`]+)`/g, "<code>$1</code>")
+    // Images（リンクより先に処理。seoserver の renderMarkdown と同一仕様）
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" loading="lazy" />')
     // Links
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
     // Unordered lists
