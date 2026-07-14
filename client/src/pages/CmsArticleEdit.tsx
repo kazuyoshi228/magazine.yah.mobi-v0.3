@@ -24,7 +24,7 @@ interface CmsArticleEditProps {
 }
 
 const LANGS = ALL_LANGS as readonly Lang[];
-const LANG_LABELS: Record<Lang, string> = { ja: "日本語", en: "English", ko: "한국어", "zh-TW": "繁體中文" };
+const LANG_LABELS: Record<Lang, string> = { ja: "日本語", en: "English", ko: "한국어", "zh-TW": "繁體中文", th: "ไทย" };
 
 // 選択肢が固定の戦略フィールド（チップ式チェックボックスで選ぶ）
 const DISTRIBUTION_OPTIONS: { value: DistributionSurface; label: string }[] = [
@@ -165,7 +165,7 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
 
   // Translations per lang
   const [translations, setTranslations] = useState<Record<Lang, ArticleTranslation>>({
-    ja: emptyTranslation(), en: emptyTranslation(), ko: emptyTranslation(), "zh-TW": emptyTranslation(),
+    ja: emptyTranslation(), en: emptyTranslation(), ko: emptyTranslation(), "zh-TW": emptyTranslation(), th: emptyTranslation(),
   });
 
   const isAdmin = !!user && user.role === "admin";

@@ -22,7 +22,7 @@ initializeApp();
 const db = getFirestore();
 
 const BASE_URL = "https://magazine.yah.mobi";
-const LANGS = ["ja", "en", "ko", "zh-TW"] as const;
+const LANGS = ["ja", "en", "ko", "zh-TW", "th"] as const;
 type Lang = (typeof LANGS)[number];
 
 interface Translation {

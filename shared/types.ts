@@ -10,8 +10,8 @@
 
 // TH（タイ語・v9 の対象市場）は将来追加。Lang へ "th" を足す際は Record<Lang,…> を使う
 // 箇所（client/src/pages/CmsArticleEdit.tsx 等）・LANGS・seoserver の hreflang もまとめて対応する。
-export type Lang = "ja" | "en" | "ko" | "zh-TW";
-export const LANGS: readonly Lang[] = ["ja", "en", "ko", "zh-TW"] as const;
+export type Lang = "ja" | "en" | "ko" | "zh-TW" | "th";
+export const LANGS: readonly Lang[] = ["ja", "en", "ko", "zh-TW", "th"] as const;
 
 export type SchemaType = "Article" | "HowTo" | "FAQPage";
 export type ArticleStatus = "draft" | "published" | "archived";
