@@ -19,9 +19,9 @@ title: "Where to Stay in Fukuoka: Tenjin or Hakata? (An Honest Local Answer)"
 excerpt: "Every Fukuoka guide makes you choose between Tenjin and Hakata. Here's the local secret: the best area is between them. A practical breakdown of Fukuoka's neighborhoods — with a comparison table, first-timer tips, and honest advice for families and groups. Updated July 2026."
 metaTitle: "Where to Stay in Fukuoka [2026]: Tenjin or Hakata? Best Areas Compared"
 metaDescription: "Tenjin or Hakata? Honest local answer: stay between them. Fukuoka's best areas compared for first-timers, families, and groups — walkability, nightlife, food access, and price ranges. Updated July 2026."
-directAnswer: "Both — so stay between them. Tenjin (shopping, nightlife) and Hakata (transit hub, old town) are only about 6 minutes apart by subway, and the riverside neighborhoods between them — Watanabe-dori, Kiyokawa, and Yakuin — put both within a 10-minute reach while staying quiet at night. First-timers who want pure convenience can pick Hakata Station; nightlife-first travelers can pick Tenjin. Expect roughly ¥8,000–15,000 per night for a double hotel room, or from about ¥15,000 per night for a whole-house rental that sleeps a family or group (as of July 2026)."
+directAnswer: "Both — so stay between them. Tenjin (shopping, nightlife) and Hakata (transit hub, old town) are only about 6 minutes apart by subway, and the riverside neighborhoods between them — Watanabe-dori, Kiyokawa, and Yakuin — put both within about 10 minutes while staying quiet at night. First-timers who want pure convenience can pick Hakata Station; nightlife-first travelers can pick Tenjin. Expect roughly ¥8,000–15,000 per night for a double hotel room, or from about ¥15,000 per night for a whole-house rental that sleeps a family or group — around ¥6,000 per person for six (as of July 2026)."
 faq:
-  - "Should I stay in Tenjin or Hakata?||Pick Hakata if you want pure transit convenience — the airport is 2 subway stops away and the shinkansen leaves from Hakata Station. Pick Tenjin if shopping and nightlife matter most. If you want both, stay between them: the Watanabe-dori / Kiyokawa / Yakuin area reaches either within about 10 minutes and is quieter at night."
+  - "Should I stay in Tenjin or Hakata?||Pick Hakata if you want pure transit convenience — the airport is 2 subway stops away and the shinkansen leaves from Hakata Station. Pick Tenjin if shopping and nightlife matter most. If you want both, stay between them: the Watanabe-dori / Kiyokawa / Yakuin area puts both within about 10 minutes and is quieter at night."
   - "Is Fukuoka walkable without a car?||Yes — central Fukuoka is one of Japan's most compact big cities. Tenjin, Hakata, Nakasu, and Canal City are all within walking or short-subway distance of each other, and taxis are affordable for short hops. You only need a car for day trips to Itoshima or the coast."
   - "Where should a family or group of 5–7 stay in Fukuoka?||Hotel rooms in Japan usually sleep 2–3, so groups of 5+ end up splitting across multiple rooms. Whole-house vacation rentals in the city center sleep 6–7 in separate bedrooms with a shared living room, often at a lower per-person price than multiple hotel rooms. They cluster in residential areas like Kiyokawa and Watanabe-dori, close to everything but quiet at night."
   - "Is Nakasu a good area to stay?||Nakasu is Fukuoka's famous nightlife island — great for the yatai food stalls and bars, but noisy at night and less pleasant in the morning. Most travelers do Nakasu in the evening and sleep elsewhere. Staying 10 minutes away (Tenjin or the riverside area south of it) gives you the fun without the 3 a.m. noise."
@@ -46,6 +46,8 @@ This guide breaks down the real differences, then shows you how to choose by tra
 
 **Choose Hakata** if your trip is built around day trips (the shinkansen and airport are right there) or you land late and leave early. **Choose Tenjin** if you want to walk out of your hotel into department stores, izakayas, and bars.
 
+One caution: some hotels that show up as "near Hakata Station" are actually a long walk from the station — check the **actual walking minutes to the station** before you book.
+
 But before you decide — look at what sits between them.
 
 ## The local secret: the riverside neighborhoods in between
@@ -54,7 +56,7 @@ But before you decide — look at what sits between them.
 
 Between Tenjin and Hakata Station, along the Naka River, sit the residential neighborhoods of **Watanabe-dori, Kiyokawa, and Yakuin**. Staying here means:
 
-- **Tenjin and Hakata both within ~10 minutes** — walk, subway, or a short taxi
+- **Tenjin and Hakata both within ~10 minutes** — walk, subway, or a short taxi ride
 - **Nakasu's yatai food stalls and Canal City on foot** — the evening fun is 15–20 minutes' walk
 - **Yanagibashi Market ("Fukuoka's kitchen") nearby** — morning food shopping like a local
 - **Quiet nights** — these are real residential streets, not entertainment districts
@@ -79,7 +81,7 @@ Other areas in brief: **Daimyo/Imaizumi** (fashionable backstreets west of Tenji
 - **Hotels**: a standard double in Tenjin or Hakata runs roughly **¥8,000–15,000 per night**, rising sharply during events, cherry blossom season, and holidays.
 - **Whole-house rentals**: from about **¥15,000 per night for two, room only** ([kakaku.com data](https://travel.kakaku.com/)) — and because you pay per house, not per room, a group of six often pays **around ¥6,000 per person**, less than splitting into multiple hotel rooms.
 
-Japanese hotel rooms rarely sleep more than 3, so this per-house math is the single most useful thing to know for **families and groups** — see our [complete guide to Fukuoka's villas and vacation rentals](/guides/fukuoka-villa) for the full breakdown.
+Japanese hotel rooms rarely sleep more than 3, so this per-house math is the single most useful thing to know for **families and groups** — see our [complete guide to Fukuoka's villas and vacation rentals](/guides/fukuoka-whole-house) for the full breakdown.
 
 ## → Staying in the in-between area: the two yah.homes houses
 
@@ -89,9 +91,9 @@ This site, yah.homes, runs **two newly built whole-house rentals exactly in that
 
 ![yah.homes Takasago — whole-house rental 5–10 minutes on foot from Watanabe-dori Station](https://yah.homes/manus-storage/takasago-exterior_d4f7ccff-768.webp)
 
-- **[Takasago (sleeps 6)](/booking/takasago)** — 5–10 minutes on foot from Watanabe-dori Station, Yakuin also walkable. Three wash basins keep the morning routine moving; the parking fits large vehicles.
+- **[Takasago (sleeps 6)](/booking/takasago)** — 5–10 minutes on foot from Watanabe-dori Station, Yakuin also walkable. Three bathroom sinks keep the morning routine moving, and the parking space fits large vehicles.
 
-Both are one-group-per-day, fully private, with keyless self check-in — arrive on a late flight without worrying about a front desk. Newly built, with Simmons mattresses in every bedroom.
+Both host just one group per day and are fully private, with keyless self check-in — arrive on a late flight without worrying about a front desk. Newly built, with Simmons mattresses in every bedroom.
 
 ## Summary
 

@@ -7,7 +7,7 @@ layer: "1.5"
 pageType: article
 hesitation: anxiety
 primaryQuery: 福岡親子住宿
-secondaryQueries: ["福岡親子住宿推薦", "福岡帶小孩住宿", "福岡帶嬰兒住宿", "福岡三代同堂住宿", "福岡親子民宿", "福岡親子包棟民宿", "福岡適合小孩的住宿", "福岡 子連れ 宿", "福岡 赤ちゃん連れ 宿", "후쿠오카 아이랑 숙소"]
+secondaryQueries: ["福岡親子住宿推薦", "福岡帶小孩住宿", "福岡帶嬰兒住宿", "福岡三代同堂住宿", "福岡親子民宿", "福岡親子包棟民宿", "福岡適合小孩的住宿", "福岡下雨天親子景點", "福岡親子友善住宿有廚房", "福岡 子連れ 宿", "福岡 赤ちゃん連れ 宿", "후쿠오카 아이랑 숙소"]
 handoff: ["/booking/kiyokawa", "/booking/takasago"]
 confirmedDate: 2026-07-14
 sources: ["https://travel.kakaku.com/"]
