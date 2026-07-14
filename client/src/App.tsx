@@ -56,7 +56,11 @@ function Router({ lang, onLangChange }: { lang: Lang; onLangChange: (l: Lang) =>
 }
 
 function App() {
-  const [lang, setLang] = useState<Lang>("ja");
+  // URLの ?lang= から初期言語を復元（記事の言語切替は上部メニューバーに統一）
+  const [lang, setLang] = useState<Lang>(() => {
+    const q = new URLSearchParams(window.location.search).get("lang");
+    return q && ["ja", "en", "ko", "zh-TW", "th"].includes(q) ? (q as Lang) : "ja";
+  });
 
   return (
     <ErrorBoundary>

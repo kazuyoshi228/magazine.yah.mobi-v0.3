@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Globe, PenLine } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
 
-export type Lang = "ja" | "en" | "ko" | "zh-TW";
+export type Lang = "ja" | "en" | "ko" | "zh-TW" | "th";
 
 interface HeaderProps {
   lang: Lang;
@@ -15,18 +15,12 @@ const LANG_LABELS: Record<Lang, string> = {
   en: "English",
   ko: "한국어",
   "zh-TW": "繁體中文",
+  th: "ไทย",
 };
 
 const NAV_ITEMS: Record<Lang, { label: string; href: string }[]> = {
   // 公開ホーム・一覧ページの削除（2026-07-14）に伴いナビ項目は空。記事ページのヘッダーはロゴのみ
-  ja: [], en: [], ko: [], "zh-TW": [],
-};
-
-const CTA_LABEL: Record<Lang, string> = {
-  ja: "eSIMを購入",
-  en: "Buy eSIM",
-  ko: "eSIM 구매",
-  "zh-TW": "購買eSIM",
+  ja: [], en: [], ko: [], "zh-TW": [], th: [],
 };
 
 // Hamburger SVG icon
@@ -87,7 +81,6 @@ export default function Header({ lang, onLangChange }: HeaderProps) {
   }, [menuOpen]);
 
   const navItems = NAV_ITEMS[lang];
-  const ctaLabel = CTA_LABEL[lang];
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
 
@@ -279,19 +272,6 @@ export default function Header({ lang, onLangChange }: HeaderProps) {
             )}
           </div>
 
-          {/* eSIM CTA — desktop only */}
-          {!isMobile && (
-            <a
-              href="https://yah.mobi/app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary"
-              style={{ fontSize: "0.6875rem", padding: "0.5rem 1.25rem" }}
-            >
-              {ctaLabel}
-            </a>
-          )}
-
           {/* Hamburger — mobile only */}
           {isMobile && (
             <button
@@ -348,22 +328,6 @@ export default function Header({ lang, onLangChange }: HeaderProps) {
                 {item.label}
               </Link>
             ))}
-            <a
-              href="https://yah.mobi/app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary"
-              style={{
-                marginTop: "1.5rem",
-                display: "flex",
-                justifyContent: "center",
-                width: "100%",
-                fontSize: "0.875rem",
-                padding: "0.875rem 1.5rem",
-              }}
-            >
-              {ctaLabel}
-            </a>
           </div>
         </div>
       )}

@@ -41,6 +41,15 @@ const CTA_COPY: Record<Lang, { esimHeadline: string; esimSub: string; esimBtn: s
     homesBtn: "숙소 찾기",
     backToList: "기사 목록으로 돌아가기",
   },
+  th: {
+    esimHeadline: "เตรียม eSIM ให้พร้อมก่อนเที่ยวญี่ปุ่น",
+    esimSub: "สแกน QR โค้ดแล้วออนไลน์ได้ทันทีที่ถึงญี่ปุ่น",
+    esimBtn: "ซื้อ eSIM",
+    homesHeadline: "พักฟุกุโอกะกับ yah.homes",
+    homesSub: "ที่พักที่หยั่งรากในวัฒนธรรมท้องถิ่น ค้นพบอาหาร ผู้คน และย่านต่างๆ ของฟุกุโอกะ",
+    homesBtn: "ดูที่พัก",
+    backToList: "กลับไปหน้ารายการ",
+  },
   "zh-TW": {
     esimHeadline: "出發日本前，先準備好 eSIM。",
     esimSub: "掃描 QR 碼，抵達日本即刻上線。",
@@ -82,7 +91,7 @@ function buildArticleSchema(article: any, translation: any, lang: string) {
 }
 
 export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
-  const cta = CTA_COPY[lang];
+  const cta = CTA_COPY[lang] ?? CTA_COPY.en;
 
   // homes専売記事は一般公開しない（canonicalはyah.homes）が、管理者にはCMSプレビュー用に表示する
   const { user } = useAuth();
@@ -117,13 +126,13 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
   const catSlug = article.categories?.slug ?? "";
   const catName =
     lang === "ja" ? article.categories?.nameJa :
-    lang === "en" ? article.categories?.nameEn :
+    lang === "en" || lang === "th" ? article.categories?.nameEn :
     lang === "ko" ? article.categories?.nameKo :
     article.categories?.nameZhTw;
 
   const publishedDate = article.articles?.publishedAt
     ? new Date(article.articles.publishedAt).toLocaleDateString(
-        lang === "ja" ? "ja-JP" : lang === "ko" ? "ko-KR" : lang === "zh-TW" ? "zh-TW" : "en-US",
+        lang === "ja" ? "ja-JP" : lang === "ko" ? "ko-KR" : lang === "zh-TW" ? "zh-TW" : lang === "th" ? "th-TH" : "en-US",
         { year: "numeric", month: "long", day: "numeric" }
       )
     : "";
@@ -242,29 +251,6 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
                   <p style={{ margin: 0, fontSize: "0.6875rem", color: "#999999" }}>{article.articles.author.title}</p>
                 )}
               </div>
-            </div>
-          )}
-
-          {/* Language variants */}
-          {allTranslations.length > 1 && (
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "1.5rem" }}>
-              {allTranslations.map((t) => (
-                <a
-                  key={t.lang}
-                  href={`/articles/${slug}?lang=${t.lang}`}
-                  style={{
-                    fontSize: "0.6875rem",
-                    fontWeight: 500,
-                    padding: "0.25rem 0.625rem",
-                    border: `1px solid ${t.lang === lang ? "#000000" : "#D7D7D7"}`,
-                    backgroundColor: t.lang === lang ? "#000000" : "transparent",
-                    color: t.lang === lang ? "#FFFFFF" : "#555555",
-                    transition: "all 150ms",
-                  }}
-                >
-                  {t.lang === "zh-TW" ? "繁中" : t.lang.toUpperCase()}
-                </a>
-              ))}
             </div>
           )}
         </div>
