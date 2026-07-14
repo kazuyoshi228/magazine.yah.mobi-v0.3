@@ -104,8 +104,24 @@ function esc(s: string): string {
  * 本文は admin 専用 CMS からのみ書き込まれる信頼済みコンテンツで、
  * HTML 直書き（既存記事）も許容するためエスケープしない（クライアント実装と同一挙動）。
  */
+
+/**
+ * lean Markdown表 → <table>（GFM形式・renderMarkdown の前段で適用）。
+ * クライアントと seoserver の両方に同一実装を置く（片方を変えたら両方揃える）。
+ */
+function renderTables(md: string): string {
+  return md.replace(/((?:^\|.*\|[ \t]*$\n?)+)/gm, (block) => {
+    const rows = block.trim().split("\n").map((r) => r.trim()).filter(Boolean);
+    if (rows.length < 2 || !/^\|(?:\s*:?-+:?\s*\|)+$/.test(rows[1])) return block;
+    const cells = (row: string) => row.replace(/^\||\|$/g, "").split("|").map((c) => c.trim());
+    const thead = `<thead><tr>${cells(rows[0]).map((h) => `<th>${h}</th>`).join("")}</tr></thead>`;
+    const tbody = `<tbody>${rows.slice(2).map((r) => `<tr>${cells(r).map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody>`;
+    return `\n<table class="md-table">${thead}${tbody}</table>\n`;
+  });
+}
+
 function renderMarkdown(md: string): string {
-  const html = md
+  const html = renderTables(md)
     .replace(/^### (.+)$/gm, "<h3>$1</h3>")
     .replace(/^## (.+)$/gm, "<h2>$1</h2>")
     .replace(/^# (.+)$/gm, "<h1>$1</h1>")
