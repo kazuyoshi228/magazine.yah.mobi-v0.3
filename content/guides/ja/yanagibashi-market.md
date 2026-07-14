@@ -85,6 +85,7 @@ faq:
 ![yah.homes 清川 — 福岡市中央区・那珂川沿いの新築一棟貸しヴィラ外観](https://yah.homes/manus-storage/kiyokawa-exterior_18a3409b-768.webp)
 
 - **[清川（最大7名）](/booking/kiyokawa)** — 市場へ徒歩約7分〔※要実測で確定〕。那珂川沿いの散歩道もすぐ。寝室3室・駐車場つき。
+
 ![yah.homes 高砂 — 渡辺通駅徒歩5〜10分の一棟貸し外観](https://yah.homes/manus-storage/takasago-exterior_d4f7ccff-768.webp)
 
 - **[高砂（最大6名）](/booking/takasago)** — 市場へ徒歩約10分〔※要実測で確定〕。渡辺通駅徒歩5〜10分。洗面台3つ。

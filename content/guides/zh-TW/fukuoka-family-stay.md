@@ -91,6 +91,7 @@ faq:
 ![yah.homes 清川 — 福岡市中央區那珂川沿岸的新建包棟villa外觀](https://yah.homes/manus-storage/kiyokawa-exterior_18a3409b-768.webp)
 
 - **[清川（最多7人）](/booking/kiyokawa)** — 3臥室，三代同堂的分配範例照做即可。專用停車場（租車家庭免煩惱）、柳橋連合市場步行7〜10分鐘、那珂川沿岸散步道就在旁邊，嬰兒車散步剛剛好。
+
 ![yah.homes 高砂 — 渡邊通站步行5〜10分鐘的包棟外觀](https://yah.homes/manus-storage/takasago-exterior_d4f7ccff-768.webp)
 
 - **[高砂（最多6人）](/booking/takasago)** — 渡邊通站步行5〜10分鐘。**3座洗手台**，一家人的早晨不用搶。停車場可停大型車。
