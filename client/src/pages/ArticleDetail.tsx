@@ -135,6 +135,18 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
 
   const schemaJson = buildArticleSchema(article, translation, lang);
 
+  // 目次: 本文h2にidを振り、3本以上あれば冒頭に目次を出す（yah.homes guidesと同一規約）
+  const rawBodyHtml = translation?.body ? renderCompareBody(translation.body, plans, renderMarkdown) : "";
+  const tocItems: { id: string; text: string }[] = [];
+  const bodyHtml = rawBodyHtml.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/g, (_m, attrs: string, inner: string) => {
+    const id = `sec-${tocItems.length + 1}`;
+    tocItems.push({ id, text: inner.replace(/<[^>]+>/g, "").trim() });
+    return `<h2${attrs} id="${id}">${inner}</h2>`;
+  });
+  const showToc = tocItems.length >= 3;
+  const tocLabel = lang === "ja" ? "目次" : lang === "ko" ? "목차" : lang === "zh-TW" ? "目錄" : "Contents";
+  const faqLabel = lang === "ja" ? "よくある質問" : lang === "ko" ? "자주 묻는 질문" : lang === "zh-TW" ? "常見問題" : "FAQ";
+
   return (
     <>
       <SeoHead
@@ -269,16 +281,41 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
             </div>
           )}
 
+          {/* 目次（h2が3本以上のとき） */}
+          {showToc && (
+            <nav className="md-toc">
+              <p className="md-toc-label">{tocLabel}</p>
+              <ol>
+                {tocItems.map((item) => (
+                  <li key={item.id}><a href={`#${item.id}`}>{item.text}</a></li>
+                ))}
+              </ol>
+            </nav>
+          )}
+
           {/* Body */}
           {translation?.body ? (
             <div
               className="prose-yah"
-              dangerouslySetInnerHTML={{ __html: renderCompareBody(translation.body, plans, renderMarkdown) }}
+              dangerouslySetInnerHTML={{ __html: bodyHtml }}
             />
           ) : (
             <div style={{ padding: "3rem 0", textAlign: "center", color: "#999999" }}>
               <p>コンテンツがまだありません。</p>
             </div>
+          )}
+
+          {/* FAQ（CMSのfaqフィールドから自動表示） */}
+          {translation?.faq && translation.faq.length > 0 && (
+            <section className="md-faq">
+              <h2>{faqLabel}</h2>
+              {translation.faq.map((f, i) => (
+                <details key={i}>
+                  <summary>{substitutePlaceholders(f.q, plans, computePriceMeta(plans))}</summary>
+                  <p>{substitutePlaceholders(f.a, plans, computePriceMeta(plans))}</p>
+                </details>
+              ))}
+            </section>
           )}
 
           {/* eSIM CTA */}

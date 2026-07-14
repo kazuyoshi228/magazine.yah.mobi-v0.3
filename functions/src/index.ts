@@ -122,6 +122,20 @@ function renderTables(md: string): string {
   });
 }
 
+/** 目次: 本文h2にidを振り、3本以上あれば先頭に目次を付ける（client と同一規約） */
+function withToc(html: string, lang: Lang): string {
+  const items: { id: string; text: string }[] = [];
+  const body = html.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/g, (_m, attrs: string, inner: string) => {
+    const id = `sec-${items.length + 1}`;
+    items.push({ id, text: inner.replace(/<[^>]+>/g, "").trim() });
+    return `<h2${attrs} id="${id}">${inner}</h2>`;
+  });
+  if (items.length < 3) return body;
+  const label = lang === "ja" ? "目次" : lang === "ko" ? "목차" : lang === "zh-TW" ? "目錄" : "Contents";
+  const toc = `<nav><p>${label}</p><ol>${items.map((i) => `<li><a href="#${i.id}">${i.text}</a></li>`).join("")}</ol></nav>`;
+  return toc + body;
+}
+
 function renderMarkdown(md: string): string {
   const html = renderTables(md)
     .replace(/^### (.+)$/gm, "<h3>$1</h3>")
@@ -409,7 +423,7 @@ function buildSeoContent(a: ArticleDoc, t: Translation, lang: Lang, plans: Plan[
 <h1>${esc(sub(t.title))}</h1>
 ${date ? `<p><time datetime="${date}">${date}</time> · ${esc(a.categorySlug)} · yah.magazine</p>` : ""}
 ${t.directAnswer ? `<section><h2>${lang === "ja" ? "直接回答" : "Direct Answer"}</h2><p>${esc(sub(t.directAnswer))}</p></section>` : ""}
-${renderCompareBody(t.body, plans)}
+${withToc(renderCompareBody(t.body, plans), lang)}
 ${
   t.faq && t.faq.length
     ? `<section><h2>${lang === "ja" ? "よくある質問" : "FAQ"}</h2>${t.faq

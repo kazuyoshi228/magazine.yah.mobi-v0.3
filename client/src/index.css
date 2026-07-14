@@ -477,3 +477,78 @@
     display: none;
   }
 }
+
+/* ── 目次（記事テンプレート共通・yah.homes guidesと同一規約） ── */
+.md-toc {
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 1.1rem 1.4rem;
+  margin-bottom: 2.5rem;
+  background: #ffffff;
+}
+.md-toc-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #aaaaaa;
+  margin: 0 0 0.6rem;
+}
+.md-toc ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+.md-toc li {
+  font-size: 0.85rem;
+  line-height: 2;
+}
+.md-toc a {
+  color: #333333;
+  text-decoration: none;
+}
+.md-toc a:hover {
+  text-decoration: underline;
+}
+
+/* ── FAQ（記事テンプレート共通） ── */
+.md-faq {
+  margin-top: 3rem;
+}
+.md-faq h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+.md-faq details {
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  background: #ffffff;
+  padding: 0;
+  margin-bottom: 0.625rem;
+}
+.md-faq summary {
+  cursor: pointer;
+  padding: 1rem 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #111111;
+  list-style: none;
+  position: relative;
+}
+.md-faq summary::after {
+  content: "+";
+  position: absolute;
+  right: 1.25rem;
+  color: #999999;
+}
+.md-faq details[open] summary::after {
+  content: "−";
+}
+.md-faq details p {
+  padding: 0 1.25rem 1rem;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.85;
+  color: #555555;
+}
