@@ -123,6 +123,8 @@ function renderTables(md: string): string {
 function renderMarkdown(md: string): string {
   const html = renderTables(md)
     .replace(/^### (.+)$/gm, "<h3>$1</h3>")
+    // 手渡し見出し規約: 「## → 見出し」は矢印アイコン付き（client と同一仕様）
+    .replace(/^## → (.+)$/gm, '<h2 class="h2-handoff">$1</h2>')
     .replace(/^## (.+)$/gm, "<h2>$1</h2>")
     .replace(/^# (.+)$/gm, "<h1>$1</h1>")
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")

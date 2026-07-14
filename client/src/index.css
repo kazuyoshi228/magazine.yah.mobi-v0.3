@@ -289,6 +289,18 @@
     letter-spacing: -0.02em;
   }
 
+  /* 手渡し見出し（## → …）の矢印アイコン。文字色に追従 */
+  .prose-yah h2.h2-handoff::before {
+    content: "";
+    display: inline-block;
+    width: 0.62em;
+    height: 0.62em;
+    margin-right: 0.45em;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M496 256l-240-240v144h-256v192h256v144z'/%3E%3C/svg%3E") no-repeat center / contain;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M496 256l-240-240v144h-256v192h256v144z'/%3E%3C/svg%3E") no-repeat center / contain;
+  }
+
   .prose-yah h3 {
     font-size: 1.2rem;
     font-weight: 500;

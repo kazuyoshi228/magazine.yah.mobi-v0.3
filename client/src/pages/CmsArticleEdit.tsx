@@ -13,7 +13,7 @@ import { renderCompareBody } from "@/lib/compareGrid";
 import { CATEGORIES, LANGS as ALL_LANGS, type Lang, type SchemaType, type ArticleStatus, type CategorySlug, type ArticleTranslation, type Layer, type PageType, type Hesitation, type DistributionSurface } from "@shared/types";
 import { useAuth } from "@/_core/hooks/useAuth";
 
-import { ArrowLeft, Save, Eye, Upload, X, ImagePlus } from "lucide-react";
+import { ArrowLeft, Save, Eye, Upload, X, ImagePlus, Table } from "lucide-react";
 import { toast } from "sonner";
 import SeoHead from "@/components/SeoHead";
 
@@ -257,10 +257,9 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     }
   };
 
-  // Insert markdown image at cursor position in the textarea
-  const insertImageMarkdown = (url: string, filename: string) => {
+  // Insert arbitrary markdown at cursor position in the textarea
+  const insertMarkdownAtCursor = (markdown: string) => {
     const ta = textareaRef.current;
-    const markdown = `![${filename}](${url})`;
     if (ta) {
       const start = ta.selectionStart;
       const end = ta.selectionEnd;
@@ -274,6 +273,16 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     } else {
       updateTranslation("body", translations[activeLang].body + "\n" + markdown);
     }
+  };
+
+  const insertImageMarkdown = (url: string, filename: string) => {
+    insertMarkdownAtCursor(`![${filename}](${url})`);
+  };
+
+  const insertTableTemplate = () => {
+    insertMarkdownAtCursor(
+      "\n| 見出し1 | 見出し2 | 見出し3 |\n|---|---|---|\n| 内容 | 内容 | 内容 |\n| 内容 | 内容 | 内容 |\n"
+    );
   };
 
   const processInlineImageFile = async (file: File) => {
@@ -478,6 +487,14 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                         <ImagePlus size={11} strokeWidth={1.5} />
                         {uploadingInlineImage ? "アップロード中..." : "画像を挿入"}
                       </label>
+                      <button
+                        onClick={insertTableTemplate}
+                        style={{ fontSize: "0.6875rem", color: "#333", background: "none", border: "1px solid #D7D7D7", padding: "0.25rem 0.625rem", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.375rem" }}
+                        title="カーソル位置に表のひな形を挿入します（| で区切って編集）"
+                      >
+                        <Table size={11} strokeWidth={1.5} />
+                        表を挿入
+                      </button>
                       <button
                         onClick={() => setPreview((v) => !v)}
                         style={{ fontSize: "0.6875rem", color: preview ? "#000000" : "#555555", fontWeight: preview ? 600 : 400, background: preview ? "#F0F0F0" : "none", border: "1px solid #D7D7D7", padding: "0.25rem 0.625rem", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.375rem" }}
@@ -783,11 +800,14 @@ function renderMarkdown(md: string): string {
       continue;
     }
 
-    // 見出し
+    // 見出し（「## → 見出し」は手渡し見出し＝矢印アイコン付き。client/seoserver と同一仕様）
     const h = /^(#{1,4})\s+(.+)$/.exec(trimmed);
     if (h) {
       flushPara();
-      out.push(`<h${h[1].length}>${renderInline(h[2])}</h${h[1].length}>`);
+      const level = h[1].length;
+      const handoff = level === 2 && h[2].startsWith("→ ");
+      const text = handoff ? h[2].slice(2) : h[2];
+      out.push(`<h${level}${handoff ? ' class="h2-handoff"' : ""}>${renderInline(text)}</h${level}>`);
       i++;
       continue;
     }
