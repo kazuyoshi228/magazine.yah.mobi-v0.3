@@ -17,6 +17,9 @@ const STATUS_COLORS: Record<string, string> = {
 
 type SortKey = "category" | "status" | "publishedAt";
 
+// 全公開記事数（言語計）の目標: 30記事×5言語（月間1,000人流入計画）
+const PUBLISHED_PAGES_GOAL = 150;
+
 // ステータスの表示順（公開中→下書き→アーカイブ）
 const STATUS_ORDER: Record<string, number> = { published: 0, draft: 1, archived: 2 };
 
@@ -162,7 +165,24 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
                 { icon: <FileText size={14} strokeWidth={1.5} color="#555555" />, label: "記事数", value: articles?.length ?? 0 },
                 { icon: <Eye size={14} strokeWidth={1.5} color="#555555" />, label: "公開中", value: articles?.filter((a) => a.status === "published").length ?? 0 },
                 { icon: <Languages size={14} strokeWidth={1.5} color="#555555" />, label: "ドラフト数", value: articles?.filter((a) => a.status === "draft").length ?? 0 },
-                { icon: <UserRound size={14} strokeWidth={1.5} color="#555555" />, label: "全公開記事数（言語計）", value: articles?.filter((a) => a.status === "published").reduce((n, a) => n + a.languages.length, 0) ?? 0 },
+                {
+                  icon: <UserRound size={14} strokeWidth={1.5} color="#555555" />,
+                  label: `全公開記事数（言語計・目標${PUBLISHED_PAGES_GOAL}）`,
+                  value: (() => {
+                    const n = articles?.filter((a) => a.status === "published").reduce((sum, a) => sum + a.languages.length, 0) ?? 0;
+                    const pct = Math.round((n / PUBLISHED_PAGES_GOAL) * 1000) / 10;
+                    return (
+                      <span>
+                        {n}
+                        <span style={{ fontSize: "0.875rem", color: "#999999", fontWeight: 400 }}> / {PUBLISHED_PAGES_GOAL}</span>
+                        <span style={{ fontSize: "0.875rem", color: "#000000", fontWeight: 600, marginLeft: "0.5rem" }}>{pct}%</span>
+                        <span style={{ display: "block", marginTop: "0.5rem", height: "4px", backgroundColor: "#EBEBEB", borderRadius: "2px", overflow: "hidden" }}>
+                          <span style={{ display: "block", height: "100%", width: `${Math.min(100, pct)}%`, backgroundColor: "#000000" }} />
+                        </span>
+                      </span>
+                    );
+                  })(),
+                },
               ] as { icon: React.ReactNode; label: string; value: React.ReactNode }[]).map((c) => (
                 <div key={c.label} style={{ backgroundColor: "#FFFFFF", border: "1px solid #D7D7D7", borderRadius: "4px", padding: "1.25rem 1.5rem" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
