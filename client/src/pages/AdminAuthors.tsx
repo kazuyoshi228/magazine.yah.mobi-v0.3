@@ -125,7 +125,7 @@ export default function AdminAuthors() {
       <SeoHead title="Author 管理 | yah.magazine CMS" description="著者マスタの管理" noindex />
       <div style={{ backgroundColor: "#F7F7F7", minHeight: "100vh" }}>
         {/* Header */}
-        <div style={{ backgroundColor: "#000000", color: "#FFFFFF", padding: "1.5rem 0" }}>
+        <div style={{ backgroundColor: "#000000", color: "#FFFFFF", padding: "1.5rem 0", position: "sticky", top: 0, zIndex: 100 }}>
           <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div>
               <p className="label-section" style={{ color: "rgba(255,255,255,0.4)", marginBottom: "0.25rem" }}>yah.magazine</p>

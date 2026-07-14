@@ -86,7 +86,7 @@ export default function AdminWhitelist() {
 
       <div style={{ backgroundColor: "#F7F7F7", minHeight: "100vh" }}>
         {/* Header */}
-        <div style={{ backgroundColor: "#000000", color: "#FFFFFF", padding: "1.25rem 0" }}>
+        <div style={{ backgroundColor: "#000000", color: "#FFFFFF", padding: "1.25rem 0", position: "sticky", top: 0, zIndex: 100 }}>
           <div className="container" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
             <Link href="/admin/cms" style={{ color: "rgba(255,255,255,0.6)", display: "flex", alignItems: "center", gap: "0.375rem", fontSize: "0.75rem" }}>
               <ArrowLeft size={13} strokeWidth={1.5} />

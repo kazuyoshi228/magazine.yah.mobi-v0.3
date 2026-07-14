@@ -115,7 +115,7 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
 
       <div style={{ backgroundColor: "#F7F7F7", minHeight: "100vh" }}>
         {/* Admin header */}
-        <div style={{ backgroundColor: "#000000", color: "#FFFFFF", padding: "1.5rem 0" }}>
+        <div style={{ backgroundColor: "#000000", color: "#FFFFFF", padding: "1.5rem 0", position: "sticky", top: 0, zIndex: 100 }}>
           <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div>
               <p className="label-section" style={{ color: "rgba(255,255,255,0.4)", marginBottom: "0.25rem" }}>yah.magazine</p>
@@ -133,9 +133,6 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
               <Link href="/admin/whitelist" style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "0.375rem" }}>
                 <ShieldCheck size={13} strokeWidth={1.5} />
                 管理者
-              </Link>
-              <Link href="/" style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                サイトを見る →
               </Link>
             </div>
           </div>

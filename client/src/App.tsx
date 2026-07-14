@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Route, Switch, Redirect } from "wouter";
+import { Route, Switch, Redirect, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Header, { type Lang } from "./components/Header";
@@ -22,10 +22,13 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
 function Router({ lang, onLangChange }: { lang: Lang; onLangChange: (l: Lang) => void }) {
+  // 管理画面では公開サイトのメニューバーを出さず、各画面の黒いバーをメニューバーとして使う
+  const [location] = useLocation();
+  const isAdminPage = location.startsWith("/admin");
   return (
     <>
       <ScrollToTop />
-      <Header lang={lang} onLangChange={onLangChange} />
+      {!isAdminPage && <Header lang={lang} onLangChange={onLangChange} />}
       <main style={{ minHeight: "calc(100vh - 56px)" }}>
         <Switch>
           <Route path="/" component={() => <Home lang={lang} />} />
@@ -48,7 +51,7 @@ function Router({ lang, onLangChange }: { lang: Lang; onLangChange: (l: Lang) =>
           <Route component={NotFound} />
         </Switch>
       </main>
-      <Footer lang={lang} />
+      {!isAdminPage && <Footer lang={lang} />}
       <BackToTop />
     </>
   );
