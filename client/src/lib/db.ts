@@ -111,7 +111,6 @@ export async function getArticleBySlug(slug: string, lang: Lang): Promise<Articl
     const snap = await getDoc(doc(articlesCol, slug));
     if (!snap.exists()) return null;
     a = snap.data() as ArticleDoc;
-    if (isHomesOnly(a)) return null; // homes専売はmagazineでは404（canonicalはyah.homes側）
   } catch {
     // 非公開記事への一般アクセスは rules で permission-denied になる
     return null;
@@ -134,6 +133,7 @@ export async function getArticleBySlug(slug: string, lang: Lang): Promise<Articl
         updatedAt: a.updatedAt,
         categorySlug: a.categorySlug,
         author: a.author ?? null,
+        homesOnly: isHomesOnly(a),
       },
       categories: getCategory(a.categorySlug),
       ai_writers: null,

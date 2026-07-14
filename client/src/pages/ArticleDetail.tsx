@@ -6,6 +6,7 @@ import { renderCompareBody, substitutePlaceholders, computePriceMeta } from "@/l
 import SeoHead from "@/components/SeoHead";
 import type { Lang } from "@/components/Header";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { useAuth } from "@/_core/hooks/useAuth";
 
 interface ArticleDetailProps {
   slug: string;
@@ -83,6 +84,8 @@ function buildArticleSchema(article: any, translation: any, lang: string) {
 export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
   const cta = CTA_COPY[lang];
 
+  // homes専売記事は一般公開しない（canonicalはyah.homes）が、管理者にはCMSプレビュー用に表示する
+  const { user } = useAuth();
   const { data, isLoading, error } = useQuery({
     queryKey: ["article", slug, lang],
     queryFn: () => getArticleBySlug(slug, lang),
@@ -100,7 +103,8 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
     );
   }
 
-  if (error || !data) {
+  const homesOnlyBlocked = data?.article.articles.homesOnly && user?.role !== "admin";
+  if (error || !data || homesOnlyBlocked) {
     return (
       <div style={{ backgroundColor: "#F7F7F7", minHeight: "60vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.5rem" }}>
         <p style={{ fontSize: "1.125rem", color: "#555555" }}>記事が見つかりませんでした。</p>
@@ -143,6 +147,12 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
         hreflangLinks={hreflangLinks}
         schemaJson={schemaJson}
       />
+
+      {data.article.articles.homesOnly && (
+        <div style={{ backgroundColor: "#000000", color: "#FFFFFF", textAlign: "center", padding: "0.5rem", fontSize: "0.75rem", letterSpacing: "0.08em" }}>
+          homes専売記事のプレビュー（管理者のみ表示・一般公開面は yah.homes/guides）
+        </div>
+      )}
 
       {/* Article header */}
       <div style={{ backgroundColor: "#FFFFFF", borderBottom: "1px solid #D7D7D7", padding: "2.5rem 0 2rem" }}>

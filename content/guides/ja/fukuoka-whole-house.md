@@ -15,6 +15,9 @@ distribution: [homes]
 canonical: /guides/ja/fukuoka-whole-house
 thumbnailUrl: https://yah.homes/manus-storage/takasago-exterior_d4f7ccff.webp
 market: [JP]
+authorName: Yoshi
+authorTitle: yah.homes Director
+authorPhotoUrl: https://firebasestorage.googleapis.com/v0/b/magazine-yah-mobi.firebasestorage.app/o/authors%2F1783994684582-yaj8ux-director-photo_def5f1a6-480.webp?alt=media&token=7f21ec34-8483-4da3-bb72-f111fa7da220
 title: 福岡の一棟貸しガイド — 仕組み・料金・人数別の選び方をぜんぶ解説
 excerpt: 「一棟貸しって普通の宿と何が違う？」から、福岡での相場・人数別の選び方・チェックインの仕組みまで。2026年7月時点の情報で、初めての一棟貸しでも迷わないよう整理しました。
 metaTitle: 福岡の一棟貸しガイド【2026年7月】仕組み・料金相場・人数別の選び方
