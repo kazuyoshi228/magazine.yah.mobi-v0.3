@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { listAllArticlesAdmin, deleteArticle as deleteArticleDoc, countUniqueVisitors30d } from "@/lib/db";
+import { listAllArticlesAdmin, deleteArticle as deleteArticleDoc } from "@/lib/db";
 import { useAuth } from "@/_core/hooks/useAuth";
 
 import { Plus, Edit2, Trash2, FileText, Eye, ShieldCheck, PenLine, Users, ChevronUp, ChevronDown, Languages, UserRound } from "lucide-react";
@@ -60,15 +60,6 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
   });
   // カテゴリ絞り込み（URL /admin/cms/{category}）。統計カード・一覧の両方に効く
   const articles = category ? allArticles?.filter((a) => a.categorySlug === category) : allArticles;
-  const categorySlugSet = category && articles ? new Set(articles.map((a) => a.slug)) : undefined;
-
-  // ユニークビジター（直近30日・pageviewのdistinct sessionId・クローラー除外）
-  const { data: uniqueVisitors } = useQuery({
-    queryKey: ["cms", "visitors30d", category ?? "all", categorySlugSet?.size ?? -1],
-    queryFn: () => countUniqueVisitors30d(categorySlugSet ? { articleSlugs: categorySlugSet } : undefined),
-    staleTime: 10 * 60_000,
-    enabled: isAdmin && (!category || !!articles),
-  });
 
   const deleteArticle = useMutation({
     mutationFn: (slug: string) => deleteArticleDoc(slug),
@@ -171,7 +162,7 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
                 { icon: <FileText size={14} strokeWidth={1.5} color="#555555" />, label: "記事数", value: articles?.length ?? 0 },
                 { icon: <Eye size={14} strokeWidth={1.5} color="#555555" />, label: "公開中", value: articles?.filter((a) => a.status === "published").length ?? 0 },
                 { icon: <Languages size={14} strokeWidth={1.5} color="#555555" />, label: "全記事数（言語計）", value: articles?.reduce((n, a) => n + a.languages.length, 0) ?? 0 },
-                { icon: <UserRound size={14} strokeWidth={1.5} color="#555555" />, label: category ? "ユニークビジター（30日・このカテゴリの記事）" : "ユニークビジター（30日）", value: uniqueVisitors ?? "—" },
+                { icon: <UserRound size={14} strokeWidth={1.5} color="#555555" />, label: "全公開記事数（言語計）", value: articles?.filter((a) => a.status === "published").reduce((n, a) => n + a.languages.length, 0) ?? 0 },
               ] as { icon: React.ReactNode; label: string; value: React.ReactNode }[]).map((c) => (
                 <div key={c.label} style={{ backgroundColor: "#FFFFFF", border: "1px solid #D7D7D7", borderRadius: "4px", padding: "1.25rem 1.5rem" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
