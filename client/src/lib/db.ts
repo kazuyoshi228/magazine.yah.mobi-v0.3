@@ -309,7 +309,7 @@ export async function deleteAuthor(id: string): Promise<void> {
 
 /** 直近30日のユニークビジター数（pageview の distinct sessionId・admin専用）。
     複合インデックス不要にするため createdAt 範囲のみで引き、type/クローラーはクライアント側で除外。 */
-export async function countUniqueVisitors30d(): Promise<number> {
+export async function countUniqueVisitors30d(opts?: { articleSlugs?: Set<string> }): Promise<number> {
   const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
   const snap = await getDocs(
     query(collection(db, "events"), where("createdAt", ">=", cutoff), qLimit(10000)),
@@ -317,7 +317,10 @@ export async function countUniqueVisitors30d(): Promise<number> {
   const sids = new Set<string>();
   for (const d of snap.docs) {
     const e = d.data() as EventDoc;
-    if (e.type === "pageview" && e.sessionId && !e.crawlerName) sids.add(e.sessionId);
+    if (e.type !== "pageview" || !e.sessionId || e.crawlerName) continue;
+    // カテゴリ絞り込み時は、そのカテゴリの記事slugへのpageviewのみ数える
+    if (opts?.articleSlugs && (!e.articleSlug || !opts.articleSlugs.has(e.articleSlug))) continue;
+    sids.add(e.sessionId);
   }
   return sids.size;
 }

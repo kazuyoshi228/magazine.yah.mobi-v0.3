@@ -32,8 +32,13 @@ function Router({ lang, onLangChange }: { lang: Lang; onLangChange: (l: Lang) =>
           <Route path="/articles" component={() => <ArticleList lang={lang} />} />
           <Route path="/articles/:slug" component={({ params }) => <ArticleDetail slug={params.slug} lang={lang} />} />
           <Route path="/admin"><Redirect to="/admin/cms" /></Route>
-          <Route path="/admin/cms" component={CmsAdmin} />
+          <Route path="/admin/cms" component={() => <CmsAdmin />} />
           <Route path="/admin/cms/new" component={() => <CmsArticleEdit articleId={null} />} />
+          {/* カテゴリ別ビュー（記事slugより先にマッチさせる。esim等はslugとして使用不可） */}
+          <Route path="/admin/cms/esim" component={() => <CmsAdmin category="esim" />} />
+          <Route path="/admin/cms/gadget" component={() => <CmsAdmin category="gadget" />} />
+          <Route path="/admin/cms/gourmet" component={() => <CmsAdmin category="gourmet" />} />
+          <Route path="/admin/cms/travel" component={() => <CmsAdmin category="travel" />} />
           <Route path="/admin/cms/:id" component={({ params }) => <CmsArticleEdit articleId={params.id} />} />
           <Route path="/admin/whitelist" component={AdminWhitelist} />
           <Route path="/admin/writer" component={AdminWriter} />

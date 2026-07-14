@@ -5,7 +5,7 @@ import { listAllArticlesAdmin, deleteArticle as deleteArticleDoc, countUniqueVis
 import { useAuth } from "@/_core/hooks/useAuth";
 
 import { Plus, Edit2, Trash2, FileText, Eye, ShieldCheck, PenLine, Users, ChevronUp, ChevronDown, Languages, UserRound } from "lucide-react";
-import type { ArticleAdminRow } from "@shared/types";
+import { CATEGORIES, type ArticleAdminRow, type CategorySlug } from "@shared/types";
 import { toast } from "sonner";
 import SeoHead from "@/components/SeoHead";
 
@@ -20,7 +20,12 @@ type SortKey = "category" | "status" | "publishedAt";
 // ステータスの表示順（公開中→下書き→アーカイブ）
 const STATUS_ORDER: Record<string, number> = { published: 0, draft: 1, archived: 2 };
 
-export default function CmsAdmin() {
+interface CmsAdminProps {
+  /** カテゴリ絞り込み（/admin/cms/esim 等）。undefined = 全記事 */
+  category?: CategorySlug;
+}
+
+export default function CmsAdmin({ category }: CmsAdminProps) {
   const { user, loading } = useAuth();
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
@@ -48,18 +53,21 @@ export default function CmsAdmin() {
   };
 
   const isAdmin = !!user && user.role === "admin";
-  const { data: articles, refetch: refetchArticles } = useQuery({
+  const { data: allArticles, refetch: refetchArticles } = useQuery({
     queryKey: ["cms", "articles"],
     queryFn: listAllArticlesAdmin,
     enabled: isAdmin,
   });
+  // カテゴリ絞り込み（URL /admin/cms/{category}）。統計カード・一覧の両方に効く
+  const articles = category ? allArticles?.filter((a) => a.categorySlug === category) : allArticles;
+  const categorySlugSet = category && articles ? new Set(articles.map((a) => a.slug)) : undefined;
 
   // ユニークビジター（直近30日・pageviewのdistinct sessionId・クローラー除外）
   const { data: uniqueVisitors } = useQuery({
-    queryKey: ["cms", "visitors30d"],
-    queryFn: countUniqueVisitors30d,
+    queryKey: ["cms", "visitors30d", category ?? "all", categorySlugSet?.size ?? -1],
+    queryFn: () => countUniqueVisitors30d(categorySlugSet ? { articleSlugs: categorySlugSet } : undefined),
     staleTime: 10 * 60_000,
-    enabled: isAdmin,
+    enabled: isAdmin && (!category || !!articles),
   });
 
   const deleteArticle = useMutation({
@@ -133,6 +141,31 @@ export default function CmsAdmin() {
           </div>
         </div>
 
+        {/* カテゴリタブ（URLで切替 = 計測・共有しやすい） */}
+        <div style={{ backgroundColor: "#FFFFFF", borderBottom: "1px solid #D7D7D7" }}>
+          <div className="container" style={{ display: "flex", gap: "0.25rem", overflowX: "auto" }}>
+            {[{ slug: null as CategorySlug | null, label: "すべて" }, ...CATEGORIES.map((c) => ({ slug: c.slug as CategorySlug | null, label: c.nameJa }))].map((t) => {
+              const active = (category ?? null) === t.slug;
+              return (
+                <Link
+                  key={t.label}
+                  href={t.slug ? `/admin/cms/${t.slug}` : "/admin/cms"}
+                  style={{
+                    padding: "0.75rem 1.125rem",
+                    fontSize: "0.8125rem",
+                    fontWeight: active ? 600 : 400,
+                    color: active ? "#000000" : "#999999",
+                    borderBottom: active ? "2px solid #000000" : "2px solid transparent",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {t.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Stats（カード形式） */}
         <div style={{ padding: "1.5rem 0", borderBottom: "1px solid #D7D7D7" }}>
           <div className="container">
@@ -141,7 +174,7 @@ export default function CmsAdmin() {
                 { icon: <FileText size={14} strokeWidth={1.5} color="#555555" />, label: "記事数", value: articles?.length ?? 0 },
                 { icon: <Eye size={14} strokeWidth={1.5} color="#555555" />, label: "公開中", value: articles?.filter((a) => a.status === "published").length ?? 0 },
                 { icon: <Languages size={14} strokeWidth={1.5} color="#555555" />, label: "全記事数（言語計）", value: articles?.reduce((n, a) => n + a.languages.length, 0) ?? 0 },
-                { icon: <UserRound size={14} strokeWidth={1.5} color="#555555" />, label: "ユニークビジター（30日）", value: uniqueVisitors ?? "—" },
+                { icon: <UserRound size={14} strokeWidth={1.5} color="#555555" />, label: category ? "ユニークビジター（30日・このカテゴリの記事）" : "ユニークビジター（30日）", value: uniqueVisitors ?? "—" },
               ] as { icon: React.ReactNode; label: string; value: React.ReactNode }[]).map((c) => (
                 <div key={c.label} style={{ backgroundColor: "#FFFFFF", border: "1px solid #D7D7D7", borderRadius: "4px", padding: "1.25rem 1.5rem" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
