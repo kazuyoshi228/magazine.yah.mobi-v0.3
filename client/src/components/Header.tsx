@@ -82,7 +82,8 @@ export default function Header({ lang, onLangChange }: HeaderProps) {
 
   const navItems = NAV_ITEMS[lang];
   const { user } = useAuth();
-  const isAdmin = user?.role === "admin";
+  // CMS へのリンクは編集者（editor）にも出す（公開権限の有無は CMS 側で分岐）
+  const isAdmin = user?.role === "admin" || user?.role === "editor";
 
   return (
     <header

@@ -1,0 +1,1042 @@
+no,query,category,lifestyle_category,sub_category,phase,intent,type,type_reason,language,is_new,phase_n,cluster
+1,日本旅行 eSIMとポケットWi-Fi どっちがいい,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（どっちがいい）。直接CV可能,ja,N,pre,P2_比較
+2,日本 eSIM おすすめ,通信・eSIM,,existing_master,旅行前,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,pre,P1_おすすめHub
+3,日本 SIMカード どこで買う,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（どこで買う）。直接CV可能,ja,N,pre,C1_購入・価格
+4,成田空港 SIMカード 営業時間,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,pre,P2_比較
+5,羽田空港 ポケットWi-Fi レンタル 予約なし,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,pre,P2_比較
+6,日本 eSIM 対応機種 確認方法,通信・eSIM,,existing_master,旅行前,やり方,A,情報提供クエリ（対応機種）。権威構築・AI引用狙い,ja,N,pre,C2_設定・機種
+7,日本旅行 ネット環境 どうしてる,通信・eSIM,,existing_master,旅行前,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+8,Ubigi eSIM 日本 評判,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（評判）。直接CV可能,ja,N,pre,P2_比較
+9,Airalo eSIM 日本 速度,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（airalo）。直接CV可能,ja,N,pre,P2_比較
+10,日本 フリーWi-Fi 使えるか,通信・eSIM,,existing_master,旅行前,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+11,日本 SIMカード 電話番号付き 必要か,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C4_機能・認証
+12,日本 eSIM 購入 いつ,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,pre,C1_購入・価格
+13,日本 ポケットWi-Fi 複数人,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+14,日本 SIMカード Amazon 事前購入,通信・eSIM,,existing_master,旅行前,やり方,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,pre,C1_購入・価格
+15,日本 eSIM 設定方法 出発前,通信・eSIM,,existing_master,旅行前,やり方,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,pre,C2_設定・機種
+16,日本旅行 SIMカード 容量 どれくらい必要,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C5_容量・プラン
+17,日本 14日間 eSIM おすすめ,通信・eSIM,,existing_master,旅行前,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,pre,P1_おすすめHub
+18,日本 1ヶ月 ポケットWi-Fi 安い,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（安い）。直接CV可能,ja,N,pre,P2_比較
+19,日本 eSIM 無制限 本当か,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（無制限）。直接CV可能,ja,N,pre,C5_容量・プラン
+20,日本 SIMカード Klook 評判,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（評判）。直接CV可能,ja,N,pre,C1_購入・価格
+21,関西国際空港 SIMカード 受け取り,通信・eSIM,,existing_master,旅行前,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,pre,P2_比較
+22,日本 eSIM テザリング できるか,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（テザリング）。直接CV可能,ja,N,pre,C4_機能・認証
+23,日本 ポケットWi-Fi バッテリー 持ち,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+24,日本 SIMカード 音声通話,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C4_機能・認証
+25,日本 eSIM アクティベート タイミング,通信・eSIM,,existing_master,旅行前,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C2_設定・機種
+26,日本旅行 ネット 必須か,通信・eSIM,,existing_master,旅行前,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+27,日本 フリーWi-Fi セキュリティ,通信・eSIM,,existing_master,旅行前,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+28,日本 eSIM 複数国 アジア周遊,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+29,日本 SIMカード 審査 あるか,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+30,日本 ポケットWi-Fi 返却方法,通信・eSIM,,existing_master,旅行前,やり方,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+31,日本 eSIM QRコード 届かない,通信・eSIM,,existing_master,旅行前,トラブル解決,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C2_設定・機種
+32,日本 SIMカード APN設定 難しいか,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,pre,C2_設定・機種
+33,日本 eSIM 物理SIM 併用,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+34,日本 ポケットWi-Fi 紛失 補償,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+35,日本 SIMカード 速度制限,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,pre,C6_回線・実測
+36,日本 eSIM 楽天モバイル ローミング,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+37,日本旅行 韓国 SIMカード 事前購入,通信・eSIM,,existing_master,旅行前,やり方,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,pre,C1_購入・価格
+38,日本旅行 台湾 eSIM おすすめ,通信・eSIM,,existing_master,旅行前,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,pre,P1_おすすめHub
+39,日本旅行 タイ SIM2Fly,通信・eSIM,,existing_master,旅行前,比較,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+40,日本旅行 インドネシア ローミング料金,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（料金）。直接CV可能,ja,N,pre,P2_比較
+41,日本 eSIM 家族でシェア,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C9_ユースケース
+42,日本 ポケットWi-Fi 空港受け取り ホテル受け取り,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,pre,P2_比較
+43,日本 SIMカード プリペイド 種類,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+44,日本 eSIM iPhone15 対応,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（iphone）。直接CV可能,ja,N,pre,C2_設定・機種
+45,日本 SIMカード 延長 できるか,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+46,日本 ポケットWi-Fi 予約 いつまで,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+47,日本 eSIM データ通信のみ LINE 使えるか,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C4_機能・認証
+48,日本 SIMカード クレジットカードなし 購入,通信・eSIM,,existing_master,旅行前,やり方,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,pre,C1_購入・価格
+49,日本 eSIM インストール 失敗,通信・eSIM,,existing_master,旅行前,トラブル解決,B,購入・比較・設定クエリ（インストール）。直接CV可能,ja,N,pre,C2_設定・機種
+50,日本 ポケットWi-Fi 速度 遅いか,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（遅い）。直接CV可能,ja,N,pre,P2_比較
+51,日本 SIMカード 5G 使えるか,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（5g）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+52,日本 eSIM Holafly 評判,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（評判）。直接CV可能,ja,N,pre,P2_比較
+53,日本 SIMカード Sakura Mobile,通信・eSIM,,existing_master,旅行前,比較,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+54,日本 ポケットWi-Fi Ninja WiFi,通信・eSIM,,existing_master,旅行前,比較,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+55,日本 eSIM Nomad 評判,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（評判）。直接CV可能,ja,N,pre,P2_比較
+56,日本 SIMカード Mobal 評判,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（評判）。直接CV可能,ja,N,pre,C1_購入・価格
+57,日本 eSIM B-mobile,通信・eSIM,,existing_master,旅行前,比較,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+58,日本 ポケットWi-Fi Japan Wireless,通信・eSIM,,existing_master,旅行前,比較,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+59,日本 SIMカード IIJmio プリペイド,通信・eSIM,,existing_master,旅行前,比較,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+60,日本 eSIM UQモバイル,通信・eSIM,,existing_master,旅行前,比較,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+61,日本 ポケットWi-Fi 郵便局 受け取り,通信・eSIM,,existing_master,旅行前,やり方,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+62,日本 SIMカード コンビニ 買えるか,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+63,日本 eSIM 乗り継ぎ 空港,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,pre,P2_比較
+64,日本 ポケットWi-Fi 割引 クーポン,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+65,日本 SIMカード パスポート 必要か,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+66,日本 eSIM 削除してしまった,通信・eSIM,,existing_master,旅行前,トラブル解決,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C8_帰国・LC
+67,日本 ポケットWi-Fi 持ち歩き 重いか,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+68,日本 SIMカード データ追加,通信・eSIM,,existing_master,旅行前,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+69,日本 eSIM 複数端末,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+70,日本 ポケットWi-Fi 支払い方法,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+71,日本 SIMカード 深夜便 到着,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（到着）。直接CV可能,ja,N,pre,C1_購入・価格
+72,日本 eSIM 通信キャリア どこがいい,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（どこがいい）。直接CV可能,ja,N,pre,C1_購入・価格
+73,日本 ポケットWi-Fi 地方 つながるか,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+74,日本 SIMカード 北海道 電波,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（電波）。権威構築・AI引用狙い,ja,N,pre,C6_回線・実測
+75,日本 eSIM 富士山 電波,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（電波）。権威構築・AI引用狙い,ja,N,pre,C6_回線・実測
+76,日本 ポケットWi-Fi 新幹線 電波,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（電波）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+77,日本 SIMカード 地下鉄 電波,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（電波）。権威構築・AI引用狙い,ja,N,pre,C6_回線・実測
+78,日本 eSIM 速度 遅い 時間帯,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（遅い）。直接CV可能,ja,N,pre,C3_トラブル
+79,日本 ポケットWi-Fi 制限 超えたら,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+80,日本 SIMカード 有効期限,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C8_帰国・LC
+81,日本 eSIM 日数 計算方法,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+82,日本 ポケットWi-Fi 破損 弁償,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+83,日本 SIMカード 返品 できるか,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+84,日本 eSIM キャンセル,通信・eSIM,,existing_master,旅行前,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+85,日本 ポケットWi-Fi 延長 料金,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（料金）。直接CV可能,ja,N,pre,P2_比較
+86,日本 SIMカード 初期不良,通信・eSIM,,existing_master,旅行前,トラブル解決,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+87,日本 eSIM サポート 英語,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+88,日本 ポケットWi-Fi 同時接続 台数,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+89,日本 SIMカード サイズ ナノSIM,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+90,日本 eSIM プロファイル 削除,通信・eSIM,,existing_master,旅行前,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C2_設定・機種
+91,日本 ポケットWi-Fi 充電器 付属,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+92,日本 SIMカード アクティベーション 失敗,通信・eSIM,,existing_master,旅行前,トラブル解決,B,購入・比較・設定クエリ（アクティベーション）。直接CV可能,ja,N,pre,C2_設定・機種
+93,日本 eSIM 通話アプリ,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+94,日本 ポケットWi-Fi 宅配便 返却,通信・eSIM,,existing_master,旅行前,やり方,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+95,日本 SIMカード 空港 自販機,通信・eSIM,,existing_master,旅行前,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,pre,P2_比較
+96,日本 eSIM 比較 サイト,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（比較）。直接CV可能,ja,N,pre,P2_比較
+97,日本 ポケットWi-Fi レンタル 比較,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（比較）。直接CV可能,ja,N,pre,P2_比較
+98,日本 SIMカード 安い,通信・eSIM,,existing_master,旅行前,比較,B,購入・比較・設定クエリ（安い）。直接CV可能,ja,N,pre,C1_購入・価格
+99,日本 eSIM 割引 コード,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,pre,C10_一般知識
+100,日本 ポケットWi-Fi 当日 レンタル,通信・eSIM,,existing_master,旅行前,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,pre,P2_比較
+101,空港に着いてすぐeSIMを使いたいが、事前に買っておくべきか？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+102,eSIMのデータ通信のみプランの場合、電話番号はどうなる？,通信・eSIM,,existing_master,移動中,知りたい,A,情報提供クエリ（プラン）。権威構築・AI引用狙い,ja,N,transit,C4_機能・認証
+103,日本旅行でeSIMと物理SIM、どちらが良い？,通信・eSIM,,existing_master,移動中,比較,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,transit,C10_一般知識
+104,eSIMのアクティベーションは日本到着前に行うべきか、到着後か？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（アクティベーション）。直接CV可能,ja,N,transit,C2_設定・機種
+105,空港でeSIMの設定がうまくいかない場合、どこで助けを求められる？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+106,eSIMのテザリング（ホットスポット）は空港で設定できるか？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+107,古いスマホでeSIMが使えない場合、空港で物理SIMを買えるか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（使えない）。直接CV可能,ja,N,transit,P2_比較
+108,eSIMのQRコードは空港のフリーWi-Fiを使って読み込めるか？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+109,日本到着時にメインのSIMをオフにしてeSIMをオンにする手順は？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（到着）。直接CV可能,ja,N,transit,C1_購入・価格
+110,eSIMの電波が空港で繋がらない時の対処法は？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（繋がらない）。直接CV可能,ja,N,transit,P2_比較
+111,成田空港で物理SIMカードを予約なしで買える場所はあるか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+112,羽田空港の深夜便で到着した場合、SIMカードは買えるか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+113,空港でSIMカードを買うのと、事前にオンラインで買うのはどちらが安い？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（安い）。直接CV可能,ja,N,transit,P2_比較
+114,空港のSIMカード販売カウンターで設定まで手伝ってもらえるか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+115,ビックカメラなどの空港店舗でSIMカードを受け取る方法は？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+116,空港で買ったSIMカードが認識しない場合、返品や交換はできるか？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+117,短期滞在（10日間）の場合、空港で買えるおすすめのSIMカードは？,通信・eSIM,,existing_master,移動中,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,transit,P2_比較
+118,空港でSIMカードを買う際、パスポートの提示は必要か？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+119,データ通信専用SIMと音声通話付きSIM、空港でどちらを買うべきか？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+120,空港でSIMカードの入れ替えをする際、SIMピンは貸してもらえるか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+121,ポケットWi-Fiは空港で当日レンタルできるか、事前予約が必要か？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+122,成田空港でのポケットWi-Fiの受け取り・返却が簡単な業者は？,通信・eSIM,,existing_master,移動中,おすすめ,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+123,グループ旅行の場合、eSIMとポケットWi-Fiどちらがコスパが良いか？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（コスパ）。直接CV可能,ja,N,transit,P2_比較
+124,空港でポケットWi-Fiを受け取った後、すぐに接続設定できるか？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+125,ポケットWi-Fiのバッテリーは空港からホテルまでの移動中持つか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+126,空港の郵便ポストでポケットWi-Fiを返却する方法は？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+127,ポケットWi-Fiの受け取りカウンターが混雑している時の待ち時間は？,通信・eSIM,,existing_master,移動中,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,transit,P2_比較
+128,空港で受け取ったポケットWi-Fiが繋がらない場合の連絡先は？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（繋がらない）。直接CV可能,ja,N,transit,P2_比較
+129,深夜便で到着した場合、ポケットWi-Fiの受け取りはどうすればいい？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（到着）。直接CV可能,ja,N,transit,P2_比較
+130,ポケットWi-FiとeSIM、空港から新幹線での移動中に電波が安定しているのは？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+131,成田空港のフリーWi-Fiは到着ロビーですぐに繋がるか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+132,羽田空港のフリーWi-Fiを使ってeSIMの設定やLINEの連絡はできるか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+133,空港のフリーWi-Fiは安全か？VPNは必要か？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P3_JPIP差別化
+134,入国審査の列に並んでいる間、空港のフリーWi-Fiは使えるか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+135,空港のフリーWi-Fiに繋がらない・認証画面が出ない時の対処法は？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（繋がらない）。直接CV可能,ja,N,transit,P2_比較
+136,関西国際空港のフリーWi-Fiの速度は動画を見れるくらい速いか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+137,空港から市内への電車（成田エクスプレスやスカイライナー）内でフリーWi-Fiは使えるか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+138,空港のフリーWi-Fiを利用するための事前登録やアプリのダウンロードは必要か？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+139,空港のフリーWi-FiとポケットWi-Fi、セキュリティ面での違いは？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+140,空港のフリーWi-Fiが途切れた場合、eSIMのダウンロードは最初からやり直しになるか？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+141,空港到着後、家族と連絡を取るための最速のインターネット接続方法は？,通信・eSIM,,existing_master,移動中,おすすめ,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,C9_ユースケース
+142,入国手続き（Visit Japan Web）のQRコードを表示するために、空港でネットに繋ぐ最適な方法は？,通信・eSIM,,existing_master,移動中,おすすめ,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,C2_設定・機種
+143,空港でネット環境を整えるのにかかる平均的な時間は？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,C1_購入・価格
+144,英語が通じない場合、空港の通信カウンターでスムーズに手続きする方法は？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,C1_購入・価格
+145,空港の通信カウンターの支払い方法はクレジットカードのみか、現金も使えるか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,C1_購入・価格
+146,日本の空港で買える通信プランは、韓国や台湾の空港と比べて高いか？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,C1_購入・価格
+147,空港からホテルまでのナビゲーションに最低限必要なデータ容量は？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,C5_容量・プラン
+148,空港で通信手段を確保し忘れた場合、市内でどうやってネットに繋ぐか？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,C1_購入・価格
+149,空港のコンビニでプリペイドSIMやWi-Fiのレンタルはできるか？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+150,到着直後の空港で、LINEやWhatsAppを使うための設定手順は？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,C2_設定・機種
+151,eSIMのQRコードを印刷し忘れた場合、空港でどうやって設定すればいい？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+152,羽田空港第3ターミナルで一番おすすめのSIMカード自販機はどこ？,通信・eSIM,,existing_master,移動中,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,transit,P2_比較
+153,成田空港の到着ロビーにあるポケットWi-Fiレンタルカウンターの営業時間は？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+154,関空で深夜に到着した際、eSIMのアクティベーションサポートは受けられる？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（アクティベーション）。直接CV可能,ja,N,transit,C2_設定・機種
+155,Visit Japan Webの画面を出すために、機内モード解除後すぐに空港Wi-Fiに繋ぐ方法は？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+156,空港でSIMカードを買うのと、韓国の空港で事前に買っておくのはどちらがお得？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+157,台湾で買ったローミングSIMと日本の空港で買うSIM、通信速度の違いは？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+158,タイのAIS SIM2Flyと日本の空港で買うeSIM、どちらが設定が簡単？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+159,インドネシアのスマホ（SIMロックあり）で、日本の空港のポケットWi-Fiは使える？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+160,空港のSIM自販機でクレジットカードが弾かれた時の対処法は？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+161,eSIMの設定プロファイルを日本到着前にインストールしても問題ない？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,C2_設定・機種
+162,空港から東京駅までのバス移動中、ポケットWi-Fiの電波は途切れない？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+163,成田空港で受け取れる無制限データプランのSIMカードのおすすめは？,通信・eSIM,,existing_master,移動中,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,transit,P2_比較
+164,羽田空港でポケットWi-Fiを借りる際、デポジット（保証金）は必要？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+165,空港のフリーWi-Fiを使ってUberやタクシーアプリを呼ぶことはできる？,通信・eSIM,,existing_master,移動中,知りたい,C,一般知識クエリ（とは）。AI完全代替可能,ja,N,transit,P2_比較
+166,eSIMのアクティベーションに空港のフリーWi-Fiは必須？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（アクティベーション）。直接CV可能,ja,N,transit,P2_比較
+167,空港で買ったSIMカードのAPN設定が分からない場合、誰に聞けばいい？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+168,ポケットWi-Fiのルーターが空港で受け取った時点で充電されていないことはある？,通信・eSIM,,existing_master,移動中,トラブル解決,C,一般知識クエリ（とは）。AI完全代替可能,ja,N,transit,P2_比較
+169,空港のSIMカウンターは日本語が話せなくても英語で対応してもらえる？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+170,到着後すぐにインスタグラムに動画をアップしたいが、空港Wi-Fiの速度で足りる？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P3_JPIP差別化
+171,eSIMと物理SIM、空港での入国審査待ちの間に設定しやすいのはどちら？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+172,成田空港第1ターミナルと第2ターミナルで、Wi-Fiレンタルの受け取りやすさに違いはある？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+173,空港でSIMカードを購入する際、アクティベーション完了までどのくらい時間がかかる？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（アクティベーション）。直接CV可能,ja,N,transit,P2_比較
+174,ポケットWi-Fiの受け取り場所が空港内で見つからない場合、どうやって探す？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+175,空港のフリーWi-Fiは1回の接続で何時間使える？再接続は可能？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+176,eSIMのデータ容量が空港からホテルへの移動中になくなってしまったらどうする？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+177,羽田空港で深夜にSIMカードを受け取れるロッカー受け取りサービスの使い方,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（使い方）。直接CV可能,ja,N,transit,P2_比較
+178,空港でレンタルしたポケットWi-Fiのパスワードが間違っていると表示される時の対処法,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+179,家族4人で別々に行動する可能性がある場合、空港でポケットWi-Fi1台かeSIM4つかどちらが良い？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+180,空港のSIM自販機で買えるSIMカードの有効期限はいつからカウントされる？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+181,入国審査前に空港のフリーWi-Fiに繋いで家族に無事到着したと連絡できる？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+182,eSIMの対応機種かどうかを空港に到着してから確認する方法はある？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+183,空港でSIMカードを買う際、現金（日本円）しか使えないカウンターはある？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（使えない）。直接CV可能,ja,N,transit,P2_比較
+184,ポケットWi-Fiのポーチに入っている充電器は日本のコンセント用？変換プラグは必要？,通信・eSIM,,existing_master,移動中,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,transit,P2_比較
+185,空港のフリーWi-Fiを使ってeSIMを購入・ダウンロードすることは可能？,通信・eSIM,,existing_master,移動中,やり方,C,一般知識クエリ（とは）。AI完全代替可能,ja,N,transit,P2_比較
+186,成田空港からスカイライナーに乗る際、駅のホームでも空港Wi-Fiは繋がる？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+187,空港で買ったSIMカードが自分のスマホの周波数帯（バンド）に合わない場合の返金対応は？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+188,羽田空港の到着ロビーで一番空いているSIMカード販売店はどこ？,通信・eSIM,,existing_master,移動中,おすすめ,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+189,ポケットWi-Fiを空港で借りる際、保険（安心補償）には加入するべき？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+190,空港到着後、eSIMの電波が3Gのまま4G/5Gにならない時の解決方法は？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（解決）。直接CV可能,ja,N,transit,P2_比較
+191,韓国のNaverブログでよくおすすめされている日本の空港受け取りWi-Fi業者はどこ？,通信・eSIM,,existing_master,移動中,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,transit,P2_比較
+192,台湾のPTTで話題になっている、日本の空港で買える格安SIMカードは？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（格安）。直接CV可能,ja,N,transit,P2_比較
+193,タイのPantipで推奨されている、日本到着時のeSIM設定のコツは？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,C2_設定・機種
+194,空港のフリーWi-Fiを使ってGoogleマップでホテルまでの行き方を調べる手順,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+195,空港でSIMカードを買うのと、自国の通信会社の国際ローミングを使うのはどちらが安い？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（安い）。直接CV可能,ja,N,transit,P2_比較
+196,ポケットWi-Fiの受け取り時にパスポート以外の身分証明書は必要？,通信・eSIM,,existing_master,移動中,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,transit,P2_比較
+197,空港のSIMカウンターが長蛇の列だった場合、諦めて市内で買うべき？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+198,eSIMの設定で「モバイル通信プランを追加できません」と出た時の空港での対処法,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+199,成田空港の第3ターミナル（LCC）にSIMカード売り場やWi-Fi受け取りカウンターはある？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+200,空港でレンタルしたポケットWi-Fiを紛失した場合のペナルティと対処法は？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+201,空港のWi-Fiに繋ぐとセキュリティ警告が出るが、そのまま使って大丈夫？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+202,eSIMのQRコードが読み込めない場合、手動で設定する情報を空港でどうやって調べる？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+203,羽田空港でSIMカードを買う場合、設定までやってくれる店舗はどこ？,通信・eSIM,,existing_master,移動中,おすすめ,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+204,ポケットWi-Fiの受け取りカウンターは深夜何時まで開いている？,通信・eSIM,,existing_master,移動中,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,transit,P2_比較
+205,空港で買ったSIMカードのデータ残量を確認する方法は？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+206,eSIMとポケットWi-Fi、空港からレンタカーで移動する場合どちらが便利？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+207,成田空港のフリーWi-FiはVPNを使わないとLINEが使えないって本当？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（使えない）。直接CV可能,ja,N,transit,P3_JPIP差別化
+208,空港のSIM自販機で買ったSIMカードが初期不良だった場合、どこに連絡すればいい？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+209,関空の到着ロビーで一番安いSIMカードはどこで買える？,通信・eSIM,,existing_master,移動中,おすすめ,B,購入・比較・設定クエリ（安い）。直接CV可能,ja,N,transit,C1_購入・価格
+210,ポケットWi-Fiを空港で受け取る際、予約番号のメールが見つからない時の対処法,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+211,eSIMのプロファイルを削除してしまった場合、空港のWi-Fiで再ダウンロードできる？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+212,空港でSIMカードを買う際、英語のパッケージはある？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+213,羽田空港から都内へのモノレール内でポケットWi-Fiの電波は入る？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+214,空港のフリーWi-Fiを使ってNetflixの動画をダウンロードするのにかかる時間は？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+215,eSIMのアクティベーションに失敗した場合、空港の通信カウンターで助けてもらえる？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（アクティベーション）。直接CV可能,ja,N,transit,P2_比較
+216,成田空港で受け取れるポケットWi-Fiの中で、一番バッテリー持ちが良い機種は？,通信・eSIM,,existing_master,移動中,おすすめ,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+217,空港でSIMカードを買うのと、eSIMを事前に買うのはどちらが設定が簡単？,通信・eSIM,,existing_master,移動中,比較,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,transit,P2_比較
+218,ポケットWi-Fiのルーターが空港で受け取った時点で壊れていた場合の交換方法は？,通信・eSIM,,existing_master,移動中,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+219,空港のフリーWi-Fiに繋ぐ際、メールアドレスの登録は必須？,通信・eSIM,,existing_master,移動中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+220,eSIMの電波が空港で圏外になる場合、機内モードのオンオフで直る？,通信・eSIM,,existing_master,移動中,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,transit,P2_比較
+221,eSIMのデータ残量を確認する方法は？,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+222,ポケットWi-Fiのデータ残量が減らない場合の対処法は？,通信・eSIM,,existing_master,滞在中,トラブル解決,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,during,P2_比較
+223,日本で使っているSIMカードの追加チャージ方法は？,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+224,データ残量が足りなくなった時の緊急チャージ方法を教えてほしい,通信・eSIM,,existing_master,滞在中,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+225,日本滞在中にeSIMのデータ追加購入はどこでできる？,通信・eSIM,,existing_master,滞在中,知りたい,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,during,C5_容量・プラン
+226,ポケットWi-Fiの通信速度が遅い時のデータ追加チャージが効果ある？,通信・eSIM,,existing_master,滞在中,比較,B,購入・比較・設定クエリ（遅い）。直接CV可能,ja,N,during,P2_比較
+227,eSIMのデータ残量をアプリで簡単に確認できるおすすめアプリは？,通信・eSIM,,existing_master,滞在中,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,during,P1_おすすめHub
+228,データ残量が少ない時に利用できる無料Wi-Fiスポットはある？,通信・eSIM,,existing_master,滞在中,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+229,日本のポケットWi-Fiでデータ追加チャージすると料金はいくら？,通信・eSIM,,existing_master,滞在中,知りたい,B,購入・比較・設定クエリ（料金）。直接CV可能,ja,N,during,P2_比較
+230,eSIMのデータ残量確認ができないトラブルの原因は？,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（トラブル）。直接CV可能,ja,N,during,C3_トラブル
+231,海外から持ち込んだSIMで日本の通信量を追加チャージする方法は？,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+232,ポケットWi-Fiの契約後にデータ残量を確認する簡単な方法は？,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,during,P2_比較
+233,日本のSIMカードでデータ追加チャージができない時の対処方法は？,通信・eSIM,,existing_master,滞在中,トラブル解決,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+234,滞在中にeSIMのデータ容量不足になった時の最速追加チャージ方法,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+235,日本のポケットWi-Fiでデータ残量が表示されない場合の確認方法は？,通信・eSIM,,existing_master,滞在中,トラブル解決,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,during,P2_比較
+236,追加チャージが安いおすすめの日本のeSIMサービスは？,通信・eSIM,,existing_master,滞在中,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,during,P1_おすすめHub
+237,データ残量を節約するための日本のSIM利用テクニックは？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+238,日本のポケットWi-Fiでデータ追加チャージの支払い方法は何がある？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,during,P2_比較
+239,eSIMのデータ追加購入ができる主要な日本のキャリアはどこ？,通信・eSIM,,existing_master,滞在中,知りたい,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,during,C5_容量・プラン
+240,日本滞在中に急にデータ残量がゼロになった場合の対処法は？,通信・eSIM,,existing_master,滞在中,トラブル解決,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+241,ポケットWi-Fiのデータ残量不足を知らせる通知設定はある？,通信・eSIM,,existing_master,滞在中,知りたい,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,during,P2_比較
+242,eSIMのデータ残量確認を自動でできる方法はありますか？,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+243,日本のSIMカードでデータ残量を家族間で共有できる？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+244,追加チャージ用のコードはどこで入手・利用できる？,通信・eSIM,,existing_master,滞在中,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+245,ポケットWi-Fiのデータ残量と通信速度は関係ある？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,P2_比較
+246,日本でeSIMのデータ残量を確認する方法,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+247,ポケットWi-Fiが遅い時の速度改善方法,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（遅い）。直接CV可能,ja,N,during,P2_比較
+248,日本国内で速度制限がかかる条件は？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,C6_回線・実測
+249,フリーWi-Fiの通信速度はどのくらい出る？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,C6_回線・実測
+250,日本の田舎で使えるeSIM回線の通信エリア,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（エリア）。権威構築・AI引用狙い,ja,N,during,C6_回線・実測
+251,ポケットWi-Fiのレンタル延長方法,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,during,P2_比較
+252,滞在中にeSIMのプラン変更は可能か？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（プラン）。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+253,日本でポケットWi-Fiの速度制限後の速度はどれくらい？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,P2_比較
+254,ポケットWi-Fiが繋がらない時の対処法,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（繋がらない）。直接CV可能,ja,N,during,P2_比較
+255,eSIMの通信速度を速くする方法はある？,通信・eSIM,,existing_master,滞在中,トラブル解決,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,C6_回線・実測
+256,日本の空港で無料Wi-Fiの速度制限はある？,通信・eSIM,,existing_master,滞在中,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,during,P2_比較
+257,滞在中のeSIMデータ残量不足時の対処法,通信・eSIM,,existing_master,滞在中,トラブル解決,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+258,日本の主要都市でのポケットWi-Fi速度比較,通信・eSIM,,existing_master,滞在中,比較,B,購入・比較・設定クエリ（比較）。直接CV可能,ja,N,during,P2_比較
+259,ポケットWi-Fiの速度が遅くなった原因は？,通信・eSIM,,existing_master,滞在中,トラブル解決,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,P2_比較
+260,フリーWi-Fiの安全性や通信速度はどう？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,C6_回線・実測
+261,日本の地下鉄や新幹線の通信速度は？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,C6_回線・実測
+262,日本で使えるおすすめの高速eSIMプランは？,通信・eSIM,,existing_master,滞在中,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,during,P1_おすすめHub
+263,ポケットWi-Fiのデータ容量を追加購入する方法,通信・eSIM,,existing_master,滞在中,やり方,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,during,P2_比較
+264,滞在中にポケットWi-Fiのエリア外になった場合の対策,通信・eSIM,,existing_master,滞在中,トラブル解決,A,情報提供クエリ（エリア）。権威構築・AI引用狙い,ja,N,during,P2_比較
+265,eSIMの通信エリアが広い日本のキャリアはどこ？,通信・eSIM,,existing_master,滞在中,比較,A,情報提供クエリ（エリア）。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+266,日本の地方でのフリーWi-Fiの通信速度事情,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,C6_回線・実測
+267,eSIMの残量通知が来ない時の確認方法,通信・eSIM,,existing_master,滞在中,トラブル解決,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+268,ポケットWi-Fiの電波が弱い場所の見分け方,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（電波）。権威構築・AI引用狙い,ja,N,during,P2_比較
+269,滞在中にeSIMの通信速度が急に遅くなる原因は？,通信・eSIM,,existing_master,滞在中,トラブル解決,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,C6_回線・実測
+270,日本国内の通信速度が速いおすすめポケットWi-Fi会社,通信・eSIM,,existing_master,滞在中,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,during,P2_比較
+271,日本でeSIMのデータ残量を確認する方法は？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+272,ポケットWi-Fiが繋がらない原因と対処法は？,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（繋がらない）。直接CV可能,ja,N,during,P2_比較
+273,eSIM接続が途中で切れる問題の解決策は？,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（問題）。直接CV可能,ja,N,during,C3_トラブル
+274,フリーWi-Fiに接続できないときの設定チェックポイントは？,通信・eSIM,,existing_master,滞在中,やり方,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,during,C2_設定・機種
+275,日本滞在中にeSIMの通信速度が遅い場合の対処法は？,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（遅い）。直接CV可能,ja,N,during,C3_トラブル
+276,ポケットWi-Fiのデータ残量をアプリで確認する方法は？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,during,P2_比較
+277,フリーWi-Fiで安全にネット接続する設定方法は？,通信・eSIM,,existing_master,滞在中,やり方,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,during,C2_設定・機種
+278,eSIMの設定エラーがでたときの初期化や再設定の手順は？,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,during,C2_設定・機種
+279,旅行中にeSIMを再度チャージ・延長する方法は？,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+280,スマホのAPN設定がうまくいかずインターネットに繋がらない時の確認ポイント,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,during,C2_設定・機種
+281,ポケットWi-Fiの電波が弱い場所での改善方法は？,通信・eSIM,,existing_master,滞在中,トラブル解決,A,情報提供クエリ（電波）。権威構築・AI引用狙い,ja,N,during,P2_比較
+282,eSIMの通信障害情報を確認できる公式サイトはある？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+283,日本のフリーWi-Fi接続時に必要な登録や認証手順は？,通信・eSIM,,existing_master,滞在中,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C4_機能・認証
+284,eSIMが圏外になるエリアとその回避策を知りたい,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（エリア）。権威構築・AI引用狙い,ja,N,during,C3_トラブル
+285,ポケットWi-Fiのバッテリー残量が急に減る原因と対処法は？,通信・eSIM,,existing_master,滞在中,トラブル解決,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,during,P2_比較
+286,設定エラーでeSIMが有効化できない場合の確認すべき設定項目は？,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,during,C2_設定・機種
+287,ポケットWi-Fiの接続数制限に達した時の対処法はある？,通信・eSIM,,existing_master,滞在中,トラブル解決,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,during,P2_比較
+288,スマホのネットワーク設定をリセットしても繋がらない場合の対策,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,during,C2_設定・機種
+289,日本の電車内でポケットWi-Fiの電波が途切れる理由と対応策,通信・eSIM,,existing_master,滞在中,知りたい,C,一般知識クエリ（理由）。AI完全代替可能,ja,N,during,P2_比較
+290,eSIMの残量があるのにインターネットに繋がらないときの確認手順は？,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（繋がらない）。直接CV可能,ja,N,during,C3_トラブル
+291,フリーWi-Fi接続後にインターネットに繋がらない時の対処法は？,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（繋がらない）。直接CV可能,ja,N,during,C3_トラブル
+292,eSIMの通信速度制限を解除する方法はある？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,C6_回線・実測
+293,日本滞在中にeSIMやポケットWi-Fiのプランを変更・延長する方法,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（プラン）。権威構築・AI引用狙い,ja,N,during,P2_比較
+294,ポケットWi-Fiの初期設定時に起こりやすいトラブルとその解決法,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,during,P2_比較
+295,eSIM利用時に発生する接続エラーの種類と対処法まとめ,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（エラー）。直接CV可能,ja,N,during,C3_トラブル
+296,日本で使っているeSIMのデータ残量を確認する方法,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+297,滞在中のeSIMプランを期間延長するにはどうすればいい？,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（プラン）。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+298,ポケットWi-Fiの追加データ購入の手順について,通信・eSIM,,existing_master,滞在中,やり方,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,during,P2_比較
+299,日本滞在中にeSIMのプランを変更できるか？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（プラン）。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+300,フリーWi-Fiの回線速度が遅い時の対処法,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（遅い）。直接CV可能,ja,N,during,C3_トラブル
+301,滞在中のeSIMデータ残量がすぐなくなる原因は？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,during,C5_容量・プラン
+302,ポケットWi-Fiの契約期間を延長する方法は？,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,during,P2_比較
+303,滞在中にポケットWi-Fiの追加データをすぐに購入できる？,通信・eSIM,,existing_master,滞在中,知りたい,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,during,P2_比較
+304,eSIMのプラン変更でおすすめのデータ容量は？,通信・eSIM,,existing_master,滞在中,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,during,P1_おすすめHub
+305,フリーWi-Fiで通信が途切れたときの対処法,通信・eSIM,,existing_master,滞在中,トラブル解決,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+306,日本滞在中にeSIMプランの延長料金はいくら？,通信・eSIM,,existing_master,滞在中,知りたい,B,購入・比較・設定クエリ（料金）。直接CV可能,ja,N,during,C1_購入・価格
+307,ポケットWi-Fiの速度が遅くなった場合のプラン変更方法,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,P2_比較
+308,eSIMの追加購入は現地で簡単にできる？,通信・eSIM,,existing_master,滞在中,知りたい,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,during,C5_容量・プラン
+309,滞在中にeSIMのプランをオンラインで変更する方法,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（プラン）。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+310,日本のポケットWi-Fiでデータ追加購入ができるサービス比較,通信・eSIM,,existing_master,滞在中,比較,B,購入・比較・設定クエリ（比較）。直接CV可能,ja,N,during,P2_比較
+311,ポケットWi-Fiのレンタル期間を滞在中に延長できるか？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,during,P2_比較
+312,eSIM残量不足時の緊急データ追加購入方法,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,during,C5_容量・プラン
+313,滞在中のフリーWi-Fiで通信速度が遅い原因は？,通信・eSIM,,existing_master,滞在中,知りたい,B,購入・比較・設定クエリ（遅い）。直接CV可能,ja,N,during,C3_トラブル
+314,滞在期間延長に伴うeSIMプラン変更の注意点,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（注意点）。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+315,ポケットWi-Fiのプラン変更で料金はどのくらい変わる？,通信・eSIM,,existing_master,滞在中,知りたい,B,購入・比較・設定クエリ（料金）。直接CV可能,ja,N,during,P2_比較
+316,日本で使うeSIMのプラン延長はアプリでできる？,通信・eSIM,,existing_master,滞在中,やり方,A,情報提供クエリ（プラン）。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+317,滞在中にポケットWi-Fiのデータ容量を追加購入する方法,通信・eSIM,,existing_master,滞在中,やり方,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,during,P2_比較
+318,eSIMのプラン変更後に速度制限がかかることはある？,通信・eSIM,,existing_master,滞在中,知りたい,C,一般知識クエリ（とは）。AI完全代替可能,ja,N,during,C6_回線・実測
+319,日本でフリーWi-Fiのサービス利用時の注意点は？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（注意点）。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+320,滞在中にデータ容量を増やすならeSIMとポケットWi-Fiどっちがおすすめ？,通信・eSIM,,existing_master,滞在中,比較,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,during,P2_比較
+321,日本のフリーWi-Fiの安全性は？,通信・eSIM,,existing_master,滞在中,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+322,カフェで無料Wi-Fiを使うときの注意点は？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（注意点）。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+323,日本のフリーWi-Fi接続方法は？,通信・eSIM,,existing_master,滞在中,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+324,フリーWi-Fi利用中に速度が遅い場合の対処法は？,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（遅い）。直接CV可能,ja,N,during,C3_トラブル
+325,日本のフリーWi-Fiスポットはどこに多い？,通信・eSIM,,existing_master,滞在中,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+326,ポケットWi-FiとフリーWi-Fiどちらが便利？,通信・eSIM,,existing_master,滞在中,比較,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,during,P2_比較
+327,日本のカフェで安全にネット接続する方法は？,通信・eSIM,,existing_master,滞在中,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+328,滞在中フリーWi-Fiの接続が切れた時の対処法は？,通信・eSIM,,existing_master,滞在中,トラブル解決,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+329,フリーWi-Fi利用時にVPNは必要ですか？,通信・eSIM,,existing_master,滞在中,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,P3_JPIP差別化
+330,日本のフリーWi-Fiはどの程度速度が速い？,通信・eSIM,,existing_master,滞在中,知りたい,A,情報提供クエリ（速度）。権威構築・AI引用狙い,ja,N,during,C6_回線・実測
+331,カフェの無料Wi-Fiで個人情報は守られる？,通信・eSIM,,existing_master,滞在中,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+332,フリーWi-Fi利用時にウイルス感染リスクはある？,通信・eSIM,,existing_master,滞在中,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+333,日本のカフェで使える無料Wi-Fi一覧は？,通信・eSIM,,existing_master,滞在中,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+334,フリーWi-Fiの利用でおすすめのセキュリティ対策は？,通信・eSIM,,existing_master,滞在中,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,during,P1_おすすめHub
+335,カフェでWi-Fi接続が不安定な時の対処法は？,通信・eSIM,,existing_master,滞在中,トラブル解決,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+336,日本のフリーWi-Fiに接続する際のパスワード入力方法は？,通信・eSIM,,existing_master,滞在中,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+337,カフェのWi-Fiで動画をストリーミングできる？,通信・eSIM,,existing_master,滞在中,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+338,フリーWi-Fiの利用時間制限はある？,通信・eSIM,,existing_master,滞在中,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+339,フリーWi-Fiのスピードテスト方法は？,通信・eSIM,,existing_master,滞在中,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+340,日本旅行中フリーWi-Fiが繋がらない時どうする？,通信・eSIM,,existing_master,滞在中,トラブル解決,B,購入・比較・設定クエリ（繋がらない）。直接CV可能,ja,N,during,C3_トラブル
+341,カフェの無料Wi-Fi利用後にすべきことは？,通信・eSIM,,existing_master,滞在中,おすすめ,C,一般知識クエリ（とは）。AI完全代替可能,ja,N,during,C10_一般知識
+342,日本の観光地でおすすめの無料Wi-Fiスポットは？,通信・eSIM,,existing_master,滞在中,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,during,P1_おすすめHub
+343,フリーWi-Fiで個人情報を盗まれないためには？,通信・eSIM,,existing_master,滞在中,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+344,カフェでのフリーWi-Fi利用に料金はかかる？,通信・eSIM,,existing_master,滞在中,知りたい,B,購入・比較・設定クエリ（料金）。直接CV可能,ja,N,during,C1_購入・価格
+345,日本のフリーWi-Fiの利用登録方法は？,通信・eSIM,,existing_master,滞在中,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,during,C10_一般知識
+346,ポケットWi-Fiの返却を忘れて出国審査を通過してしまったがどうすればいいか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+347,ポケットWi-Fiを日本で返し忘れて帰国してしまったが郵送で返却できるか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+348,帰国後にポケットWi-Fiを返却する場合の国際郵便の宛先や手順は,通信・eSIM,,existing_master,帰国後・出国時,やり方,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+349,ポケットWi-Fiの返却期限を過ぎてしまった場合の延滞料金はどうなるか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,B,購入・比較・設定クエリ（料金）。直接CV可能,ja,N,post,P2_比較
+350,成田空港でポケットWi-Fiを返却できる場所やポストはどこにあるか,通信・eSIM,,existing_master,帰国後・出国時,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,P2_比較
+351,羽田空港の出発ロビーにポケットWi-Fiの返却ポストはあるか,通信・eSIM,,existing_master,帰国後・出国時,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,P2_比較
+352,関西国際空港で早朝・深夜便の時にポケットWi-Fiを返却する方法は,通信・eSIM,,existing_master,帰国後・出国時,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,P2_比較
+353,福岡空港で借りたポケットWi-Fiを東京（成田・羽田）で返却できるか,通信・eSIM,,existing_master,帰国後・出国時,比較,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,P2_比較
+354,借りた空港と違う空港でポケットWi-Fiを返却することは可能か,通信・eSIM,,existing_master,帰国後・出国時,比較,C,一般知識クエリ（とは）。AI完全代替可能,ja,N,post,P2_比較
+355,ポケットWi-Fiの返却用封筒を紛失してしまったがどうやって返せばいいか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+356,ホテルのフロントにポケットWi-Fiの返却（郵送）を頼むことはできるか,通信・eSIM,,existing_master,帰国後・出国時,やり方,C,一般知識クエリ（とは）。AI完全代替可能,ja,N,post,P2_比較
+357,郵便局からポケットWi-Fiを返却する場合、どこの郵便局でも受け付けてもらえるか,通信・eSIM,,existing_master,帰国後・出国時,やり方,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+358,空港の郵便ポストは保安検査場の前と後のどちらにあるか,通信・eSIM,,existing_master,帰国後・出国時,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,C1_購入・価格
+359,ポケットWi-Fiの返却ポストに入れた後、返却完了の連絡はいつ来るか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+360,帰国後、日本で使っていたeSIMは削除（Delete）するべきか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+361,日本旅行が終わった後、eSIMをオフにするだけでいいのか、完全に削除すべきか,通信・eSIM,,existing_master,帰国後・出国時,比較,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+362,iPhoneで使い終わったeSIMを削除する具体的な手順は,通信・eSIM,,existing_master,帰国後・出国時,やり方,B,購入・比較・設定クエリ（iphone）。直接CV可能,ja,N,post,C2_設定・機種
+363,Android（Galaxy等）で日本のeSIMを削除する方法は,通信・eSIM,,existing_master,帰国後・出国時,やり方,B,購入・比較・設定クエリ（android）。直接CV可能,ja,N,post,C2_設定・機種
+364,帰国後にeSIMを削除したら、日本の電話番号やデータは完全に消えるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C4_機能・認証
+365,次回の日本旅行のために、期限切れのeSIMを残しておく意味はあるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+366,誤って旅行中にeSIMを削除してしまったが復元できるか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+367,帰国後、元の自国のSIM（主回線）をオンにしてデータ通信を再開する方法は,通信・eSIM,,existing_master,帰国後・出国時,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C6_回線・実測
+368,eSIMを削除する前にやっておくべき設定や確認事項はあるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,post,C2_設定・機種
+369,複数のeSIMがスマホに溜まっているが、どれが日本のものか見分ける方法は,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C10_一般知識
+370,eSIMを削除しようとしたらエラーが出て消せない場合の対処法は,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,B,購入・比較・設定クエリ（エラー）。直接CV可能,ja,N,post,C3_トラブル
+371,帰国後にeSIMを削除しないと追加料金やローミング料金が発生するか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（料金）。直接CV可能,ja,N,post,P2_比較
+372,日本で買った物理SIMカードは帰国時に空港で返却する必要があるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,P2_比較
+373,使い終わった物理SIMカードは日本で捨てて帰っても問題ないか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（問題）。直接CV可能,ja,N,post,C1_購入・価格
+374,物理SIMカードを捨てる際、個人情報が漏れる心配はないか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C10_一般知識
+375,帰国時の機内で日本のSIMから自国のSIMに入れ替えても大丈夫か,通信・eSIM,,existing_master,帰国後・出国時,やり方,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+376,自国のSIMカードを日本滞在中に紛失してしまい帰国後スマホが使えない,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,B,購入・比較・設定クエリ（使えない）。直接CV可能,ja,N,post,C3_トラブル
+377,SIMピンを忘れて帰国時にSIMカードを入れ替えられないがどうすればいいか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+378,帰国後、自国のSIMを入れたのに圏外になって通信できない,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C3_トラブル
+379,日本のSIMのAPNプロファイルが残っていて自国の通信ができない場合の削除方法は,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（apn）。権威構築・AI引用狙い,ja,N,post,C2_設定・機種
+380,ポケットWi-Fiの充電器やケーブルだけを返し忘れた場合の対応は,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+381,ポケットWi-Fiの本体を壊してしまった（紛失した）まま帰国する場合の弁償代は,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+382,レンタルしたモバイルバッテリーもポケットWi-Fiと一緒にポストに入れていいか,通信・eSIM,,existing_master,帰国後・出国時,やり方,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+383,帰国便の乗り継ぎ地（韓国や台湾など）から日本のポケットWi-Fiを郵送返却できるか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+384,帰国直前まで空港でポケットWi-Fiを使いたいが、ギリギリまで使えるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,P2_比較
+385,ポケットWi-Fiの返却を忘れないための良いリマインダー方法はあるか,通信・eSIM,,existing_master,帰国後・出国時,おすすめ,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+386,eSIMの有効期限が帰国日より前に切れてしまった場合、空港での通信はどうすればいいか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,P2_比較
+387,帰国日の空港でフリーWi-Fiは保安検査後も使えるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,P2_比較
+388,成田空港のフリーWi-Fiは搭乗ゲート付近でも安定して繋がるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,P2_比較
+389,羽田空港で帰国前に動画をダウンロードしたいがフリーWi-Fiの速度は十分か,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,P2_比較
+390,空港のフリーWi-Fiに繋ぐための登録やアプリは必要か,通信・eSIM,,existing_master,帰国後・出国時,やり方,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,P2_比較
+391,帰国時にSuicaの残高を払い戻したいが、ネット環境がないと手続きできないか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+392,帰国後、日本のアプリ（Japan Transit Plannerなど）は削除してもいいか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+393,次回の旅行のためにSuicaアプリやスマートEXのアプリは残しておくべきか,通信・eSIM,,existing_master,帰国後・出国時,おすすめ,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+394,帰国後、日本で使っていた配車アプリ（GOなど）に登録したクレジットカード情報は削除すべきか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C1_購入・価格
+395,日本のフリーWi-Fiアプリ（Japan Connected-free Wi-Fi等）は帰国後どうすればいいか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+396,帰国後、日本のSIMカードの電話番号に紐づいたLINEやWhatsAppのアカウントはどうなるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C4_機能・認証
+397,日本の電話番号（050や070）を帰国後も維持する方法はあるか,通信・eSIM,,existing_master,帰国後・出国時,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C4_機能・認証
+398,帰国後も日本のサイト（チケット予約など）にアクセスするためにVPNは必要か,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,P3_JPIP差別化
+399,日本で買ったスマホ（iPhoneなど）は帰国後、自国のSIMを入れてそのまま使えるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（iphone）。直接CV可能,ja,N,post,C2_設定・機種
+400,日本で買ったスマホのシャッター音は帰国後（海外のSIMを入れたら）消えるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+401,帰国後、日本で撮影した大量の写真をクラウドにバックアップするのに最適な方法は,通信・eSIM,,existing_master,帰国後・出国時,おすすめ,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+402,日本旅行中に使ったデータ通信量がどれくらいだったか帰国後に確認する方法は,通信・eSIM,,existing_master,帰国後・出国時,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+403,eSIMのデータ残量が余った場合、次回の旅行に持ち越すことはできるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,C,一般知識クエリ（とは）。AI完全代替可能,ja,N,post,C5_容量・プラン
+404,帰国後、eSIMのプロバイダからアンケートやレビューの依頼が来たが答えるべきか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（レビュー）。直接CV可能,ja,N,post,C8_帰国・LC
+405,次回の日本旅行でおすすめの通信手段（eSIM vs ポケットWi-Fi）は結局どちらか,通信・eSIM,,existing_master,帰国後・出国時,比較,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,post,P2_比較
+406,帰国後、家族や友人に日本のeSIMをおすすめする場合、どの会社が良いか,通信・eSIM,,existing_master,帰国後・出国時,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,post,P1_おすすめHub
+407,日本で使ったeSIMのアプリは帰国後アンインストールしても問題ないか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（インストール）。直接CV可能,ja,N,post,C2_設定・機種
+408,帰国後、スマホのバッテリーの減りが早い気がするが日本のeSIMの設定が原因か,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,B,購入・比較・設定クエリ（設定）。直接CV可能,ja,N,post,C2_設定・機種
+409,日本の空港でポケットWi-Fiを返却する際、レシートや控えはもらえるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,P2_比較
+410,ポケットWi-Fiの返却用封筒に切手を貼る必要はあるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+411,帰国日の朝にホテルからポケットWi-Fiを発送した場合、当日の返却期限に間に合うか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+412,帰国後、ポケットWi-Fiのレンタル会社から「返却されていない」と連絡が来た場合の対処法は,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+413,帰国便が遅延・欠航して滞在が延びた場合、ポケットWi-Fiの延長手続きはどうすればいいか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（ポケットwi-fi）。権威構築・AI引用狙い,ja,N,post,P2_比較
+414,帰国便が遅延・欠航した場合、eSIMのデータを追加購入・延長する方法は,通信・eSIM,,existing_master,帰国後・出国時,やり方,B,購入・比較・設定クエリ（購入）。直接CV可能,ja,N,post,C5_容量・プラン
+415,帰国後、日本のSIMカードの解約手続きは自動で行われるのか、自分で手続きが必要か,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+416,長期滞在（留学・ワーホリ）を終えて帰国する際、携帯電話の解約金や違約金はかかるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+417,長期滞在用のSIMを解約せずに帰国してしまった場合、海外から解約手続きはできるか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,情報提供クエリ（sim）。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+418,帰国後、日本の銀行口座やクレジットカードを解約する際、日本の電話番号でのSMS認証が必要か,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C4_機能・認証
+419,帰国後、日本の友人やホストファミリーと連絡を取り続けるのに最適なアプリは何か,通信・eSIM,,existing_master,帰国後・出国時,おすすめ,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+420,"日本旅行の思い出をSNS（Instagram, TikTok）に投稿する際、おすすめのハッシュタグは",通信・eSIM,,existing_master,帰国後・出国時,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,post,P3_JPIP差別化
+421,帰国後、日本で買った電化製品を自国で使う場合、変圧器や変換プラグは必要か,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+422,日本の空港の免税店で買ったものは、機内持ち込み手荷物の重量制限に含まれるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,C1_購入・価格
+423,帰国時の空港でのチェックインや保安検査は、出発の何時間前に行けば安心か,通信・eSIM,,existing_master,帰国後・出国時,知りたい,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,C8_帰国・LC
+424,帰国後、日本旅行のブログやVlogを作成したいが、おすすめのプラットフォームは,通信・eSIM,,existing_master,帰国後・出国時,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,post,P1_おすすめHub
+425,次回の日本旅行に向けて、今から準備しておくべきこと（マイルを貯めるなど）は何か,通信・eSIM,,existing_master,帰国後・出国時,おすすめ,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+426,帰国後、日本ロス（Post-Japan Depression）になってしまったがどう乗り越えればいいか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+427,日本のコンビニで買った食べ物を自国に持ち帰ることはできるか（検疫など）,通信・eSIM,,existing_master,帰国後・出国時,知りたい,C,一般知識クエリ（とは）。AI完全代替可能,ja,N,post,C10_一般知識
+428,帰国後、日本で買ったお土産（お菓子など）の賞味期限はどこを見ればわかるか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+429,日本の硬貨（小銭）が大量に余ってしまったが、帰国前に空港でどう使い切るのがベストか,通信・eSIM,,existing_master,帰国後・出国時,おすすめ,B,購入・比較・設定クエリ（空港）。直接CV可能,ja,N,post,C5_容量・プラン
+430,帰国後、余った日本円の紙幣を自国の通貨に両替する一番お得な方法は,通信・eSIM,,existing_master,帰国後・出国時,比較,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+431,日本旅行中に加入した海外旅行保険の請求は、帰国後いつまでにどうやって行えばいいか,通信・eSIM,,existing_master,帰国後・出国時,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+432,帰国後、日本で受けた医療費の領収書を自国の保険会社に提出するための翻訳はどうすればいいか,通信・eSIM,,existing_master,帰国後・出国時,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+433,日本で落とし物をして帰国してしまったが、海外から日本の警察や施設に問い合わせる方法は,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+434,帰国後、日本のホテルに忘れ物をしたことに気づいたが、国際郵便で送ってもらえるか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+435,日本旅行中に交通違反（レンタカーなど）をしてしまった場合、帰国後に罰金の請求は来るか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+436,帰国後、日本の消費税免税（Tax Free）の手続きが正しく行われていたか確認する方法は,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+437,日本の空港で免税手続き（パスポートのスキャンなど）を忘れて帰国してしまったが問題ないか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,B,購入・比較・設定クエリ（問題）。直接CV可能,ja,N,post,C8_帰国・LC
+438,帰国後、日本で買ったブランド品が偽物だったと気づいた場合、どう対応すればいいか,通信・eSIM,,existing_master,帰国後・出国時,トラブル解決,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+439,日本旅行中に知り合った人と帰国後も連絡を取りたいが、日本人はどのSNSをよく使うか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+440,帰国後、日本のテレビ番組やアニメを自国で合法的に視聴する方法は,通信・eSIM,,existing_master,帰国後・出国時,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+441,次回の日本旅行はいつの時期（季節）に行くのがおすすめか,通信・eSIM,,existing_master,帰国後・出国時,おすすめ,B,購入・比較・設定クエリ（おすすめ）。直接CV可能,ja,N,post,P1_おすすめHub
+442,帰国後、日本食が恋しくなったが、自国で本格的な日本の食材を買えるオンラインショップは,通信・eSIM,,existing_master,帰国後・出国時,おすすめ,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+443,日本旅行のアンケートやフィードバックを求められたが、どこに送れば日本の観光業の役に立つか,通信・eSIM,,existing_master,帰国後・出国時,知りたい,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C10_一般知識
+444,帰国後、日本の特定の地域（被災地など）に寄付や支援をしたいがどうすればいいか,通信・eSIM,,existing_master,帰国後・出国時,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C8_帰国・LC
+445,日本旅行の経験を活かして、自国で日本関連の仕事やボランティアを見つける方法は,通信・eSIM,,existing_master,帰国後・出国時,やり方,A,通信・eSIM関連情報クエリ。権威構築・AI引用狙い,ja,N,post,C10_一般知識
+446,best eSIM for Japan 2025,通信・eSIM,,esim_selection,pre,comparison,B,比較クエリ。購入直前の意思決定フェーズ。yah.mobiへの直接誘導可能,en,Y,pre,P1_おすすめHub
+447,best eSIM for Japan 2026,通信・eSIM,,esim_selection,pre,comparison,B,最新年版比較クエリ。高CV率,en,Y,pre,P1_おすすめHub
+448,cheapest eSIM for Japan,通信・eSIM,,esim_selection,pre,price,B,価格訴求クエリ。yah.mobiの$1/dayプランが競合優位,en,Y,pre,C1_購入・価格
+449,Japan eSIM price comparison,通信・eSIM,,esim_selection,pre,comparison,B,価格比較クエリ。一次情報として比較表を提供できる,en,Y,pre,C1_購入・価格
+450,Japan eSIM Airalo vs Holafly,通信・eSIM,,esim_selection,pre,comparison,B,競合比較クエリ。yah.mobiを第3の選択肢として提示,en,Y,pre,P2_比較
+451,Japan eSIM Airalo vs Saily,通信・eSIM,,esim_selection,pre,comparison,B,競合比較クエリ,en,Y,pre,P2_比較
+452,Japan eSIM Holafly vs Saily,通信・eSIM,,esim_selection,pre,comparison,B,競合比較クエリ,en,Y,pre,P2_比較
+453,Japan eSIM Airalo review,通信・eSIM,,esim_selection,pre,review,B,競合レビュークエリ。yah.mobiとの比較で差別化,en,Y,pre,P2_比較
+454,Japan eSIM Holafly review,通信・eSIM,,esim_selection,pre,review,B,競合レビュークエリ,en,Y,pre,P2_比較
+455,Japan eSIM Saily review,通信・eSIM,,esim_selection,pre,review,B,競合レビュークエリ,en,Y,pre,P2_比較
+456,Japan eSIM unlimited data best,通信・eSIM,,esim_selection,pre,comparison,B,無制限データ比較クエリ,en,Y,pre,P1_おすすめHub
+457,Japan eSIM 1GB plan,通信・eSIM,,esim_selection,pre,purchase,B,プラン別購入クエリ。yah.mobiの$1/dayプランに直結,en,Y,pre,C1_購入・価格
+458,Japan eSIM 2GB plan,通信・eSIM,,esim_selection,pre,purchase,B,プラン別購入クエリ。yah.mobiの$2/dayプランに直結,en,Y,pre,C1_購入・価格
+459,Japan eSIM 5GB plan,通信・eSIM,,esim_selection,pre,purchase,B,プラン別購入クエリ,en,Y,pre,C1_購入・価格
+460,Japan eSIM 10GB plan,通信・eSIM,,esim_selection,pre,purchase,B,プラン別購入クエリ。yah.mobiの$5/dayプランに直結,en,Y,pre,C1_購入・価格
+461,Japan eSIM 20GB plan,通信・eSIM,,esim_selection,pre,purchase,B,プラン別購入クエリ,en,Y,pre,C1_購入・価格
+462,Japan eSIM 7 days plan,通信・eSIM,,esim_selection,pre,purchase,B,期間別購入クエリ,en,Y,pre,C1_購入・価格
+463,Japan eSIM 14 days plan,通信・eSIM,,esim_selection,pre,purchase,B,期間別購入クエリ,en,Y,pre,C1_購入・価格
+464,Japan eSIM 30 days plan,通信・eSIM,,esim_selection,pre,purchase,B,長期滞在向けプラン,en,Y,pre,C1_購入・価格
+465,how to buy eSIM for Japan,通信・eSIM,,esim_purchase,pre,how_to,B,購入方法クエリ。購入フロー説明でyah.mobiへ誘導,en,Y,pre,C1_購入・価格
+466,where to buy Japan eSIM online,通信・eSIM,,esim_purchase,pre,purchase,B,購入場所クエリ。直接CV,en,Y,pre,C4_機能・認証
+467,Japan eSIM buy before arrival,通信・eSIM,,esim_purchase,pre,timing,B,購入タイミングクエリ,en,Y,pre,C1_購入・価格
+468,Japan eSIM buy at airport,通信・eSIM,,esim_purchase,pre,purchase,A,空港購入vs事前購入の比較,en,Y,pre,C1_購入・価格
+469,Japan eSIM no passport required,通信・eSIM,,esim_purchase,pre,requirement,B,書類不要の説明。購入障壁除去,en,Y,pre,C1_購入・価格
+470,Japan eSIM payment methods,通信・eSIM,,esim_purchase,pre,payment,A,支払い方法クエリ,en,Y,pre,C10_一般知識
+471,Japan eSIM PayPal,通信・eSIM,,esim_purchase,pre,payment,B,PayPal支払い可否クエリ,en,Y,pre,C1_購入・価格
+472,Japan eSIM without credit card,通信・eSIM,,esim_purchase,pre,payment,B,クレジットカード不要クエリ,en,Y,pre,C1_購入・価格
+473,Japan eSIM refund policy,通信・eSIM,,esim_purchase,pre,policy,A,返金ポリシークエリ,en,Y,pre,C10_一般知識
+474,Japan eSIM cancel unused,通信・eSIM,,esim_purchase,pre,policy,A,未使用キャンセルクエリ,en,Y,pre,C10_一般知識
+475,how much data do I need for Japan,通信・eSIM,,esim_data,pre,planning,B,データ量計算クエリ。購入直前の重要クエリ,en,Y,pre,C1_購入・価格
+476,Japan eSIM how many GB for 7 days,通信・eSIM,,esim_data,pre,planning,B,期間別データ量クエリ,en,Y,pre,C1_購入・価格
+477,Japan eSIM how many GB for 10 days,通信・eSIM,,esim_data,pre,planning,B,期間別データ量クエリ,en,Y,pre,C1_購入・価格
+478,Japan eSIM how many GB for 2 weeks,通信・eSIM,,esim_data,pre,planning,B,期間別データ量クエリ,en,Y,pre,C1_購入・価格
+479,Japan eSIM data usage per day,通信・eSIM,,esim_data,pre,planning,A,1日あたりデータ使用量の目安,en,Y,pre,C10_一般知識
+480,is my phone compatible with Japan eSIM,通信・eSIM,,esim_compatibility,pre,check,B,互換性確認クエリ。購入前の重要ステップ,en,Y,pre,C1_購入・価格
+481,Japan eSIM compatible phones list,通信・eSIM,,esim_compatibility,pre,check,A,対応端末リスト,en,Y,pre,C10_一般知識
+482,Japan eSIM iPhone compatible,通信・eSIM,,esim_compatibility,pre,check,B,iPhone互換性クエリ,en,Y,pre,C2_設定・機種
+483,Japan eSIM iPhone 13 compatible,通信・eSIM,,esim_compatibility,pre,check,B,機種別互換性クエリ,en,Y,pre,C2_設定・機種
+484,Japan eSIM iPhone 14 compatible,通信・eSIM,,esim_compatibility,pre,check,B,機種別互換性クエリ,en,Y,pre,C2_設定・機種
+485,Japan eSIM iPhone 15 compatible,通信・eSIM,,esim_compatibility,pre,check,B,機種別互換性クエリ,en,Y,pre,C2_設定・機種
+486,Japan eSIM iPhone 16 compatible,通信・eSIM,,esim_compatibility,pre,check,B,機種別互換性クエリ,en,Y,pre,C2_設定・機種
+487,Japan eSIM Android compatible,通信・eSIM,,esim_compatibility,pre,check,B,Android互換性クエリ,en,Y,pre,C2_設定・機種
+488,Japan eSIM Samsung Galaxy compatible,通信・eSIM,,esim_compatibility,pre,check,B,Samsung互換性クエリ,en,Y,pre,C2_設定・機種
+489,Japan eSIM Google Pixel compatible,通信・eSIM,,esim_compatibility,pre,check,B,Pixel互換性クエリ,en,Y,pre,C2_設定・機種
+490,Japan eSIM locked phone,通信・eSIM,,esim_compatibility,pre,check,B,SIMロック端末クエリ,en,Y,pre,C1_購入・価格
+491,how to check if phone supports eSIM,通信・eSIM,,esim_compatibility,pre,how_to,A,eSIM対応確認方法,en,Y,pre,C10_一般知識
+492,Japan eSIM carrier unlocked requirement,通信・eSIM,,esim_compatibility,pre,requirement,A,SIMフリー要件クエリ,en,Y,pre,C10_一般知識
+493,how to install Japan eSIM,通信・eSIM,,esim_setup,pre,how_to,B,インストール方法クエリ。購入後の次ステップ,en,Y,pre,C2_設定・機種
+494,how to activate Japan eSIM,通信・eSIM,,esim_setup,pre,how_to,B,アクティベーション方法クエリ,en,Y,pre,C2_設定・機種
+495,Japan eSIM QR code activation,通信・eSIM,,esim_setup,pre,how_to,B,QRコード設定クエリ,en,Y,pre,C1_購入・価格
+496,Japan eSIM manual installation,通信・eSIM,,esim_setup,pre,how_to,A,手動インストール方法,en,Y,pre,C2_設定・機種
+497,Japan eSIM setup iPhone step by step,通信・eSIM,,esim_setup,pre,how_to,B,iPhone設定手順クエリ,en,Y,pre,C2_設定・機種
+498,Japan eSIM setup Android step by step,通信・eSIM,,esim_setup,pre,how_to,B,Android設定手順クエリ,en,Y,pre,C2_設定・機種
+499,Japan eSIM setup Samsung,通信・eSIM,,esim_setup,pre,how_to,B,Samsung設定クエリ,en,Y,pre,C2_設定・機種
+500,Japan eSIM setup Google Pixel,通信・eSIM,,esim_setup,pre,how_to,B,Pixel設定クエリ,en,Y,pre,C2_設定・機種
+501,when to activate Japan eSIM before or after arrival,通信・eSIM,,esim_setup,pre,timing,B,アクティベーションタイミングクエリ,en,Y,pre,C2_設定・機種
+502,Japan eSIM install before departure,通信・eSIM,,esim_setup,pre,timing,B,出発前インストールクエリ,en,Y,pre,C2_設定・機種
+503,Japan eSIM activate on arrival,通信・eSIM,,esim_setup,during,timing,B,到着後アクティベーションクエリ,en,Y,during,C2_設定・機種
+504,Japan eSIM APN settings,通信・eSIM,,esim_setup,pre,technical,A,APN設定クエリ,en,Y,pre,C2_設定・機種
+505,Japan eSIM data roaming settings,通信・eSIM,,esim_setup,pre,technical,B,データローミング設定クエリ,en,Y,pre,P2_比較
+506,Japan eSIM set as default data line,通信・eSIM,,esim_setup,pre,technical,A,デフォルトデータ回線設定クエリ,en,Y,pre,C4_機能・認証
+507,Japan eSIM not working fix,通信・eSIM,,esim_troubleshoot,during,problem,B,トラブル解決クエリ。旅行中の緊急ニーズ,en,Y,during,C3_トラブル
+508,Japan eSIM no internet connection,通信・eSIM,,esim_troubleshoot,during,problem,B,インターネット接続不可クエリ,en,Y,during,C1_購入・価格
+509,Japan eSIM not connecting to network,通信・eSIM,,esim_troubleshoot,during,problem,B,ネットワーク接続不可クエリ,en,Y,during,C1_購入・価格
+510,Japan eSIM activation failed,通信・eSIM,,esim_troubleshoot,during,problem,B,アクティベーション失敗クエリ,en,Y,during,C1_購入・価格
+511,Japan eSIM QR code not scanning,通信・eSIM,,esim_troubleshoot,during,problem,B,QRコードスキャン失敗クエリ,en,Y,during,C1_購入・価格
+512,Japan eSIM stuck on activating,通信・eSIM,,esim_troubleshoot,during,problem,A,アクティベーション中断クエリ,en,Y,during,C10_一般知識
+513,Japan eSIM hotspot not working,通信・eSIM,,esim_troubleshoot,during,problem,B,ホットスポット不具合クエリ,en,Y,during,C3_トラブル
+514,Japan eSIM slow speed fix,通信・eSIM,,esim_troubleshoot,during,problem,B,速度低下クエリ,en,Y,during,C3_トラブル
+515,Japan eSIM data not working after setup,通信・eSIM,,esim_troubleshoot,during,problem,B,設定後データ不通クエリ,en,Y,during,C2_設定・機種
+516,Japan eSIM error message fix,通信・eSIM,,esim_troubleshoot,during,problem,A,エラーメッセージ解決クエリ,en,Y,during,C3_トラブル
+517,Japan eSIM airplane mode fix,通信・eSIM,,esim_troubleshoot,during,problem,A,機内モードリセット手順,en,Y,during,C3_トラブル
+518,Japan eSIM restart phone fix,通信・eSIM,,esim_troubleshoot,during,problem,A,再起動による修復手順,en,Y,during,C3_トラブル
+519,Japan eSIM too many eSIMs installed error,通信・eSIM,,esim_troubleshoot,during,problem,A,eSIM上限エラークエリ,en,Y,during,C2_設定・機種
+520,Japan eSIM data roaming must enable,通信・eSIM,,esim_troubleshoot,during,technical,B,データローミング有効化クエリ,en,Y,during,P2_比較
+521,Japan eSIM dual SIM setup,通信・eSIM,,esim_usage,pre,how_to,B,デュアルSIM設定クエリ,en,Y,pre,C2_設定・機種
+522,Japan eSIM keep home SIM active,通信・eSIM,,esim_usage,pre,how_to,A,ホームSIM維持クエリ,en,Y,pre,C10_一般知識
+523,Japan eSIM switch between SIMs,通信・eSIM,,esim_usage,during,how_to,A,SIM切り替えクエリ,en,Y,during,C10_一般知識
+524,Japan eSIM avoid roaming charges,通信・eSIM,,esim_usage,pre,how_to,B,ローミング課金回避クエリ,en,Y,pre,P2_比較
+525,Japan eSIM hotspot tethering,通信・eSIM,,esim_usage,during,feature,B,ホットスポット利用クエリ,en,Y,during,C4_機能・認証
+526,Japan eSIM share data with friends,通信・eSIM,,esim_usage,during,feature,B,データシェアクエリ,en,Y,during,C1_購入・価格
+527,Japan eSIM family plan,通信・eSIM,,esim_usage,pre,purchase,B,ファミリープランクエリ,en,Y,pre,C1_購入・価格
+528,Japan eSIM for 2 people,通信・eSIM,,esim_usage,pre,purchase,B,2人用プランクエリ,en,Y,pre,C1_購入・価格
+529,Japan eSIM for group travel,通信・eSIM,,esim_usage,pre,purchase,B,グループ旅行クエリ,en,Y,pre,C1_購入・価格
+530,Japan eSIM check data remaining,通信・eSIM,,esim_usage,during,how_to,A,残データ確認クエリ,en,Y,during,C10_一般知識
+531,Japan eSIM top up data,通信・eSIM,,esim_usage,during,purchase,B,データ追加購入クエリ,en,Y,during,C1_購入・価格
+532,Japan eSIM run out of data what to do,通信・eSIM,,esim_usage,during,problem,B,データ切れ対処クエリ,en,Y,during,C1_購入・価格
+533,Japan eSIM phone number included,通信・eSIM,,esim_usage,pre,feature,A,電話番号付きクエリ,en,Y,pre,C10_一般知識
+534,Japan eSIM data only no calls,通信・eSIM,,esim_usage,pre,feature,A,データのみプランクエリ,en,Y,pre,C10_一般知識
+535,Japan eSIM receive calls home number,通信・eSIM,,esim_usage,during,feature,A,自国番号着信クエリ,en,Y,during,C10_一般知識
+536,Japan eSIM SMS text messages,通信・eSIM,,esim_usage,during,feature,A,SMS受信クエリ,en,Y,during,C4_機能・認証
+537,Japan eSIM WhatsApp calls,通信・eSIM,,esim_usage,during,feature,A,WhatsApp通話クエリ,en,Y,during,C4_機能・認証
+538,Japan eSIM LINE calls,通信・eSIM,,esim_usage,during,feature,A,LINE通話クエリ,en,Y,during,C4_機能・認証
+539,Japan eSIM ChatGPT available,通信・eSIM,,esim_features,pre,feature,B,ChatGPT利用可否。yah.mobiのJP IP差別化ポイント,en,Y,pre,P3_JPIP差別化
+540,Japan eSIM Instagram available,通信・eSIM,,esim_features,pre,feature,B,Instagram利用可否。JP IP差別化ポイント,en,Y,pre,P3_JPIP差別化
+541,Japan eSIM TikTok available,通信・eSIM,,esim_features,pre,feature,B,TikTok利用可否。JP IP差別化ポイント,en,Y,pre,P3_JPIP差別化
+542,Japan eSIM local IP address,通信・eSIM,,esim_features,pre,feature,B,ローカルIPアドレスクエリ。差別化ポイント,en,Y,pre,P3_JPIP差別化
+543,Japan eSIM Japan IP vs Hong Kong IP,通信・eSIM,,esim_features,pre,comparison,B,JP IP vs HK IP比較。yah.mobiの強み,en,Y,pre,P3_JPIP差別化
+544,Japan eSIM local breakout IP,通信・eSIM,,esim_features,pre,technical,B,ローカルブレイクアウトIPクエリ,en,Y,pre,P3_JPIP差別化
+545,Japan eSIM roaming IP problems,通信・eSIM,,esim_features,pre,problem,B,ローミングIP問題クエリ,en,Y,pre,P3_JPIP差別化
+546,Japan eSIM 5G available,通信・eSIM,,esim_features,pre,feature,B,5G対応クエリ,en,Y,pre,C1_購入・価格
+547,Japan eSIM 5G vs 4G LTE,通信・eSIM,,esim_features,pre,comparison,A,5G vs 4G比較クエリ,en,Y,pre,P2_比較
+548,Japan eSIM hotspot allowed,通信・eSIM,,esim_features,pre,feature,B,ホットスポット許可クエリ,en,Y,pre,C4_機能・認証
+549,Japan eSIM VPN compatible,通信・eSIM,,esim_features,during,feature,A,VPN互換性クエリ,en,Y,during,P3_JPIP差別化
+550,Japan eSIM privacy tracking,通信・eSIM,,esim_features,pre,concern,A,プライバシー・追跡クエリ,en,Y,pre,C10_一般知識
+551,Japan eSIM Docomo network,通信・eSIM,,esim_network,pre,comparison,B,Docomo回線クエリ,en,Y,pre,C6_回線・実測
+552,Japan eSIM SoftBank network,通信・eSIM,,esim_network,pre,comparison,B,SoftBank回線クエリ,en,Y,pre,C6_回線・実測
+553,Japan eSIM KDDI au network,通信・eSIM,,esim_network,pre,comparison,B,KDDI回線クエリ,en,Y,pre,C6_回線・実測
+554,Japan eSIM Docomo vs SoftBank vs KDDI,通信・eSIM,,esim_network,pre,comparison,A,キャリア比較クエリ,en,Y,pre,P2_比較
+555,Japan eSIM best network coverage,通信・eSIM,,esim_network,pre,comparison,B,最良カバレッジクエリ,en,Y,pre,P1_おすすめHub
+556,Japan eSIM rural coverage,通信・eSIM,,esim_network,pre,coverage,B,地方カバレッジクエリ,en,Y,pre,C6_回線・実測
+557,Japan eSIM Mount Fuji coverage,通信・eSIM,,esim_network,during,coverage,B,富士山エリアカバレッジ,en,Y,during,C6_回線・実測
+558,Japan eSIM Hokkaido coverage,通信・eSIM,,esim_network,pre,coverage,B,北海道カバレッジ,en,Y,pre,C6_回線・実測
+559,Japan eSIM Kyoto coverage,通信・eSIM,,esim_network,pre,coverage,B,京都カバレッジ,en,Y,pre,C6_回線・実測
+560,Japan eSIM Osaka coverage,通信・eSIM,,esim_network,pre,coverage,B,大阪カバレッジ,en,Y,pre,C6_回線・実測
+561,Japan eSIM Tokyo subway underground,通信・eSIM,,esim_network,during,coverage,B,東京地下鉄カバレッジ,en,Y,during,C1_購入・価格
+562,Japan eSIM Shinkansen bullet train,通信・eSIM,,esim_network,during,coverage,B,新幹線カバレッジ,en,Y,during,C1_購入・価格
+563,Japan eSIM Shinkansen internet speed,通信・eSIM,,esim_network,during,coverage,A,新幹線通信速度クエリ,en,Y,during,C6_回線・実測
+564,Japan eSIM signal strength test,通信・eSIM,,esim_network,during,technical,A,電波強度テストクエリ,en,Y,during,C10_一般知識
+565,Japan eSIM speed test results,通信・eSIM,,esim_speed,pre,comparison,B,速度テスト結果クエリ,en,Y,pre,C6_回線・実測
+566,Japan eSIM unlimited data throttle,通信・eSIM,,esim_speed,pre,concern,B,無制限データ速度制限クエリ,en,Y,pre,C5_容量・プラン
+567,Japan eSIM fair use policy,通信・eSIM,,esim_speed,pre,policy,A,フェアユースポリシークエリ,en,Y,pre,C10_一般知識
+568,Japan eSIM speed after daily limit,通信・eSIM,,esim_speed,during,concern,B,日次上限後速度クエリ,en,Y,during,C6_回線・実測
+569,Japan eSIM 1Mbps throttle,通信・eSIM,,esim_speed,during,concern,A,1Mbps制限クエリ,en,Y,during,C10_一般知識
+570,Japan eSIM truly unlimited no throttle,通信・eSIM,,esim_speed,pre,comparison,B,真の無制限クエリ,en,Y,pre,C5_容量・プラン
+571,Japan eSIM streaming video quality,通信・eSIM,,esim_speed,during,feature,B,動画ストリーミング品質クエリ,en,Y,during,C1_購入・価格
+572,Japan eSIM video call quality,通信・eSIM,,esim_speed,during,feature,B,ビデオ通話品質クエリ,en,Y,during,C1_購入・価格
+573,Japan eSIM Zoom meeting,通信・eSIM,,esim_speed,during,feature,B,Zoomミーティングクエリ,en,Y,during,C1_購入・価格
+574,Japan eSIM Google Maps navigation,通信・eSIM,,esim_speed,during,feature,B,Googleマップナビクエリ,en,Y,during,C1_購入・価格
+575,Japan eSIM transfer to new phone,通信・eSIM,,esim_management,post,how_to,A,新端末への転送クエリ,en,Y,post,C10_一般知識
+576,Japan eSIM lost phone,通信・eSIM,,esim_management,during,problem,B,端末紛失時クエリ,en,Y,during,C1_購入・価格
+577,Japan eSIM delete after trip,通信・eSIM,,esim_management,post,how_to,A,旅行後削除クエリ,en,Y,post,C8_帰国・LC
+578,Japan eSIM delete from iPhone,通信・eSIM,,esim_management,post,how_to,A,iPhone削除手順クエリ,en,Y,post,C2_設定・機種
+579,Japan eSIM delete from Android,通信・eSIM,,esim_management,post,how_to,A,Android削除手順クエリ,en,Y,post,C2_設定・機種
+580,Japan eSIM expired remove,通信・eSIM,,esim_management,post,how_to,A,期限切れ削除クエリ,en,Y,post,C8_帰国・LC
+581,Japan eSIM reuse same eSIM next trip,通信・eSIM,,esim_management,post,feature,B,再利用クエリ,en,Y,post,C1_購入・価格
+582,Japan eSIM multiple trips,通信・eSIM,,esim_management,pre,feature,B,複数回旅行クエリ,en,Y,pre,C1_購入・価格
+583,Japan eSIM reinstall after delete,通信・eSIM,,esim_management,post,problem,A,削除後再インストールクエリ,en,Y,post,C2_設定・機種
+584,Japan eSIM maximum eSIMs on phone,通信・eSIM,,esim_management,pre,technical,A,端末eSIM上限クエリ,en,Y,pre,C10_一般知識
+585,Japan eSIM vs pocket WiFi,通信・eSIM,,esim_comparison,pre,comparison,B,eSIM vs ポケットWiFi比較クエリ,en,Y,pre,P2_比較
+586,Japan eSIM vs physical SIM card,通信・eSIM,,esim_comparison,pre,comparison,B,eSIM vs 物理SIM比較クエリ,en,Y,pre,P2_比較
+587,Japan eSIM vs roaming plan,通信・eSIM,,esim_comparison,pre,comparison,B,eSIM vs ローミングプラン比較クエリ,en,Y,pre,P2_比較
+588,Japan eSIM vs T-Mobile international,通信・eSIM,,esim_comparison,pre,comparison,B,T-Mobile比較クエリ,en,Y,pre,P2_比較
+589,Japan eSIM vs AT&T international plan,通信・eSIM,,esim_comparison,pre,comparison,B,AT&T比較クエリ,en,Y,pre,P2_比較
+590,Japan eSIM vs Verizon international,通信・eSIM,,esim_comparison,pre,comparison,B,Verizon比較クエリ,en,Y,pre,P2_比較
+591,Japan eSIM vs pocket wifi for family,通信・eSIM,,esim_comparison,pre,comparison,B,ファミリー向け比較クエリ,en,Y,pre,P2_比較
+592,Japan eSIM for solo traveler,通信・eSIM,,esim_comparison,pre,recommendation,B,ソロ旅行者向けクエリ,en,Y,pre,C1_購入・価格
+593,Japan eSIM for business travel,通信・eSIM,,esim_comparison,pre,recommendation,B,ビジネス旅行者向けクエリ,en,Y,pre,C1_購入・価格
+594,Japan eSIM for digital nomad,通信・eSIM,,esim_comparison,pre,recommendation,B,デジタルノマド向けクエリ,en,Y,pre,P2_比較
+595,Japan eSIM for cruise ship,通信・eSIM,,esim_comparison,pre,recommendation,A,クルーズ旅行者向けクエリ,en,Y,pre,C10_一般知識
+596,Japan eSIM short trip 3 days,通信・eSIM,,esim_travel_style,pre,recommendation,B,短期旅行向けクエリ,en,Y,pre,C1_購入・価格
+597,Japan eSIM long stay 30 days,通信・eSIM,,esim_travel_style,pre,recommendation,B,長期滞在向けクエリ,en,Y,pre,C1_購入・価格
+598,Japan eSIM 60 days 90 days,通信・eSIM,,esim_travel_style,pre,recommendation,B,超長期滞在クエリ,en,Y,pre,C1_購入・価格
+599,Japan eSIM first time traveler,通信・eSIM,,esim_travel_style,pre,recommendation,B,初訪問者向けクエリ,en,Y,pre,C1_購入・価格
+600,Japan eSIM for seniors elderly,通信・eSIM,,esim_travel_style,pre,recommendation,B,シニア向けクエリ,en,Y,pre,C1_購入・価格
+601,Japan eSIM easy setup non-tech,通信・eSIM,,esim_travel_style,pre,recommendation,B,非技術者向けクエリ,en,Y,pre,C2_設定・機種
+602,Japan eSIM for students,通信・eSIM,,esim_travel_style,pre,recommendation,B,学生向けクエリ,en,Y,pre,C1_購入・価格
+603,Japan eSIM work remotely,通信・eSIM,,esim_travel_style,pre,recommendation,B,リモートワーク向けクエリ,en,Y,pre,C1_購入・価格
+604,일본 eSIM 추천 2025,通信・eSIM,,esim_korean,pre,comparison,B,韓国語：日本eSIM推薦クエリ,ko,Y,pre,C1_購入・価格
+605,일본 eSIM 설치 방법,通信・eSIM,,esim_korean,pre,how_to,B,韓国語：インストール方法クエリ,ko,Y,pre,C1_購入・価格
+606,일본 eSIM 가격 비교,通信・eSIM,,esim_korean,pre,price,B,韓国語：価格比較クエリ,ko,Y,pre,C1_購入・価格
+607,일본 eSIM 아이폰 설정,通信・eSIM,,esim_korean,pre,how_to,B,韓国語：iPhone設定クエリ,ko,Y,pre,C1_購入・価格
+608,일본 eSIM 무제한 데이터,通信・eSIM,,esim_korean,pre,comparison,B,韓国語：無制限データクエリ,ko,Y,pre,C1_購入・価格
+609,일본 eSIM 핫스팟 가능,通信・eSIM,,esim_korean,pre,feature,B,韓国語：ホットスポット可否クエリ,ko,Y,pre,C1_購入・価格
+610,일본 eSIM 안되는 이유,通信・eSIM,,esim_korean,during,problem,B,韓国語：接続不可クエリ,ko,Y,during,C1_購入・価格
+611,일본 eSIM 데이터 로밍,通信・eSIM,,esim_korean,pre,technical,B,韓国語：データローミングクエリ,ko,Y,pre,C1_購入・価格
+612,일본 eSIM 에어알로 vs 홀라플라이,通信・eSIM,,esim_korean,pre,comparison,B,韓国語：Airalo vs Holafly比較,ko,Y,pre,P2_比較
+613,일본 eSIM 도코모 소프트뱅크,通信・eSIM,,esim_korean,pre,comparison,B,韓国語：Docomo vs SoftBank比較,ko,Y,pre,C1_購入・価格
+614,일본 eSIM 유심 차이,通信・eSIM,,esim_korean,pre,comparison,A,韓国語：eSIM vs 物理SIM比較,ko,Y,pre,C10_一般知識
+615,일본 여행 eSIM 얼마나 필요,通信・eSIM,,esim_korean,pre,planning,B,韓国語：必要データ量クエリ,ko,Y,pre,C1_購入・価格
+616,일본 eSIM 삼성 갤럭시,通信・eSIM,,esim_korean,pre,compatibility,B,韓国語：Samsung互換性クエリ,ko,Y,pre,C1_購入・価格
+617,일본 eSIM 챗GPT 사용 가능,通信・eSIM,,esim_korean,pre,feature,B,韓国語：ChatGPT利用可否クエリ,ko,Y,pre,C1_購入・価格
+618,일본 eSIM 틱톡 인스타그램,通信・eSIM,,esim_korean,pre,feature,B,韓国語：TikTok/Instagram利用クエリ,ko,Y,pre,C1_購入・価格
+619,日本eSIM推薦 2025,通信・eSIM,,esim_traditional_chinese,pre,comparison,B,繁体字：日本eSIM推薦クエリ,zh-TW,Y,pre,C1_購入・価格
+620,日本eSIM怎麼設定,通信・eSIM,,esim_traditional_chinese,pre,how_to,B,繁体字：設定方法クエリ,zh-TW,Y,pre,C2_設定・機種
+621,日本eSIM價格比較,通信・eSIM,,esim_traditional_chinese,pre,price,B,繁体字：価格比較クエリ,zh-TW,Y,pre,P2_比較
+622,日本eSIM iPhone設定,通信・eSIM,,esim_traditional_chinese,pre,how_to,B,繁体字：iPhone設定クエリ,zh-TW,Y,pre,C2_設定・機種
+623,日本eSIM吃到飽,通信・eSIM,,esim_traditional_chinese,pre,comparison,B,繁体字：無制限データクエリ,zh-TW,Y,pre,C1_購入・価格
+624,日本eSIM熱點分享,通信・eSIM,,esim_traditional_chinese,pre,feature,B,繁体字：ホットスポットクエリ,zh-TW,Y,pre,C1_購入・価格
+625,日本eSIM連不上網,通信・eSIM,,esim_traditional_chinese,during,problem,B,繁体字：接続不可クエリ,zh-TW,Y,during,C1_購入・価格
+626,日本eSIM不能用怎麼辦,通信・eSIM,,esim_traditional_chinese,during,problem,B,繁体字：使えない場合クエリ,zh-TW,Y,during,C1_購入・価格
+627,日本eSIM Airalo評價,通信・eSIM,,esim_traditional_chinese,pre,review,B,繁体字：Airaloレビュークエリ,zh-TW,Y,pre,P2_比較
+628,日本eSIM本地IP,通信・eSIM,,esim_traditional_chinese,pre,feature,B,繁体字：ローカルIPクエリ,zh-TW,Y,pre,C1_購入・価格
+629,日本eSIM ChatGPT可以用嗎,通信・eSIM,,esim_traditional_chinese,pre,feature,B,繁体字：ChatGPT利用可否クエリ,zh-TW,Y,pre,P3_JPIP差別化
+630,日本eSIM幾GB夠用,通信・eSIM,,esim_traditional_chinese,pre,planning,B,繁体字：必要GB数クエリ,zh-TW,Y,pre,C1_購入・価格
+631,日本eSIM docomo還是softbank,通信・eSIM,,esim_traditional_chinese,pre,comparison,B,繁体字：Docomo vs SoftBank比較,zh-TW,Y,pre,C6_回線・実測
+632,日本eSIM不要中資廠商,通信・eSIM,,esim_traditional_chinese,pre,concern,B,繁体字：中国系ブランド回避クエリ,zh-TW,Y,pre,C1_購入・価格
+633,日本eSIM原生網路,通信・eSIM,,esim_traditional_chinese,pre,feature,B,繁体字：ネイティブネットワーククエリ,zh-TW,Y,pre,C1_購入・価格
+634,日本eSIM推荐 2025,通信・eSIM,,esim_simplified_chinese,pre,comparison,B,簡体字：日本eSIM推薦クエリ,zh-CN,Y,pre,C1_購入・価格
+635,日本eSIM怎么设置,通信・eSIM,,esim_simplified_chinese,pre,how_to,B,簡体字：設定方法クエリ,zh-CN,Y,pre,C1_購入・価格
+636,日本eSIM价格对比,通信・eSIM,,esim_simplified_chinese,pre,price,B,簡体字：価格比較クエリ,zh-CN,Y,pre,C1_購入・価格
+637,日本eSIM无限流量,通信・eSIM,,esim_simplified_chinese,pre,comparison,B,簡体字：無制限データクエリ,zh-CN,Y,pre,C1_購入・価格
+638,日本eSIM连不上网怎么办,通信・eSIM,,esim_simplified_chinese,during,problem,B,簡体字：接続不可クエリ,zh-CN,Y,during,C1_購入・価格
+639,日本eSIM热点共享,通信・eSIM,,esim_simplified_chinese,pre,feature,B,簡体字：ホットスポットクエリ,zh-CN,Y,pre,C1_購入・価格
+640,日本eSIM ChatGPT能用吗,通信・eSIM,,esim_simplified_chinese,pre,feature,B,簡体字：ChatGPT利用可否クエリ,zh-CN,Y,pre,P3_JPIP差別化
+641,日本eSIM抖音TikTok,通信・eSIM,,esim_simplified_chinese,pre,feature,B,簡体字：TikTok利用クエリ,zh-CN,Y,pre,P3_JPIP差別化
+642,日本eSIM本地IP地址,通信・eSIM,,esim_simplified_chinese,pre,feature,B,簡体字：ローカルIPクエリ,zh-CN,Y,pre,C1_購入・価格
+643,日本eSIM多少GB够用,通信・eSIM,,esim_simplified_chinese,pre,planning,B,簡体字：必要GB数クエリ,zh-CN,Y,pre,C1_購入・価格
+644,eSIM ญี่ปุ่น แนะนำ 2025,通信・eSIM,,esim_thai,pre,comparison,B,タイ語：日本eSIM推薦クエリ,th,Y,pre,C1_購入・価格
+645,eSIM ญี่ปุ่น วิธีติดตั้ง,通信・eSIM,,esim_thai,pre,how_to,B,タイ語：インストール方法クエリ,th,Y,pre,C1_購入・価格
+646,eSIM ญี่ปุ่น ราคาเปรียบเทียบ,通信・eSIM,,esim_thai,pre,price,B,タイ語：価格比較クエリ,th,Y,pre,C1_購入・価格
+647,eSIM ญี่ปุ่น ใช้ไม่ได้ แก้ยังไง,通信・eSIM,,esim_thai,during,problem,B,タイ語：接続不可クエリ,th,Y,during,C1_購入・価格
+648,eSIM ญี่ปุ่น แชร์ฮอตสปอต,通信・eSIM,,esim_thai,pre,feature,B,タイ語：ホットスポットクエリ,th,Y,pre,C1_購入・価格
+649,eSIM ญี่ปุ่น ChatGPT ใช้ได้ไหม,通信・eSIM,,esim_thai,pre,feature,B,タイ語：ChatGPT利用可否クエリ,th,Y,pre,P3_JPIP差別化
+650,eSIM ญี่ปุ่น เน็ตไม่จำกัด,通信・eSIM,,esim_thai,pre,comparison,B,タイ語：無制限データクエリ,th,Y,pre,C1_購入・価格
+651,eSIM ญี่ปุ่น กี่ GB พอ,通信・eSIM,,esim_thai,pre,planning,B,タイ語：必要GB数クエリ,th,Y,pre,C1_購入・価格
+652,eSIM Jepang terbaik 2025,通信・eSIM,,esim_indonesian,pre,comparison,B,インドネシア語：日本eSIM最良クエリ,id,Y,pre,C1_購入・価格
+653,cara pasang eSIM Jepang,通信・eSIM,,esim_indonesian,pre,how_to,B,インドネシア語：インストール方法クエリ,id,Y,pre,C1_購入・価格
+654,eSIM Jepang harga perbandingan,通信・eSIM,,esim_indonesian,pre,price,B,インドネシア語：価格比較クエリ,id,Y,pre,C1_購入・価格
+655,eSIM Jepang tidak bisa konek,通信・eSIM,,esim_indonesian,during,problem,B,インドネシア語：接続不可クエリ,id,Y,during,C1_購入・価格
+656,eSIM Jepang hotspot tethering,通信・eSIM,,esim_indonesian,pre,feature,B,インドネシア語：ホットスポットクエリ,id,Y,pre,C4_機能・認証
+657,eSIM Jepang ChatGPT bisa dipakai,通信・eSIM,,esim_indonesian,pre,feature,B,インドネシア語：ChatGPT利用可否クエリ,id,Y,pre,P3_JPIP差別化
+658,eSIM Jepang unlimited data,通信・eSIM,,esim_indonesian,pre,comparison,B,インドネシア語：無制限データクエリ,id,Y,pre,C5_容量・プラン
+659,eSIM Jepang berapa GB cukup,通信・eSIM,,esim_indonesian,pre,planning,B,インドネシア語：必要GB数クエリ,id,Y,pre,C1_購入・価格
+660,Japan eSIM with Japanese phone number,通信・eSIM,,esim_special,pre,feature,B,日本電話番号付きeSIMクエリ,en,Y,pre,C1_購入・価格
+661,Japan eSIM for banking 2FA,通信・eSIM,,esim_special,during,feature,A,銀行2FA認証クエリ,en,Y,during,C10_一般知識
+662,Japan eSIM for Suica IC card,通信・eSIM,,esim_special,during,feature,A,Suica連携クエリ,en,Y,during,C10_一般知識
+663,Japan eSIM for Google Maps offline,通信・eSIM,,esim_special,during,feature,A,オフラインマップクエリ,en,Y,during,C4_機能・認証
+664,Japan eSIM for translation apps,通信・eSIM,,esim_special,during,feature,A,翻訳アプリクエリ,en,Y,during,C10_一般知識
+665,Japan eSIM for navigation apps,通信・eSIM,,esim_special,during,feature,A,ナビアプリクエリ,en,Y,during,C10_一般知識
+666,Japan eSIM for social media,通信・eSIM,,esim_special,during,feature,B,SNSクエリ,en,Y,during,C1_購入・価格
+667,Japan eSIM for streaming Netflix,通信・eSIM,,esim_special,during,feature,A,Netflixストリーミングクエリ,en,Y,during,C10_一般知識
+668,Japan eSIM for YouTube,通信・eSIM,,esim_special,during,feature,A,YouTubeクエリ,en,Y,during,C10_一般知識
+669,Japan eSIM for Osaka Expo 2025,通信・eSIM,,esim_special,pre,event,B,大阪万博向けクエリ,en,Y,pre,C1_購入・価格
+670,Japan eSIM for cherry blossom season,通信・eSIM,,esim_special,pre,seasonal,B,桜シーズン向けクエリ,en,Y,pre,C1_購入・価格
+671,Japan eSIM for ski trip Hokkaido Niseko,通信・eSIM,,esim_special,pre,seasonal,B,スキー旅行向けクエリ,en,Y,pre,C1_購入・価格
+672,Japan eSIM for hiking Mount Fuji,通信・eSIM,,esim_special,pre,activity,B,富士山登山向けクエリ,en,Y,pre,C1_購入・価格
+673,Japan eSIM for anime pilgrimage,通信・eSIM,,esim_special,pre,activity,A,聖地巡礼向けクエリ,en,Y,pre,C10_一般知識
+674,Japan eSIM for food tour,通信・eSIM,,esim_special,pre,activity,A,グルメツアー向けクエリ,en,Y,pre,C10_一般知識
+675,what is eSIM Japan,通信・eSIM,,esim_general,pre,education,A,eSIM基本説明クエリ,en,Y,pre,C10_一般知識
+676,how does eSIM work Japan,通信・eSIM,,esim_general,pre,education,A,eSIM仕組み説明クエリ,en,Y,pre,C10_一般知識
+677,eSIM vs SIM card Japan difference,通信・eSIM,,esim_general,pre,education,A,eSIM vs SIM違い説明クエリ,en,Y,pre,P2_比較
+678,Japan eSIM history evolution,通信・eSIM,,esim_general,pre,education,C,eSIM歴史クエリ（AI代替）,en,Y,pre,C1_購入・価格
+679,Japan mobile network overview,通信・eSIM,,esim_general,pre,education,C,日本モバイルネットワーク概要（AI代替）,en,Y,pre,C1_購入・価格
+680,Japan eSIM regulations 2025 2026,通信・eSIM,,esim_general,pre,policy,A,eSIM規制クエリ,en,Y,pre,C10_一般知識
+681,Japan eSIM policy changes 2026,通信・eSIM,,esim_general,pre,policy,A,eSIMポリシー変更クエリ,en,Y,pre,C10_一般知識
+682,Japan eSIM security privacy,通信・eSIM,,esim_general,pre,concern,A,セキュリティ・プライバシークエリ,en,Y,pre,C10_一般知識
+683,Japan eSIM environmental eco-friendly,通信・eSIM,,esim_general,pre,benefit,C,環境配慮クエリ（AI代替）,en,Y,pre,C1_購入・価格
+684,日本 ショッピング中 eSIM データ どれくらい使う,通信・eSIM,ショッピング,esim_shopping,during,planning,B,ショッピング中のデータ消費量クエリ。購入プラン選択に直結,ja,Y,during,C7_シーン別
+685,日本 免税手続き eSIM 必要か,通信・eSIM,ショッピング,esim_shopping,during,feature,B,免税×eSIM。Tax Free手続きにネット必要かどうか,ja,Y,during,C7_シーン別
+686,日本 ショッピングモール フリーWi-Fi eSIM どっちがいい,通信・eSIM,ショッピング,esim_shopping,during,comparison,B,ショッピングモール内の通信手段比較,ja,Y,during,C7_シーン別
+687,日本 アウトドア店 eSIM 電波 入るか,通信・eSIM,ショッピング,esim_shopping,during,coverage,A,アウトドア専門店エリアの電波確認,ja,Y,during,C7_シーン別
+688,日本 百貨店 地下 eSIM 電波,通信・eSIM,ショッピング,esim_shopping,during,coverage,A,百貨店地下フロアの電波状況,ja,Y,during,C7_シーン別
+689,日本 ドン・キホーテ eSIM 使いながら 値段調べ,通信・eSIM,ショッピング,esim_shopping,during,feature,B,ドンキでの価格比較にeSIM活用,ja,Y,during,C7_シーン別
+690,日本 コンビニ eSIM データ残量確認 方法,通信・eSIM,ショッピング,esim_shopping,during,how_to,B,コンビニ立ち寄り中のデータ残量確認,ja,Y,during,C7_シーン別
+691,日本 薬局 ドラッグストア eSIM 翻訳アプリ 使える,通信・eSIM,ショッピング,esim_shopping,during,feature,B,薬局での翻訳アプリ利用,ja,Y,during,C7_シーン別
+692,日本 家電量販店 ビックカメラ eSIM 購入できるか,通信・eSIM,ショッピング,esim_shopping,pre,purchase,B,家電量販店でのeSIM購入可否,ja,Y,pre,C7_シーン別
+693,日本 秋葉原 電気街 eSIM 購入 おすすめ,通信・eSIM,ショッピング,esim_shopping,pre,purchase,B,秋葉原でのeSIM購入クエリ,ja,Y,pre,C7_シーン別
+694,日本 ショッピング中 Google翻訳 eSIM データ消費,通信・eSIM,ショッピング,esim_shopping,during,feature,A,翻訳アプリのデータ消費量,ja,Y,during,C7_シーン別
+695,日本 ショッピング PayPay eSIM なくても使える,通信・eSIM,ショッピング,esim_shopping,during,feature,A,PayPayのオフライン利用可否,ja,Y,during,C7_シーン別
+696,日本 メルカリ フリマ eSIM 使いながら 購入,通信・eSIM,ショッピング,esim_shopping,during,feature,A,フリマアプリ利用中のeSIM活用,ja,Y,during,C7_シーン別
+697,日本 アウトレット eSIM 電波 御殿場 佐野,通信・eSIM,ショッピング,esim_shopping,during,coverage,B,アウトレット（地方）の電波状況,ja,Y,during,C7_シーン別
+698,日本 ショッピング中 Instagram eSIM 投稿できるか,通信・eSIM,ショッピング,esim_shopping,during,feature,B,ショッピング中のInstagram投稿,ja,Y,during,C7_シーン別
+699,日本 ショッピング 購入品 TikTok 動画 eSIM 速度,通信・eSIM,ショッピング,esim_shopping,during,feature,B,TikTok動画投稿のための速度,ja,Y,during,C7_シーン別
+700,日本 免税カウンター 混雑 eSIM 時間つぶし,通信・eSIM,ショッピング,esim_shopping,during,feature,A,免税手続き待ち時間のネット利用,ja,Y,during,C7_シーン別
+701,日本 ショッピング 荷物 宅配 eSIM 追跡,通信・eSIM,ショッピング,esim_shopping,during,feature,A,宅配追跡のためのeSIM活用,ja,Y,during,C7_シーン別
+702,日本 ショッピング 予算管理 アプリ eSIM 使える,通信・eSIM,ショッピング,esim_shopping,during,feature,A,予算管理アプリのオンライン利用,ja,Y,during,C7_シーン別
+703,日本 ショッピング eSIM 無制限 安心 おすすめ,通信・eSIM,ショッピング,esim_shopping,pre,recommendation,B,ショッピング旅行向け無制限プラン,ja,Y,pre,C7_シーン別
+704,日本 街歩き eSIM Google マップ ナビ 使える,通信・eSIM,街中散歩,esim_walking,during,feature,B,街歩き中のGoogleマップ利用,ja,Y,during,C7_シーン別
+705,日本 散歩 eSIM データ どれくらい消費する,通信・eSIM,街中散歩,esim_walking,during,planning,B,散歩中のデータ消費量クエリ,ja,Y,during,C7_シーン別
+706,日本 街中 eSIM 電波 入らない エリア,通信・eSIM,街中散歩,esim_walking,during,coverage,A,電波が入らないエリアの確認,ja,Y,during,C7_シーン別
+707,日本 観光地 eSIM 写真 アップロード 速度,通信・eSIM,街中散歩,esim_walking,during,feature,B,観光写真のSNSアップロード速度,ja,Y,during,C7_シーン別
+708,日本 神社 仏閣 eSIM 電波 入るか,通信・eSIM,街中散歩,esim_walking,during,coverage,B,神社・仏閣エリアの電波状況,ja,Y,during,C7_シーン別
+709,日本 浅草 eSIM 電波 混雑時 速度落ちる,通信・eSIM,街中散歩,esim_walking,during,coverage,B,浅草混雑時の電波速度,ja,Y,during,C7_シーン別
+710,日本 渋谷 原宿 eSIM 電波 混雑 つながるか,通信・eSIM,街中散歩,esim_walking,during,coverage,B,渋谷・原宿の混雑時電波,ja,Y,during,C7_シーン別
+711,日本 京都 嵐山 eSIM 電波 観光シーズン,通信・eSIM,街中散歩,esim_walking,during,coverage,B,嵐山観光シーズンの電波,ja,Y,during,C7_シーン別
+712,日本 大阪 道頓堀 eSIM 電波 夜 速度,通信・eSIM,街中散歩,esim_walking,during,coverage,B,道頓堀夜間の電波速度,ja,Y,during,C7_シーン別
+713,日本 公園 eSIM 電波 代々木 上野 新宿御苑,通信・eSIM,街中散歩,esim_walking,during,coverage,A,都市公園の電波状況,ja,Y,during,C7_シーン別
+714,日本 路地裏 eSIM 電波 入るか,通信・eSIM,街中散歩,esim_walking,during,coverage,A,路地裏・細い道の電波,ja,Y,during,C7_シーン別
+715,日本 散歩 eSIM 翻訳アプリ リアルタイム 使える,通信・eSIM,街中散歩,esim_walking,during,feature,B,リアルタイム翻訳のためのeSIM,ja,Y,during,C7_シーン別
+716,日本 街歩き eSIM Instagram ライブ配信 できるか,通信・eSIM,街中散歩,esim_walking,during,feature,B,Instagram Live配信のための速度,ja,Y,during,C7_シーン別
+717,日本 街歩き TikTok eSIM リアルタイム 投稿,通信・eSIM,街中散歩,esim_walking,during,feature,B,TikTokリアルタイム投稿のためのeSIM,ja,Y,during,C7_シーン別
+718,日本 観光 eSIM 音声ガイド アプリ 使える,通信・eSIM,街中散歩,esim_walking,during,feature,A,音声ガイドアプリのオンライン利用,ja,Y,during,C7_シーン別
+719,日本 街歩き eSIM Google レンズ 使える,通信・eSIM,街中散歩,esim_walking,during,feature,B,Google Lensのリアルタイム翻訳,ja,Y,during,C7_シーン別
+720,日本 観光 eSIM ChatGPT 使いながら 観光案内,通信・eSIM,街中散歩,esim_walking,during,feature,B,ChatGPTを観光案内として活用,ja,Y,during,C7_シーン別
+721,日本 夜の街 eSIM 電波 安定 おすすめ,通信・eSIM,街中散歩,esim_walking,during,coverage,B,夜間の電波安定性クエリ,ja,Y,during,C7_シーン別
+722,日本 花火大会 eSIM 電波 混雑 つながらない,通信・eSIM,街中散歩,esim_walking,during,problem,B,花火大会混雑時の電波問題,ja,Y,during,C7_シーン別
+723,日本 祭り 縁日 eSIM 電波 つながるか,通信・eSIM,街中散歩,esim_walking,during,coverage,B,祭り・縁日での電波状況,ja,Y,during,C7_シーン別
+724,日本 観光 eSIM 地図アプリ オフライン 必要か,通信・eSIM,街中散歩,esim_walking,pre,feature,A,オフラインマップの必要性,ja,Y,pre,C7_シーン別
+725,日本 街歩き eSIM バッテリー 消費 節約方法,通信・eSIM,街中散歩,esim_walking,during,how_to,A,eSIM使用中のバッテリー節約,ja,Y,during,C7_シーン別
+726,日本 観光 eSIM 紙の地図 不要になるか,通信・eSIM,街中散歩,esim_walking,pre,feature,A,eSIMがあれば紙地図不要か,ja,Y,pre,C7_シーン別
+727,日本 散歩 eSIM 万歩計 ヘルスアプリ 使える,通信・eSIM,街中散歩,esim_walking,during,feature,A,ヘルスアプリのオンライン同期,ja,Y,during,C7_シーン別
+728,日本 観光 eSIM 食べログ Googleマップ 口コミ 調べる,通信・eSIM,街中散歩,esim_walking,during,feature,B,グルメ情報検索のためのeSIM,ja,Y,during,C7_シーン別
+729,日本 登山 eSIM 電波 山頂 入るか,通信・eSIM,登山,esim_hiking,during,coverage,B,山頂の電波状況クエリ。高需要,ja,Y,during,C7_シーン別
+730,日本 富士山 eSIM 電波 5合目 8合目 山頂,通信・eSIM,登山,esim_hiking,during,coverage,B,富士山各地点の電波状況,ja,Y,during,C7_シーン別
+731,日本 富士山 eSIM おすすめ キャリア Docomo,通信・eSIM,登山,esim_hiking,pre,recommendation,B,富士山登山向けeSIM推薦,ja,Y,pre,C7_シーン別
+732,日本 北アルプス eSIM 電波 槍ヶ岳 穂高,通信・eSIM,登山,esim_hiking,during,coverage,B,北アルプスの電波状況,ja,Y,during,C7_シーン別
+733,日本 高尾山 eSIM 電波 登山道,通信・eSIM,登山,esim_hiking,during,coverage,B,高尾山の電波状況,ja,Y,during,C7_シーン別
+734,日本 屋久島 eSIM 電波 縄文杉 トレッキング,通信・eSIM,登山,esim_hiking,during,coverage,B,屋久島トレッキングの電波,ja,Y,during,C7_シーン別
+735,日本 登山 eSIM 緊急連絡 使えるか,通信・eSIM,登山,esim_hiking,during,feature,B,登山中の緊急連絡手段としてのeSIM,ja,Y,during,C7_シーン別
+736,日本 登山 eSIM 遭難 GPS 位置情報 共有,通信・eSIM,登山,esim_hiking,during,feature,B,遭難時のGPS位置情報共有,ja,Y,during,C7_シーン別
+737,日本 登山 eSIM 天気予報 リアルタイム 確認,通信・eSIM,登山,esim_hiking,during,feature,B,登山中のリアルタイム天気確認,ja,Y,during,C7_シーン別
+738,日本 登山 eSIM ヤマレコ YAMAP 使える,通信・eSIM,登山,esim_hiking,during,feature,B,登山アプリのオンライン利用,ja,Y,during,C7_シーン別
+739,日本 登山 eSIM オフライン 地図 必要か,通信・eSIM,登山,esim_hiking,pre,feature,B,登山でのオフライン地図の必要性,ja,Y,pre,C7_シーン別
+740,日本 登山 eSIM Docomo 電波 最強 理由,通信・eSIM,登山,esim_hiking,pre,comparison,B,登山でDocomo回線が強い理由,ja,Y,pre,C7_シーン別
+741,日本 登山 eSIM バッテリー 消費 激しい 対策,通信・eSIM,登山,esim_hiking,during,problem,B,登山中のバッテリー消費対策,ja,Y,during,C7_シーン別
+742,日本 登山 eSIM 山小屋 Wi-Fi ある,通信・eSIM,登山,esim_hiking,during,coverage,A,山小屋のWi-Fi有無,ja,Y,during,C7_シーン別
+743,日本 登山 eSIM 圏外 エリア 対策,通信・eSIM,登山,esim_hiking,during,problem,B,圏外エリアでの対策,ja,Y,during,C7_シーン別
+744,日本 富士山 eSIM 外国人 登山 おすすめ プラン,通信・eSIM,登山,esim_hiking,pre,recommendation,B,外国人向け富士山登山eSIMプラン,ja,Y,pre,C7_シーン別
+745,日本 登山 eSIM 防水 スマホ 使えるか,通信・eSIM,登山,esim_hiking,pre,feature,A,防水スマホとeSIMの組み合わせ,ja,Y,pre,C7_シーン別
+746,日本 登山 eSIM 緊急SOS 機能 使えるか,通信・eSIM,登山,esim_hiking,during,feature,B,iPhoneの緊急SOSとeSIM,ja,Y,during,C7_シーン別
+747,日本 ハイキング eSIM 電波 奥多摩 丹沢,通信・eSIM,登山,esim_hiking,during,coverage,B,奥多摩・丹沢の電波状況,ja,Y,during,C7_シーン別
+748,日本 登山 eSIM 写真 SNS アップロード 山頂,通信・eSIM,登山,esim_hiking,during,feature,B,山頂からのSNS投稿,ja,Y,during,C7_シーン別
+749,日本 登山 eSIM 外国人 注意点,通信・eSIM,登山,esim_hiking,pre,planning,B,外国人登山者向けeSIM注意点,ja,Y,pre,C7_シーン別
+750,日本 登山 eSIM 1日 データ どれくらい使う,通信・eSIM,登山,esim_hiking,pre,planning,B,登山1日のデータ消費量,ja,Y,pre,C7_シーン別
+751,日本 登山 eSIM 複数日 縦走 データ 足りるか,通信・eSIM,登山,esim_hiking,pre,planning,B,縦走登山の複数日データ計算,ja,Y,pre,C7_シーン別
+752,日本 登山 eSIM 家族 位置情報 共有 アプリ,通信・eSIM,登山,esim_hiking,during,feature,B,家族との位置情報共有,ja,Y,during,C7_シーン別
+753,日本 登山 eSIM 熊 出没情報 確認 できるか,通信・eSIM,登山,esim_hiking,during,feature,A,熊出没情報のリアルタイム確認,ja,Y,during,C7_シーン別
+754,日本 スキー場 eSIM 電波 入るか,通信・eSIM,ウィンタースポーツ,esim_winter,during,coverage,B,スキー場の電波状況クエリ,ja,Y,during,C7_シーン別
+755,日本 ニセコ eSIM 電波 おすすめ キャリア,通信・eSIM,ウィンタースポーツ,esim_winter,pre,recommendation,B,ニセコスキーリゾートのeSIM推薦,ja,Y,pre,C7_シーン別
+756,日本 白馬 eSIM 電波 スキー場,通信・eSIM,ウィンタースポーツ,esim_winter,during,coverage,B,白馬スキー場の電波状況,ja,Y,during,C7_シーン別
+757,日本 志賀高原 eSIM 電波 スキー,通信・eSIM,ウィンタースポーツ,esim_winter,during,coverage,B,志賀高原の電波状況,ja,Y,during,C7_シーン別
+758,日本 野沢温泉 eSIM 電波 スノーボード,通信・eSIM,ウィンタースポーツ,esim_winter,during,coverage,B,野沢温泉スキー場の電波,ja,Y,during,C7_シーン別
+759,日本 スキー場 eSIM 防水 防寒 大丈夫か,通信・eSIM,ウィンタースポーツ,esim_winter,pre,feature,A,寒冷地でのeSIM動作確認,ja,Y,pre,C7_シーン別
+760,日本 スキー場 eSIM バッテリー 寒さ 減りやすい,通信・eSIM,ウィンタースポーツ,esim_winter,during,problem,B,寒冷地でのバッテリー問題,ja,Y,during,C7_シーン別
+761,日本 スキー eSIM ゲレンデ マップ アプリ 使える,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,B,ゲレンデマップアプリの利用,ja,Y,during,C7_シーン別
+762,日本 スキー場 eSIM リフト待ち 暇つぶし,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,A,リフト待ち中のネット利用,ja,Y,during,C7_シーン別
+763,日本 スキー eSIM 雪山 緊急連絡 使えるか,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,B,雪山での緊急連絡手段,ja,Y,during,C7_シーン別
+764,日本 スキー場 eSIM 動画 撮影 アップロード,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,B,スキー動画のSNSアップロード,ja,Y,during,C7_シーン別
+765,日本 スキー eSIM 天気予報 積雪情報 確認,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,B,積雪情報のリアルタイム確認,ja,Y,during,C7_シーン別
+766,日本 スキー場 eSIM 外国人 英語 サポート,通信・eSIM,ウィンタースポーツ,esim_winter,pre,recommendation,B,外国人スキーヤー向けeSIM,ja,Y,pre,C7_シーン別
+767,日本 ニセコ 外国人 eSIM 英語 おすすめ,通信・eSIM,ウィンタースポーツ,esim_winter,pre,recommendation,B,ニセコ外国人向けeSIM推薦,ja,Y,pre,C7_シーン別
+768,日本 スキー場 eSIM ロッカー 中 電波 入るか,通信・eSIM,ウィンタースポーツ,esim_winter,during,coverage,A,ロッカールームの電波状況,ja,Y,during,C7_シーン別
+769,日本 スキー場 eSIM 1日 データ 何GB 使う,通信・eSIM,ウィンタースポーツ,esim_winter,pre,planning,B,スキー1日のデータ消費量,ja,Y,pre,C7_シーン別
+770,日本 スキー場 eSIM 温泉 施設 電波 入るか,通信・eSIM,ウィンタースポーツ,esim_winter,during,coverage,A,温泉施設内の電波状況,ja,Y,during,C7_シーン別
+771,日本 スノーボード eSIM GoPro 連携 使える,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,A,GoProとeSIMの連携,ja,Y,during,C7_シーン別
+772,日本 スキー場 eSIM Docomo SoftBank どっちが強い,通信・eSIM,ウィンタースポーツ,esim_winter,pre,comparison,B,スキー場でのキャリア比較,ja,Y,pre,C7_シーン別
+773,日本 北海道 スキー eSIM 旅行 おすすめ プラン,通信・eSIM,ウィンタースポーツ,esim_winter,pre,recommendation,B,北海道スキー旅行向けeSIMプラン,ja,Y,pre,C7_シーン別
+774,日本 新幹線 eSIM 電波 速度 どれくらい出る,通信・eSIM,移動,esim_transport,during,coverage,B,新幹線でのeSIM速度,ja,Y,during,C7_シーン別
+775,日本 新幹線 eSIM 動画 見れるか Netflix,通信・eSIM,移動,esim_transport,during,feature,B,新幹線でのNetflix視聴,ja,Y,during,C7_シーン別
+776,日本 新幹線 eSIM トンネル 電波 切れる,通信・eSIM,移動,esim_transport,during,problem,B,新幹線トンネルでの電波切断,ja,Y,during,C7_シーン別
+777,日本 新幹線 eSIM Zoom ビデオ会議 できるか,通信・eSIM,移動,esim_transport,during,feature,B,新幹線でのZoom会議,ja,Y,during,C7_シーン別
+778,日本 地下鉄 eSIM 電波 入るか 全線,通信・eSIM,移動,esim_transport,during,coverage,B,地下鉄全線の電波状況,ja,Y,during,C7_シーン別
+779,日本 地下鉄 eSIM 東京メトロ 都営 電波 違い,通信・eSIM,移動,esim_transport,during,coverage,A,東京メトロ vs 都営地下鉄の電波,ja,Y,during,C7_シーン別
+780,日本 電車 eSIM ナビ 乗り換え アプリ 使える,通信・eSIM,移動,esim_transport,during,feature,B,乗り換えアプリのリアルタイム利用,ja,Y,during,C7_シーン別
+781,日本 バス eSIM 電波 高速バス 長距離,通信・eSIM,移動,esim_transport,during,coverage,B,高速バスの電波状況,ja,Y,during,C7_シーン別
+782,日本 バス eSIM 観光バス 電波 入るか,通信・eSIM,移動,esim_transport,during,coverage,A,観光バスの電波状況,ja,Y,during,C7_シーン別
+783,日本 タクシー eSIM 配車アプリ GO Uber 使える,通信・eSIM,移動,esim_transport,during,feature,B,タクシー配車アプリのeSIM利用,ja,Y,during,C7_シーン別
+784,日本 レンタカー eSIM カーナビ 代わり 使える,通信・eSIM,移動,esim_transport,during,feature,B,レンタカーでのeSIMナビ利用,ja,Y,during,C7_シーン別
+785,日本 レンタカー eSIM Google マップ ナビ 使い方,通信・eSIM,移動,esim_transport,during,how_to,B,レンタカーでのGoogleマップナビ,ja,Y,during,C7_シーン別
+786,日本 レンタカー eSIM テザリング カーナビ 接続,通信・eSIM,移動,esim_transport,during,how_to,A,レンタカーナビへのテザリング接続,ja,Y,during,C7_シーン別
+787,日本 フェリー eSIM 電波 入るか 船内,通信・eSIM,移動,esim_transport,during,coverage,B,フェリー船内の電波状況,ja,Y,during,C7_シーン別
+788,日本 離島 フェリー eSIM 電波 沖縄 石垣,通信・eSIM,移動,esim_transport,during,coverage,B,離島フェリーの電波状況,ja,Y,during,C7_シーン別
+789,日本 ロープウェイ ゴンドラ eSIM 電波 入るか,通信・eSIM,移動,esim_transport,during,coverage,A,ロープウェイ内の電波,ja,Y,during,C7_シーン別
+790,日本 移動中 eSIM 動画ダウンロード 事前 おすすめ,通信・eSIM,移動,esim_transport,pre,how_to,A,移動前の動画ダウンロード推奨,ja,Y,pre,C7_シーン別
+791,日本 電車 eSIM 混雑時 速度落ちる 朝ラッシュ,通信・eSIM,移動,esim_transport,during,problem,B,朝ラッシュ時の電波速度低下,ja,Y,during,C7_シーン別
+792,日本 新幹線 eSIM 車内Wi-Fi eSIM どっちが速い,通信・eSIM,移動,esim_transport,during,comparison,B,新幹線車内Wi-Fi vs eSIM比較,ja,Y,during,C7_シーン別
+793,日本 電車 eSIM 充電 どうする モバイルバッテリー,通信・eSIM,移動,esim_transport,during,how_to,A,電車移動中の充電方法,ja,Y,during,C7_シーン別
+794,日本 移動中 eSIM ChatGPT 使いながら 旅程 相談,通信・eSIM,移動,esim_transport,during,feature,B,移動中のChatGPT活用,ja,Y,during,C7_シーン別
+795,日本 空港バス eSIM 電波 成田 羽田 リムジン,通信・eSIM,移動,esim_transport,during,coverage,B,空港リムジンバスの電波,ja,Y,during,C7_シーン別
+796,日本 スカイライナー eSIM 電波 速度 成田,通信・eSIM,移動,esim_transport,during,coverage,B,スカイライナーの電波速度,ja,Y,during,C7_シーン別
+797,日本 夜行バス eSIM 電波 深夜 使えるか,通信・eSIM,移動,esim_transport,during,coverage,A,夜行バス深夜の電波状況,ja,Y,during,C7_シーン別
+798,日本 電車 eSIM 音楽 Spotify 途切れないか,通信・eSIM,移動,esim_transport,during,feature,B,電車内でのSpotify再生,ja,Y,during,C7_シーン別
+799,日本 飛行機 機内 eSIM 使えるか,通信・eSIM,飛行機,esim_flight,during,feature,B,機内でのeSIM利用可否,ja,Y,during,C7_シーン別
+800,日本 飛行機 機内モード eSIM 設定 方法,通信・eSIM,飛行機,esim_flight,during,how_to,B,機内モードとeSIMの設定方法,ja,Y,during,C7_シーン別
+801,日本 飛行機 機内Wi-Fi eSIM どっちが安い,通信・eSIM,飛行機,esim_flight,during,comparison,B,機内Wi-Fi vs eSIM比較,ja,Y,during,C7_シーン別
+802,日本 飛行機 機内 eSIM 電源オフ 必要か,通信・eSIM,飛行機,esim_flight,during,feature,A,機内でのeSIM電源オフ要否,ja,Y,during,C7_シーン別
+803,日本 飛行機 着陸後 eSIM 自動接続 されるか,通信・eSIM,飛行機,esim_flight,during,feature,B,着陸後のeSIM自動接続,ja,Y,during,C7_シーン別
+804,日本 飛行機 乗り継ぎ eSIM 使えるか 韓国 台湾,通信・eSIM,飛行機,esim_flight,during,feature,B,乗り継ぎ地でのeSIM利用,ja,Y,during,C7_シーン別
+805,日本 飛行機 搭乗前 eSIM 設定 空港 手順,通信・eSIM,飛行機,esim_flight,pre,how_to,B,搭乗前のeSIM設定手順,ja,Y,pre,C7_シーン別
+806,日本 飛行機 機内 eSIM データ 消費 される,通信・eSIM,飛行機,esim_flight,during,feature,A,機内モード中のデータ消費,ja,Y,during,C7_シーン別
+807,日本 飛行機 eSIM QRコード 機内 読み込める,通信・eSIM,飛行機,esim_flight,during,how_to,A,機内でのQRコード読み込み,ja,Y,during,C7_シーン別
+808,日本 飛行機 eSIM デュアルSIM 機内モード 設定,通信・eSIM,飛行機,esim_flight,during,how_to,B,デュアルSIM×機内モードの設定,ja,Y,during,C7_シーン別
+809,日本 飛行機 eSIM 着陸 成田 羽田 すぐ使える,通信・eSIM,飛行機,esim_flight,during,feature,B,着陸直後のeSIM利用可否,ja,Y,during,C7_シーン別
+810,日本 飛行機 eSIM 乗り継ぎ 空港 ラウンジ 使える,通信・eSIM,飛行機,esim_flight,during,feature,A,乗り継ぎラウンジでのeSIM利用,ja,Y,during,C7_シーン別
+811,日本 飛行機 eSIM 出発前 アクティベーション 済ませる,通信・eSIM,飛行機,esim_flight,pre,timing,B,出発前のアクティベーション推奨,ja,Y,pre,C7_シーン別
+812,日本 飛行機 eSIM フライト追跡 アプリ 使える,通信・eSIM,飛行機,esim_flight,during,feature,A,フライト追跡アプリのeSIM利用,ja,Y,during,C7_シーン別
+813,日本 飛行機 eSIM 機内 Netflix ダウンロード 事前,通信・eSIM,飛行機,esim_flight,pre,how_to,A,機内用Netflix事前ダウンロード,ja,Y,pre,C7_シーン別
+814,日本 飛行機 eSIM 搭乗口 電波 つながるか,通信・eSIM,飛行機,esim_flight,during,coverage,A,搭乗口エリアの電波状況,ja,Y,during,C7_シーン別
+815,日本 飛行機 eSIM 保安検査後 電波 入るか,通信・eSIM,飛行機,esim_flight,during,coverage,A,保安検査後エリアの電波,ja,Y,during,C7_シーン別
+816,日本 飛行機 eSIM 家族 連絡 着陸後 すぐ,通信・eSIM,飛行機,esim_flight,during,feature,B,着陸後すぐ家族に連絡,ja,Y,during,C7_シーン別
+817,日本 飛行機 eSIM 入国審査 QRコード 表示 できるか,通信・eSIM,飛行機,esim_flight,during,feature,B,入国審査QRコードの表示,ja,Y,during,C7_シーン別
+818,日本 飛行機 eSIM Visit Japan Web 空港 使える,通信・eSIM,飛行機,esim_flight,during,feature,B,Visit Japan WebとeSIMの連携,ja,Y,during,C7_シーン別
+819,日本 温泉旅館 eSIM 電波 入るか,通信・eSIM,温泉・リゾート,esim_onsen,during,coverage,B,温泉旅館の電波状況,ja,Y,during,C7_シーン別
+820,日本 温泉 eSIM 防水 スマホ 湯船 使える,通信・eSIM,温泉・リゾート,esim_onsen,during,feature,A,温泉でのスマホ利用,ja,Y,during,C7_シーン別
+821,日本 箱根 eSIM 電波 温泉 旅行,通信・eSIM,温泉・リゾート,esim_onsen,during,coverage,B,箱根温泉の電波状況,ja,Y,during,C7_シーン別
+822,日本 草津温泉 eSIM 電波 山奥 入るか,通信・eSIM,温泉・リゾート,esim_onsen,during,coverage,B,草津温泉の電波状況,ja,Y,during,C7_シーン別
+823,日本 別府 eSIM 電波 温泉 九州,通信・eSIM,温泉・リゾート,esim_onsen,during,coverage,B,別府温泉の電波状況,ja,Y,during,C7_シーン別
+824,日本 温泉 eSIM Instagram 写真 投稿 できるか,通信・eSIM,温泉・リゾート,esim_onsen,during,feature,B,温泉写真のInstagram投稿,ja,Y,during,C7_シーン別
+825,日本 リゾートホテル eSIM Wi-Fi eSIM どっちが速い,通信・eSIM,温泉・リゾート,esim_onsen,during,comparison,B,ホテルWi-Fi vs eSIM比較,ja,Y,during,C7_シーン別
+826,日本 沖縄 eSIM 電波 リゾート 離島,通信・eSIM,温泉・リゾート,esim_onsen,during,coverage,B,沖縄離島リゾートの電波,ja,Y,during,C7_シーン別
+827,日本 沖縄 eSIM おすすめ キャリア 離島 電波,通信・eSIM,温泉・リゾート,esim_onsen,pre,recommendation,B,沖縄離島向けeSIM推薦,ja,Y,pre,C7_シーン別
+828,日本 レストラン eSIM 予約 食べログ ぐるなび 使える,通信・eSIM,グルメ,esim_food,during,feature,B,グルメ予約アプリのeSIM利用,ja,Y,during,C7_シーン別
+829,日本 食事中 eSIM Instagram 料理 写真 投稿,通信・eSIM,グルメ,esim_food,during,feature,B,料理写真のInstagram投稿,ja,Y,during,C7_シーン別
+830,日本 居酒屋 eSIM 電波 地下 入るか,通信・eSIM,グルメ,esim_food,during,coverage,A,地下居酒屋の電波状況,ja,Y,during,C7_シーン別
+831,日本 グルメ eSIM Google マップ 口コミ 調べる,通信・eSIM,グルメ,esim_food,during,feature,B,Googleマップでのグルメ検索,ja,Y,during,C7_シーン別
+832,日本 食事 eSIM 翻訳 メニュー 読める,通信・eSIM,グルメ,esim_food,during,feature,B,メニュー翻訳のためのeSIM,ja,Y,during,C7_シーン別
+833,日本 食事 eSIM Google レンズ メニュー 翻訳,通信・eSIM,グルメ,esim_food,during,feature,B,Google Lensでのメニュー翻訳,ja,Y,during,C7_シーン別
+834,日本 食事 eSIM ChatGPT メニュー 説明 聞ける,通信・eSIM,グルメ,esim_food,during,feature,B,ChatGPTへのメニュー質問,ja,Y,during,C7_シーン別
+835,日本 食べ歩き eSIM TikTok 動画 投稿 リアルタイム,通信・eSIM,グルメ,esim_food,during,feature,B,食べ歩き動画のTikTok投稿,ja,Y,during,C7_シーン別
+836,日本 ラーメン店 行列 eSIM 待ち時間 暇つぶし,通信・eSIM,グルメ,esim_food,during,feature,A,行列待ち中のネット利用,ja,Y,during,C7_シーン別
+837,日本 食事 eSIM 支払い QRコード PayPay 使える,通信・eSIM,グルメ,esim_food,during,feature,B,QRコード決済のためのeSIM,ja,Y,during,C7_シーン別
+838,日本 野球観戦 eSIM 電波 球場 入るか,通信・eSIM,スポーツ観戦,esim_sports,during,coverage,B,野球場の電波状況,ja,Y,during,C7_シーン別
+839,日本 サッカー観戦 eSIM 電波 スタジアム,通信・eSIM,スポーツ観戦,esim_sports,during,coverage,B,サッカースタジアムの電波,ja,Y,during,C7_シーン別
+840,日本 コンサート eSIM 電波 混雑 ドーム,通信・eSIM,スポーツ観戦,esim_sports,during,coverage,B,コンサートドームの電波混雑,ja,Y,during,C7_シーン別
+841,日本 東京ドーム eSIM 電波 混雑 つながらない,通信・eSIM,スポーツ観戦,esim_sports,during,problem,B,東京ドームの電波問題,ja,Y,during,C7_シーン別
+842,日本 観戦 eSIM ライブ配信 視聴 できるか,通信・eSIM,スポーツ観戦,esim_sports,during,feature,B,スタジアムでのライブ配信視聴,ja,Y,during,C7_シーン別
+843,日本 テーマパーク eSIM 電波 ディズニー USJ,通信・eSIM,スポーツ観戦,esim_sports,during,coverage,B,テーマパークの電波状況,ja,Y,during,C7_シーン別
+844,日本 ディズニーランド eSIM 電波 混雑 速度,通信・eSIM,スポーツ観戦,esim_sports,during,coverage,B,ディズニーランドの電波混雑,ja,Y,during,C7_シーン別
+845,日本 USJ eSIM 電波 混雑 速度,通信・eSIM,スポーツ観戦,esim_sports,during,coverage,B,USJの電波混雑,ja,Y,during,C7_シーン別
+846,日本 出張 eSIM ビジネス おすすめ プラン,通信・eSIM,ビジネス,esim_business,pre,recommendation,B,ビジネス出張向けeSIMプラン,ja,Y,pre,C7_シーン別
+847,日本 ワーケーション eSIM データ 無制限 必要か,通信・eSIM,ビジネス,esim_business,pre,planning,B,ワーケーション向けデータ量,ja,Y,pre,C7_シーン別
+848,日本 ビジネス eSIM Zoom Teams Slack 使える,通信・eSIM,ビジネス,esim_business,during,feature,B,ビジネスツールのeSIM利用,ja,Y,during,C7_シーン別
+849,日本 出張 eSIM 経費 領収書 出るか,通信・eSIM,ビジネス,esim_business,pre,feature,A,eSIM購入の経費処理,ja,Y,pre,C7_シーン別
+850,日本 コワーキングスペース eSIM Wi-Fi どっちがいい,通信・eSIM,ビジネス,esim_business,during,comparison,B,コワーキングスペースでの通信手段,ja,Y,during,C7_シーン別
+851,日本 カフェ eSIM テザリング ノートPC 使える,通信・eSIM,ビジネス,esim_business,during,feature,B,カフェでのテザリング利用,ja,Y,during,C7_シーン別
+852,日本 ビジネス eSIM VPN 使える 安全か,通信・eSIM,ビジネス,esim_business,during,feature,A,ビジネスVPNとeSIMの互換性,ja,Y,during,C7_シーン別
+853,日本 長期出張 eSIM 1ヶ月 2ヶ月 おすすめ,通信・eSIM,ビジネス,esim_business,pre,recommendation,B,長期出張向けeSIMプラン,ja,Y,pre,C7_シーン別
+854,日本 語学留学 eSIM 長期 おすすめ,通信・eSIM,留学,esim_study,pre,recommendation,B,語学留学向けeSIM推薦,ja,Y,pre,C7_シーン別
+855,日本 留学 eSIM 現地SIM どっちがいい,通信・eSIM,留学,esim_study,pre,comparison,B,留学でのeSIM vs 現地SIM比較,ja,Y,pre,C7_シーン別
+856,日本 留学 eSIM 学校 Wi-Fi eSIM 両方 必要か,通信・eSIM,留学,esim_study,pre,planning,B,留学中の通信手段計画,ja,Y,pre,C7_シーン別
+857,日本 ワーホリ eSIM 長期 データ 安い,通信・eSIM,留学,esim_study,pre,price,B,ワーホリ向け安いeSIM,ja,Y,pre,C7_シーン別
+858,日本 留学 eSIM 銀行口座 開設 SMS 受信 できるか,通信・eSIM,留学,esim_study,during,feature,B,留学中の銀行SMS認証,ja,Y,during,C7_シーン別
+859,日本 留学 eSIM 住民票 登録 電話番号 必要か,通信・eSIM,留学,esim_study,during,feature,A,住民票登録と電話番号,ja,Y,during,C7_シーン別
+860,日本 留学 eSIM 格安SIM 乗り換え タイミング,通信・eSIM,留学,esim_study,during,how_to,B,留学中の格安SIM乗り換え,ja,Y,during,C7_シーン別
+861,日本 eSIM ChatGPT 使える 理由 IPアドレス,通信・eSIM,差別化,esim_yahmobi,pre,feature,B,yah.mobiのJP IP差別化ポイント,ja,Y,pre,P3_JPIP差別化
+862,日本 eSIM 日本のIPアドレス 取得 できる,通信・eSIM,差別化,esim_yahmobi,pre,feature,B,日本IPアドレス取得クエリ,ja,Y,pre,P3_JPIP差別化
+863,日本 eSIM 香港IPアドレス 問題 ChatGPT 使えない,通信・eSIM,差別化,esim_yahmobi,pre,problem,B,香港IP問題でChatGPT使えない,ja,Y,pre,P3_JPIP差別化
+864,日本 eSIM ローカルブレイクアウト 意味 メリット,通信・eSIM,差別化,esim_yahmobi,pre,education,A,ローカルブレイクアウトの説明,ja,Y,pre,P3_JPIP差別化
+865,日本 eSIM Instagram 使えない 原因 IPアドレス,通信・eSIM,差別化,esim_yahmobi,during,problem,B,Instagram使えない原因クエリ,ja,Y,during,P3_JPIP差別化
+866,日本 eSIM TikTok 使えない 原因 解決方法,通信・eSIM,差別化,esim_yahmobi,during,problem,B,TikTok使えない原因と解決,ja,Y,during,P3_JPIP差別化
+867,日本 eSIM 1日1ドル 安い プラン,通信・eSIM,差別化,esim_yahmobi,pre,price,B,yah.mobiの$1/dayプラン訴求,ja,Y,pre,P3_JPIP差別化
+868,日本 eSIM 日割り 料金 おすすめ,通信・eSIM,差別化,esim_yahmobi,pre,price,B,日割り料金プランクエリ,ja,Y,pre,P3_JPIP差別化
+869,日本 eSIM 使った日だけ 課金 プラン,通信・eSIM,差別化,esim_yahmobi,pre,price,B,使用日のみ課金プランクエリ,ja,Y,pre,P3_JPIP差別化
+870,日本 eSIM Docomo 回線 外国人向け おすすめ,通信・eSIM,差別化,esim_yahmobi,pre,recommendation,B,Docomo回線の外国人向けeSIM,ja,Y,pre,P3_JPIP差別化
+871,日本 eSIM 外国人 日本語 サポート なくても 使える,通信・eSIM,差別化,esim_yahmobi,pre,feature,B,日本語サポート不要のeSIM,ja,Y,pre,P3_JPIP差別化
+872,日本 eSIM 設定 簡単 QRコード 読むだけ,通信・eSIM,差別化,esim_yahmobi,pre,feature,B,簡単設定のeSIM訴求,ja,Y,pre,P3_JPIP差別化
+873,日本 桜 花見 eSIM 電波 公園 混雑,通信・eSIM,季節・イベント,esim_seasonal,during,coverage,B,花見シーズンの電波混雑,ja,Y,during,C7_シーン別
+874,日本 花見 eSIM Instagram 写真 投稿 速度,通信・eSIM,季節・イベント,esim_seasonal,during,feature,B,花見写真のInstagram投稿,ja,Y,during,C7_シーン別
+875,日本 紅葉 eSIM 電波 山 観光地,通信・eSIM,季節・イベント,esim_seasonal,during,coverage,B,紅葉スポットの電波状況,ja,Y,during,C7_シーン別
+876,日本 大阪万博 eSIM 電波 会場 2025,通信・eSIM,季節・イベント,esim_seasonal,during,coverage,B,大阪万博会場の電波状況,ja,Y,during,C7_シーン別
+877,日本 年末年始 eSIM 電波 混雑 初詣,通信・eSIM,季節・イベント,esim_seasonal,during,coverage,B,年末年始の電波混雑,ja,Y,during,C7_シーン別
+878,日本 夏祭り eSIM 電波 花火 混雑,通信・eSIM,季節・イベント,esim_seasonal,during,coverage,B,夏祭り・花火大会の電波混雑,ja,Y,during,C7_シーン別
+879,日本 ゴールデンウィーク eSIM 電波 混雑 対策,通信・eSIM,季節・イベント,esim_seasonal,during,problem,B,GW混雑時の電波対策,ja,Y,during,C7_シーン別
+880,日本 クリスマス イルミネーション eSIM 電波 混雑,通信・eSIM,季節・イベント,esim_seasonal,during,coverage,B,イルミネーション会場の電波,ja,Y,during,C7_シーン別
+881,日本 eSIM 子供 スマホ 使わせる 設定 方法,通信・eSIM,特殊シナリオ,esim_special_ja,pre,how_to,B,子供のスマホへのeSIM設定,ja,Y,pre,C7_シーン別
+882,日本 eSIM 高齢者 親 設定 代わりにやる 方法,通信・eSIM,特殊シナリオ,esim_special_ja,pre,how_to,B,高齢者向けeSIM設定サポート,ja,Y,pre,C7_シーン別
+883,日本 eSIM 複数台 タブレット iPad 設定 できるか,通信・eSIM,特殊シナリオ,esim_special_ja,pre,feature,B,タブレットへのeSIM設定,ja,Y,pre,C7_シーン別
+884,日本 eSIM スマートウォッチ Apple Watch 使える,通信・eSIM,特殊シナリオ,esim_special_ja,pre,feature,A,Apple WatchへのeSIM設定,ja,Y,pre,C7_シーン別
+885,日本 eSIM 2枚 同時 使える デュアルSIM 活用,通信・eSIM,特殊シナリオ,esim_special_ja,pre,feature,B,デュアルeSIMの活用方法,ja,Y,pre,C7_シーン別
+886,日本 eSIM 紛失 盗難 スマホ データ 止める 方法,通信・eSIM,特殊シナリオ,esim_special_ja,during,problem,B,端末紛失時のeSIM停止方法,ja,Y,during,C7_シーン別
+887,日本 eSIM 機種変更 新しいスマホ 引き継ぎ 方法,通信・eSIM,特殊シナリオ,esim_special_ja,during,how_to,B,機種変更時のeSIM引き継ぎ,ja,Y,during,C7_シーン別
+888,日本 eSIM 容量 足りない 追加 すぐできるか,通信・eSIM,特殊シナリオ,esim_special_ja,during,problem,B,データ不足時の即時追加購入,ja,Y,during,C7_シーン別
+889,日本 eSIM 2回目 旅行 同じ 使えるか 再利用,通信・eSIM,特殊シナリオ,esim_special_ja,pre,feature,B,2回目旅行でのeSIM再利用,ja,Y,pre,C7_シーン別
+890,日本 eSIM 家族 4人 それぞれ 必要か シェアできるか,通信・eSIM,特殊シナリオ,esim_special_ja,pre,planning,B,家族4人のeSIM計画,ja,Y,pre,C7_シーン別
+891,日本 ショッピング eSIM 予算 管理 アプリ リアルタイム,通信・eSIM,ショッピング,esim_shopping,during,feature,A,予算管理アプリのリアルタイム利用,ja,Y,during,C7_シーン別
+892,日本 ショッピング eSIM 海外送金 PayPal Wise 使える,通信・eSIM,ショッピング,esim_shopping,during,feature,A,海外送金サービスのeSIM利用,ja,Y,during,C7_シーン別
+893,日本 ショッピング eSIM 値段 比較 サイト 使える,通信・eSIM,ショッピング,esim_shopping,during,feature,B,価格比較サイトのリアルタイム利用,ja,Y,during,C7_シーン別
+894,日本 ショッピング eSIM 購入品 重量 超過 調べる,通信・eSIM,ショッピング,esim_shopping,during,feature,A,荷物重量超過の確認,ja,Y,during,C7_シーン別
+895,日本 ショッピング eSIM 為替レート 確認 リアルタイム,通信・eSIM,ショッピング,esim_shopping,during,feature,B,リアルタイム為替レート確認,ja,Y,during,C7_シーン別
+896,日本 ショッピング eSIM 購入品 関税 調べる,通信・eSIM,ショッピング,esim_shopping,during,feature,A,関税情報のリアルタイム確認,ja,Y,during,C7_シーン別
+897,日本 ショッピング eSIM 店舗 営業時間 調べる,通信・eSIM,ショッピング,esim_shopping,during,feature,B,店舗営業時間の確認,ja,Y,during,C7_シーン別
+898,日本 ショッピング eSIM 混雑状況 リアルタイム 確認,通信・eSIM,ショッピング,esim_shopping,during,feature,A,混雑状況のリアルタイム確認,ja,Y,during,C7_シーン別
+899,日本 ショッピング eSIM 購入品 写真 家族 送る,通信・eSIM,ショッピング,esim_shopping,during,feature,B,購入品写真の家族共有,ja,Y,during,C7_シーン別
+900,日本 ショッピング eSIM 宅配便 ヤマト 佐川 追跡,通信・eSIM,ショッピング,esim_shopping,during,feature,A,宅配便追跡のためのeSIM,ja,Y,during,C7_シーン別
+901,日本 コスメ eSIM 成分 調べる 翻訳 アプリ,通信・eSIM,ショッピング,esim_shopping,during,feature,B,コスメ成分翻訳のためのeSIM,ja,Y,during,C7_シーン別
+902,日本 ショッピング eSIM レシート 写真 保存 経費,通信・eSIM,ショッピング,esim_shopping,during,feature,A,レシート写真の経費管理,ja,Y,during,C7_シーン別
+903,日本 ショッピング eSIM 友人 グループ 位置情報 共有,通信・eSIM,ショッピング,esim_shopping,during,feature,B,グループショッピング中の位置共有,ja,Y,during,C7_シーン別
+904,日本 ショッピング eSIM 閉店前 急いで 調べる,通信・eSIM,ショッピング,esim_shopping,during,feature,A,閉店時間の緊急確認,ja,Y,during,C7_シーン別
+905,日本 ショッピング eSIM 試着 写真 SNS 投稿,通信・eSIM,ショッピング,esim_shopping,during,feature,B,試着写真のSNS投稿,ja,Y,during,C7_シーン別
+906,日本 観光 eSIM 音楽 聴きながら 歩く Spotify,通信・eSIM,街中散歩,esim_walking,during,feature,B,散歩中のSpotify利用,ja,Y,during,C7_シーン別
+907,日本 観光 eSIM Podcast 聴きながら 散歩,通信・eSIM,街中散歩,esim_walking,during,feature,A,散歩中のPodcast利用,ja,Y,during,C7_シーン別
+908,日本 観光 eSIM YouTube 動画 見ながら 移動,通信・eSIM,街中散歩,esim_walking,during,feature,B,移動中のYouTube視聴,ja,Y,during,C7_シーン別
+909,日本 観光 eSIM 道に迷った 助けて ChatGPT,通信・eSIM,街中散歩,esim_walking,during,feature,B,道に迷った時のChatGPT活用,ja,Y,during,C7_シーン別
+910,日本 観光 eSIM 緊急 警察 救急 連絡 方法,通信・eSIM,街中散歩,esim_walking,during,feature,B,緊急連絡のためのeSIM,ja,Y,during,C7_シーン別
+911,日本 観光 eSIM 財布 なくした 助けて,通信・eSIM,街中散歩,esim_walking,during,problem,B,財布紛失時のeSIM活用,ja,Y,during,C7_シーン別
+912,日本 観光 eSIM 雨 急に 天気 調べる,通信・eSIM,街中散歩,esim_walking,during,feature,B,急な天気変化の確認,ja,Y,during,C7_シーン別
+913,日本 観光 eSIM 台風 情報 リアルタイム 確認,通信・eSIM,街中散歩,esim_walking,during,feature,B,台風情報のリアルタイム確認,ja,Y,during,C7_シーン別
+914,日本 観光 eSIM 地震 速報 受け取れるか,通信・eSIM,街中散歩,esim_walking,during,feature,B,地震速報の受信,ja,Y,during,C7_シーン別
+915,日本 観光 eSIM 津波 避難 情報 確認,通信・eSIM,街中散歩,esim_walking,during,feature,B,津波・避難情報の確認,ja,Y,during,C7_シーン別
+916,日本 観光 eSIM 夜 安全 エリア 調べる,通信・eSIM,街中散歩,esim_walking,during,feature,A,夜間の安全エリア確認,ja,Y,during,C7_シーン別
+917,日本 観光 eSIM 病院 近く 探す 方法,通信・eSIM,街中散歩,esim_walking,during,feature,B,近くの病院検索,ja,Y,during,C7_シーン別
+918,日本 観光 eSIM 薬局 近く 探す 方法,通信・eSIM,街中散歩,esim_walking,during,feature,B,近くの薬局検索,ja,Y,during,C7_シーン別
+919,日本 観光 eSIM コンビニ ATM 近く 探す,通信・eSIM,街中散歩,esim_walking,during,feature,B,近くのATM検索,ja,Y,during,C7_シーン別
+920,日本 観光 eSIM トイレ 近く 探す アプリ,通信・eSIM,街中散歩,esim_walking,during,feature,B,近くのトイレ検索,ja,Y,during,C7_シーン別
+921,日本 観光 eSIM 写真 撮影 スポット 調べる,通信・eSIM,街中散歩,esim_walking,during,feature,B,フォトスポットの検索,ja,Y,during,C7_シーン別
+922,日本 観光 eSIM 混雑 回避 ルート 調べる,通信・eSIM,街中散歩,esim_walking,during,feature,A,混雑回避ルートの検索,ja,Y,during,C7_シーン別
+923,日本 観光 eSIM 日没 時間 調べる,通信・eSIM,街中散歩,esim_walking,during,feature,A,日没時間の確認,ja,Y,during,C7_シーン別
+924,日本 観光 eSIM 開館 閉館 時間 調べる,通信・eSIM,街中散歩,esim_walking,during,feature,B,施設の開閉館時間確認,ja,Y,during,C7_シーン別
+925,日本 観光 eSIM 入場料 割引 クーポン 調べる,通信・eSIM,街中散歩,esim_walking,during,feature,B,入場料割引クーポンの検索,ja,Y,during,C7_シーン別
+926,日本 登山 eSIM 山岳保険 加入 スマホ できるか,通信・eSIM,登山,esim_hiking,pre,feature,A,山岳保険のオンライン加入,ja,Y,pre,C7_シーン別
+927,日本 登山 eSIM 登山届 オンライン 提出 方法,通信・eSIM,登山,esim_hiking,pre,how_to,B,登山届のオンライン提出,ja,Y,pre,C7_シーン別
+928,日本 登山 eSIM 日の出 時間 確認 山頂,通信・eSIM,登山,esim_hiking,during,feature,A,山頂での日の出時間確認,ja,Y,during,C7_シーン別
+929,日本 登山 eSIM 高山病 症状 調べる,通信・eSIM,登山,esim_hiking,during,feature,A,高山病症状の確認,ja,Y,during,C7_シーン別
+930,日本 登山 eSIM 山小屋 予約 オンライン,通信・eSIM,登山,esim_hiking,pre,feature,B,山小屋のオンライン予約,ja,Y,pre,C7_シーン別
+931,日本 登山 eSIM 登山道 通行止め 情報 確認,通信・eSIM,登山,esim_hiking,during,feature,B,登山道通行止め情報,ja,Y,during,C7_シーン別
+932,日本 登山 eSIM 熊鈴 代わり アプリ ある,通信・eSIM,登山,esim_hiking,during,feature,A,熊鈴アプリの利用,ja,Y,during,C7_シーン別
+933,日本 登山 eSIM 水場 場所 調べる,通信・eSIM,登山,esim_hiking,during,feature,A,登山中の水場情報,ja,Y,during,C7_シーン別
+934,日本 登山 eSIM 下山後 温泉 調べる,通信・eSIM,登山,esim_hiking,during,feature,B,下山後の温泉検索,ja,Y,during,C7_シーン別
+935,日本 登山 eSIM 交通手段 バス 時刻表 確認,通信・eSIM,登山,esim_hiking,during,feature,B,登山口バスの時刻表確認,ja,Y,during,C7_シーン別
+936,日本 登山 eSIM 星空 天気 予報 確認,通信・eSIM,登山,esim_hiking,during,feature,A,星空・天気予報の確認,ja,Y,during,C7_シーン別
+937,日本 登山 eSIM 日本語 わからない 外国人 助けて,通信・eSIM,登山,esim_hiking,during,problem,B,外国人登山者の緊急翻訳,ja,Y,during,C7_シーン別
+938,日本 登山 eSIM 富士山 弾丸登山 禁止 情報,通信・eSIM,登山,esim_hiking,pre,feature,B,富士山弾丸登山禁止情報,ja,Y,pre,C7_シーン別
+939,日本 登山 eSIM 富士山 入山料 支払い 方法,通信・eSIM,登山,esim_hiking,pre,feature,B,富士山入山料の支払い,ja,Y,pre,C7_シーン別
+940,日本 登山 eSIM 富士山 混雑 情報 リアルタイム,通信・eSIM,登山,esim_hiking,during,feature,B,富士山混雑情報のリアルタイム確認,ja,Y,during,C7_シーン別
+941,日本 スキー場 eSIM リフト券 オンライン 購入,通信・eSIM,ウィンタースポーツ,esim_winter,pre,feature,B,リフト券のオンライン購入,ja,Y,pre,C7_シーン別
+942,日本 スキー場 eSIM 雪質 情報 確認 アプリ,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,B,雪質情報の確認,ja,Y,during,C7_シーン別
+943,日本 スキー場 eSIM 宿 予約 直前 できるか,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,B,直前の宿予約,ja,Y,during,C7_シーン別
+944,日本 スキー場 eSIM レンタル 予約 オンライン,通信・eSIM,ウィンタースポーツ,esim_winter,pre,feature,B,スキーレンタルのオンライン予約,ja,Y,pre,C7_シーン別
+945,日本 スキー場 eSIM 友人 はぐれた 位置情報,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,B,スキー場での友人位置情報共有,ja,Y,during,C7_シーン別
+946,日本 スキー場 eSIM 救助 ヘリ 呼ぶ 方法,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,B,スキー場での救助要請,ja,Y,during,C7_シーン別
+947,日本 スキー場 eSIM 雪崩 情報 確認,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,B,雪崩情報の確認,ja,Y,during,C7_シーン別
+948,日本 スキー場 eSIM 混雑 ゲレンデ 情報,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,A,ゲレンデ混雑情報の確認,ja,Y,during,C7_シーン別
+949,日本 スキー場 eSIM 外国人 多い ニセコ 通信,通信・eSIM,ウィンタースポーツ,esim_winter,pre,recommendation,B,外国人が多いニセコの通信事情,ja,Y,pre,C7_シーン別
+950,日本 スキー場 eSIM 手袋 したまま スマホ 操作,通信・eSIM,ウィンタースポーツ,esim_winter,during,feature,A,手袋着用時のスマホ操作,ja,Y,during,C7_シーン別
+951,日本 新幹線 eSIM 予約 変更 スマホ できるか,通信・eSIM,移動,esim_transport,during,feature,B,新幹線予約変更のスマホ操作,ja,Y,during,C7_シーン別
+952,日本 新幹線 eSIM 遅延 情報 リアルタイム 確認,通信・eSIM,移動,esim_transport,during,feature,B,新幹線遅延情報の確認,ja,Y,during,C7_シーン別
+953,日本 電車 eSIM 終電 時間 調べる,通信・eSIM,移動,esim_transport,during,feature,B,終電時間の確認,ja,Y,during,C7_シーン別
+954,日本 電車 eSIM 運休 情報 確認 方法,通信・eSIM,移動,esim_transport,during,feature,B,運休情報の確認,ja,Y,during,C7_シーン別
+955,日本 電車 eSIM Suica チャージ スマホ できるか,通信・eSIM,移動,esim_transport,during,feature,B,Suicaのスマホチャージ,ja,Y,during,C7_シーン別
+956,日本 電車 eSIM 優先席 マナー スマホ 使える,通信・eSIM,移動,esim_transport,during,feature,A,電車内マナーとスマホ利用,ja,Y,during,C7_シーン別
+957,日本 バス eSIM 停留所 調べる アプリ,通信・eSIM,移動,esim_transport,during,feature,B,バス停留所の検索,ja,Y,during,C7_シーン別
+958,日本 タクシー eSIM 英語 通じない 翻訳 アプリ,通信・eSIM,移動,esim_transport,during,feature,B,タクシー内での翻訳アプリ利用,ja,Y,during,C7_シーン別
+959,日本 レンタカー eSIM ETC 設定 方法,通信・eSIM,移動,esim_transport,during,how_to,A,レンタカーのETC設定,ja,Y,during,C7_シーン別
+960,日本 レンタカー eSIM 駐車場 近く 探す,通信・eSIM,移動,esim_transport,during,feature,B,近くの駐車場検索,ja,Y,during,C7_シーン別
+961,日本 レンタカー eSIM ガソリンスタンド 近く 探す,通信・eSIM,移動,esim_transport,during,feature,B,近くのガソリンスタンド検索,ja,Y,during,C7_シーン別
+962,日本 レンタカー eSIM 事故 緊急 連絡 方法,通信・eSIM,移動,esim_transport,during,feature,B,レンタカー事故時の緊急連絡,ja,Y,during,C7_シーン別
+963,日本 移動 eSIM 渋滞 情報 リアルタイム 確認,通信・eSIM,移動,esim_transport,during,feature,B,渋滞情報のリアルタイム確認,ja,Y,during,C7_シーン別
+964,日本 移動 eSIM 道路 通行止め 情報 確認,通信・eSIM,移動,esim_transport,during,feature,B,道路通行止め情報の確認,ja,Y,during,C7_シーン別
+965,日本 移動 eSIM 高速道路 料金 調べる,通信・eSIM,移動,esim_transport,during,feature,A,高速道路料金の確認,ja,Y,during,C7_シーン別
+966,日本 空港 eSIM 購入 どこで 自動販売機,通信・eSIM,飛行機,esim_flight,pre,purchase,B,空港でのeSIM購入場所,ja,Y,pre,C7_シーン別
+967,日本 空港 eSIM 購入 到着後 すぐ 使える,通信・eSIM,飛行機,esim_flight,pre,timing,B,到着後すぐ使えるeSIM,ja,Y,pre,C7_シーン別
+968,日本 空港 eSIM 購入 事前 当日 どっちがいい,通信・eSIM,飛行機,esim_flight,pre,timing,B,事前購入 vs 当日購入の比較,ja,Y,pre,C7_シーン別
+969,日本 空港 eSIM 設定 入国審査 前 後 どっち,通信・eSIM,飛行機,esim_flight,pre,timing,B,eSIM設定のタイミング,ja,Y,pre,C7_シーン別
+970,日本 空港 eSIM フリーWi-Fi 速度 比較,通信・eSIM,飛行機,esim_flight,pre,comparison,B,空港フリーWi-Fi vs eSIM速度比較,ja,Y,pre,C7_シーン別
+971,日本 空港 eSIM 両替 レート 調べる,通信・eSIM,飛行機,esim_flight,during,feature,B,空港両替レートの確認,ja,Y,during,C7_シーン別
+972,日本 空港 eSIM 荷物 追跡 アプリ 使える,通信・eSIM,飛行機,esim_flight,during,feature,A,荷物追跡アプリの利用,ja,Y,during,C7_シーン別
+973,日本 空港 eSIM 搭乗 遅延 情報 確認,通信・eSIM,飛行機,esim_flight,during,feature,B,搭乗遅延情報の確認,ja,Y,during,C7_シーン別
+974,日本 空港 eSIM 免税品 受け取り 場所 確認,通信・eSIM,飛行機,esim_flight,during,feature,A,免税品受け取り場所の確認,ja,Y,during,C7_シーン別
+975,日本 空港 eSIM 乗り継ぎ 時間 暇つぶし,通信・eSIM,飛行機,esim_flight,during,feature,A,乗り継ぎ時間のネット利用,ja,Y,during,C7_シーン別
+976,日本 飛行機 eSIM 機内食 メニュー 調べる,通信・eSIM,飛行機,esim_flight,during,feature,A,機内食メニューの事前確認,ja,Y,during,C7_シーン別
+977,日本 飛行機 eSIM 座席 変更 スマホ できるか,通信・eSIM,飛行機,esim_flight,during,feature,B,座席変更のスマホ操作,ja,Y,during,C7_シーン別
+978,日本 飛行機 eSIM 手荷物 超過 料金 調べる,通信・eSIM,飛行機,esim_flight,during,feature,B,手荷物超過料金の確認,ja,Y,during,C7_シーン別
+979,日本 飛行機 eSIM 乗り遅れ 次の便 調べる,通信・eSIM,飛行機,esim_flight,during,problem,B,乗り遅れ時の次便確認,ja,Y,during,C7_シーン別
+980,日本 飛行機 eSIM パスポート 期限 確認 方法,通信・eSIM,飛行機,esim_flight,pre,feature,A,パスポート期限の確認,ja,Y,pre,C7_シーン別
+981,日本 グルメ eSIM 食物アレルギー 確認 翻訳,通信・eSIM,グルメ,esim_food,during,feature,B,アレルギー情報の翻訳確認,ja,Y,during,C7_シーン別
+982,日本 グルメ eSIM ハラール 食事 近く 探す,通信・eSIM,グルメ,esim_food,during,feature,B,ハラール対応店の検索,ja,Y,during,C7_シーン別
+983,日本 グルメ eSIM ベジタリアン ヴィーガン 店 探す,通信・eSIM,グルメ,esim_food,during,feature,B,ベジタリアン・ヴィーガン店の検索,ja,Y,during,C7_シーン別
+984,日本 グルメ eSIM 行列 待ち時間 確認 アプリ,通信・eSIM,グルメ,esim_food,during,feature,B,行列待ち時間の確認,ja,Y,during,C7_シーン別
+985,日本 グルメ eSIM 予約 当日 できるか ホットペッパー,通信・eSIM,グルメ,esim_food,during,feature,B,当日予約のためのeSIM,ja,Y,during,C7_シーン別
+986,日本 グルメ eSIM 食後 レビュー 投稿 食べログ,通信・eSIM,グルメ,esim_food,during,feature,A,食後レビュー投稿のためのeSIM,ja,Y,during,C7_シーン別
+987,日本 グルメ eSIM 割り勘 計算 アプリ 使える,通信・eSIM,グルメ,esim_food,during,feature,A,割り勘計算アプリの利用,ja,Y,during,C7_シーン別
+988,日本 グルメ eSIM 深夜 営業 店 探す,通信・eSIM,グルメ,esim_food,during,feature,B,深夜営業店の検索,ja,Y,during,C7_シーン別
+989,日本 グルメ eSIM 朝食 モーニング 近く 探す,通信・eSIM,グルメ,esim_food,during,feature,B,モーニング提供店の検索,ja,Y,during,C7_シーン別
+990,日本 グルメ eSIM 食べ放題 近く 安い 探す,通信・eSIM,グルメ,esim_food,during,feature,B,食べ放題店の検索,ja,Y,during,C7_シーン別
+991,日本 温泉 eSIM 入浴 マナー 調べる 外国人,通信・eSIM,温泉・リゾート,esim_onsen,pre,feature,B,温泉マナーの事前確認,ja,Y,pre,C7_シーン別
+992,日本 温泉 eSIM タトゥー 入れる か 確認,通信・eSIM,温泉・リゾート,esim_onsen,pre,feature,B,タトゥー可否の事前確認,ja,Y,pre,C7_シーン別
+993,日本 温泉 eSIM 日帰り 近く 探す,通信・eSIM,温泉・リゾート,esim_onsen,during,feature,B,日帰り温泉の検索,ja,Y,during,C7_シーン別
+994,日本 温泉 eSIM 混浴 場所 調べる,通信・eSIM,温泉・リゾート,esim_onsen,during,feature,A,混浴温泉の検索,ja,Y,during,C7_シーン別
+995,日本 温泉 eSIM 貸切 予約 スマホ できるか,通信・eSIM,温泉・リゾート,esim_onsen,during,feature,B,貸切温泉のスマホ予約,ja,Y,during,C7_シーン別
+996,日本 リゾート eSIM ダイビング 水中 使えるか,通信・eSIM,温泉・リゾート,esim_onsen,during,feature,A,水中でのeSIM利用可否,ja,Y,during,C7_シーン別
+997,日本 沖縄 eSIM シュノーケリング スポット 調べる,通信・eSIM,温泉・リゾート,esim_onsen,during,feature,B,シュノーケリングスポットの検索,ja,Y,during,C7_シーン別
+998,日本 沖縄 eSIM 台風 情報 リアルタイム 確認,通信・eSIM,温泉・リゾート,esim_onsen,during,feature,B,沖縄台風情報の確認,ja,Y,during,C7_シーン別
+999,日本 野球 eSIM チケット 購入 スマホ できるか,通信・eSIM,スポーツ観戦,esim_sports,pre,feature,B,野球チケットのスマホ購入,ja,Y,pre,C7_シーン別
+1000,日本 コンサート eSIM チケット 電子 表示 できるか,通信・eSIM,スポーツ観戦,esim_sports,during,feature,B,電子チケットの表示,ja,Y,during,C7_シーン別
+1001,日本 スタジアム eSIM 座席 案内 アプリ 使える,通信・eSIM,スポーツ観戦,esim_sports,during,feature,A,座席案内アプリの利用,ja,Y,during,C7_シーン別
+1002,日本 コンサート eSIM 撮影 禁止 確認 方法,通信・eSIM,スポーツ観戦,esim_sports,pre,feature,A,撮影禁止ルールの確認,ja,Y,pre,C7_シーン別
+1003,日本 テーマパーク eSIM 待ち時間 確認 アプリ,通信・eSIM,スポーツ観戦,esim_sports,during,feature,B,テーマパーク待ち時間確認,ja,Y,during,C7_シーン別
+1004,日本 テーマパーク eSIM ファストパス 予約 スマホ,通信・eSIM,スポーツ観戦,esim_sports,during,feature,B,ファストパスのスマホ予約,ja,Y,during,C7_シーン別
+1005,日本 ビジネス eSIM 名刺 交換 アプリ 使える,通信・eSIM,ビジネス,esim_business,during,feature,A,デジタル名刺交換のためのeSIM,ja,Y,during,C7_シーン別
+1006,日本 ビジネス eSIM 会議室 予約 スマホ できるか,通信・eSIM,ビジネス,esim_business,during,feature,A,会議室予約のスマホ操作,ja,Y,during,C7_シーン別
+1007,日本 ビジネス eSIM 翻訳 同時通訳 アプリ 使える,通信・eSIM,ビジネス,esim_business,during,feature,B,同時通訳アプリのeSIM利用,ja,Y,during,C7_シーン別
+1008,日本 ビジネス eSIM 契約書 電子署名 スマホ できるか,通信・eSIM,ビジネス,esim_business,during,feature,A,電子署名のスマホ操作,ja,Y,during,C7_シーン別
+1009,日本 ビジネス eSIM 領収書 電子 保存 方法,通信・eSIM,ビジネス,esim_business,during,feature,A,電子領収書の保存方法,ja,Y,during,C7_シーン別
+1010,日本 ビジネス eSIM 出張 報告書 スマホ 作成,通信・eSIM,ビジネス,esim_business,during,feature,A,出張報告書のスマホ作成,ja,Y,during,C7_シーン別
+1011,日本 留学 eSIM 奨学金 申請 オンライン 使える,通信・eSIM,留学,esim_study,during,feature,A,奨学金申請のオンライン操作,ja,Y,during,C7_シーン別
+1012,日本 留学 eSIM 授業 オンライン Zoom 使える,通信・eSIM,留学,esim_study,during,feature,B,オンライン授業のためのeSIM,ja,Y,during,C7_シーン別
+1013,日本 留学 eSIM 図書館 館内 電波 入るか,通信・eSIM,留学,esim_study,during,coverage,A,図書館内の電波状況,ja,Y,during,C7_シーン別
+1014,日本 留学 eSIM 友達 作り SNS 使える,通信・eSIM,留学,esim_study,during,feature,A,SNSでの友達作りのためのeSIM,ja,Y,during,C7_シーン別
+1015,日本 留学 eSIM 仕送り 海外送金 受け取り 方法,通信・eSIM,留学,esim_study,during,feature,A,海外送金受け取りのためのeSIM,ja,Y,during,C7_シーン別
+1016,日本 旅行中 eSIM 体調不良 病院 探す 方法,通信・eSIM,医療・緊急,esim_emergency,during,feature,B,体調不良時の病院検索,ja,Y,during,C7_シーン別
+1017,日本 旅行中 eSIM 救急車 呼ぶ 方法 外国人,通信・eSIM,医療・緊急,esim_emergency,during,feature,B,救急車の呼び方,ja,Y,during,C7_シーン別
+1018,日本 旅行中 eSIM 薬 処方箋 翻訳 方法,通信・eSIM,医療・緊急,esim_emergency,during,feature,B,処方箋翻訳のためのeSIM,ja,Y,during,C7_シーン別
+1019,日本 旅行中 eSIM 旅行保険 申請 スマホ できるか,通信・eSIM,医療・緊急,esim_emergency,during,feature,B,旅行保険申請のスマホ操作,ja,Y,during,C7_シーン別
+1020,日本 旅行中 eSIM パスポート 紛失 大使館 連絡,通信・eSIM,医療・緊急,esim_emergency,during,problem,B,パスポート紛失時の大使館連絡,ja,Y,during,C7_シーン別
+1021,日本 旅行中 eSIM 盗難 警察 届け出 方法,通信・eSIM,医療・緊急,esim_emergency,during,problem,B,盗難届け出のためのeSIM,ja,Y,during,C7_シーン別
+1022,日本 旅行中 eSIM 地震 避難場所 調べる 方法,通信・eSIM,医療・緊急,esim_emergency,during,feature,B,地震時の避難場所検索,ja,Y,during,C7_シーン別
+1023,日本 旅行中 eSIM 大使館 電話番号 調べる,通信・eSIM,医療・緊急,esim_emergency,during,feature,B,大使館電話番号の確認,ja,Y,during,C7_シーン別
+1024,日本 ホテル eSIM チェックイン オンライン 使える,通信・eSIM,宿泊,esim_hotel,during,feature,B,オンラインチェックインのためのeSIM,ja,Y,during,C7_シーン別
+1025,日本 ホテル eSIM 部屋 Wi-Fi eSIM どっちが速い,通信・eSIM,宿泊,esim_hotel,during,comparison,B,ホテル部屋Wi-Fi vs eSIM速度比較,ja,Y,during,C7_シーン別
+1026,日本 ホテル eSIM 予約 直前 スマホ できるか,通信・eSIM,宿泊,esim_hotel,during,feature,B,直前ホテル予約のためのeSIM,ja,Y,during,C7_シーン別
+1027,日本 ホテル eSIM 部屋 番号 変更 スマホ できるか,通信・eSIM,宿泊,esim_hotel,during,feature,A,部屋番号変更のスマホ操作,ja,Y,during,C7_シーン別
+1028,日本 民泊 Airbnb eSIM 鍵 スマートロック 使える,通信・eSIM,宿泊,esim_hotel,during,feature,B,Airbnbスマートロックのためのネット,ja,Y,during,C7_シーン別
+1029,日本 ホテル eSIM 朝食 時間 確認 方法,通信・eSIM,宿泊,esim_hotel,during,feature,A,朝食時間の確認,ja,Y,during,C7_シーン別
+1030,日本 ホテル eSIM ルームサービス 注文 スマホ,通信・eSIM,宿泊,esim_hotel,during,feature,A,ルームサービスのスマホ注文,ja,Y,during,C7_シーン別
+1031,日本 ホテル eSIM 近く 観光スポット 調べる,通信・eSIM,宿泊,esim_hotel,during,feature,B,ホテル周辺観光スポットの検索,ja,Y,during,C7_シーン別
+1032,日本 eSIM 日本 IPアドレス ChatGPT 使える 理由,通信・eSIM,差別化,esim_yahmobi,pre,education,B,日本IPでChatGPT使える理由の説明,ja,Y,pre,P3_JPIP差別化
+1033,日本 eSIM 香港 IP 問題 何が困るか,通信・eSIM,差別化,esim_yahmobi,pre,education,B,香港IP問題の具体的な困りごと,ja,Y,pre,P3_JPIP差別化
+1034,日本 eSIM 日本 IP 確認 方法 ipinfo.io,通信・eSIM,差別化,esim_yahmobi,during,how_to,B,日本IPアドレスの確認方法,ja,Y,during,P3_JPIP差別化
+1035,日本 eSIM 速度制限 なし 無制限 本当か,通信・eSIM,差別化,esim_yahmobi,pre,feature,B,無制限プランの真偽確認,ja,Y,pre,P3_JPIP差別化
+1036,日本 eSIM 日割り 1日から 使える プラン,通信・eSIM,差別化,esim_yahmobi,pre,price,B,1日単位プランのクエリ,ja,Y,pre,P3_JPIP差別化
+1037,日本 eSIM 短期 1日 2日 3日 プラン 安い,通信・eSIM,差別化,esim_yahmobi,pre,price,B,短期1〜3日プランの価格,ja,Y,pre,P3_JPIP差別化
+1038,日本 eSIM 購入 クレジットカード なし 使える,通信・eSIM,差別化,esim_yahmobi,pre,purchase,B,クレカなしでのeSIM購入,ja,Y,pre,P3_JPIP差別化
+1039,日本 eSIM PayPal 購入 できるか,通信・eSIM,差別化,esim_yahmobi,pre,purchase,B,PayPalでのeSIM購入,ja,Y,pre,P3_JPIP差別化
+1040,日本 eSIM 購入後 すぐ 使える 即時 アクティベーション,通信・eSIM,差別化,esim_yahmobi,pre,timing,B,即時アクティベーションのクエリ,ja,Y,pre,P3_JPIP差別化
+1041,日本 eSIM 24時間 サポート 日本語 英語 対応,通信・eSIM,差別化,esim_yahmobi,during,feature,B,24時間サポートのクエリ,ja,Y,during,P3_JPIP差別化

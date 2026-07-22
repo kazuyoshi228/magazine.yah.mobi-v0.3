@@ -56,22 +56,20 @@ export function substitutePlaceholders(text: string | undefined | null, plans: P
 
 const TYPE_LABEL: Record<string, string> = { esim: "eSIM", wifi: "レンタルWiFi", sim: "空港SIM", roaming: "ローミング" };
 
-/** priceBindings から罫線付き比較表 HTML を生成（最安セルをハイライト）。 */
-export function buildCompareTableHtml(bindings: string[], plans: Plan[], meta: PriceMeta): string {
+/** priceBindings から罫線付き自社プラン表 HTML を生成（自社のみのため最安バッジは付けない）。
+ *  asOfDate に記事の公開日（"2026年7月15日" 等）を渡すと「◯◯時点」と表示する。 */
+export function buildCompareTableHtml(bindings: string[], plans: Plan[], meta: PriceMeta, asOfDate?: string): string {
   const map = new Map(plans.map((p) => [p.key, p]));
   const rows = bindings.map((k) => map.get(k)).filter((p): p is Plan => !!p);
   if (!rows.length) return "";
-  const min = Math.min(...rows.map((r) => r.priceJpy));
   const hasPlaceholder = rows.some((r) => r.source === "placeholder");
   const bodyHtml = rows
     .map((r) => {
-      const cheapest = r.priceJpy === min;
-      const priceStyle = `text-align:right;${cheapest ? "font-weight:700;background:#EAF7EE;" : ""}`;
-      const badge = cheapest ? ' <span style="font-size:0.75em;color:#1a7f37;">最安</span>' : "";
-      return `<tr><td>${escapeHtml(r.provider)}</td><td>${escapeHtml(`${r.days}日 / ${r.data}`)}</td><td style="${priceStyle}">¥${fmtJpy(r.priceJpy)}${badge}</td><td>${TYPE_LABEL[r.providerType] ?? escapeHtml(r.providerType)}</td></tr>`;
+      return `<tr><td>${escapeHtml(r.provider)}</td><td>${escapeHtml(`${r.days}日 / ${r.data}`)}</td><td style="text-align:right;">¥${fmtJpy(r.priceJpy)}</td><td>${TYPE_LABEL[r.providerType] ?? escapeHtml(r.providerType)}</td></tr>`;
     })
     .join("");
-  const caption = `${meta.date} ${meta.time} 取得（yah.mobile は決済と同一 Firestore・他社は手動更新）${hasPlaceholder ? "／※サンプル価格・要差し替え" : ""}`;
+  const when = asOfDate ? `${asOfDate}時点` : `${meta.date}時点`;
+  const caption = `${when}の価格（yah.mobile 本体の価格ソースと同一）${hasPlaceholder ? "／※サンプル価格・要差し替え" : ""}`;
   return (
     `<table class="compare-grid">` +
     `<caption style="caption-side:top;text-align:left;font-size:0.8em;color:#666;padding-bottom:0.4em;">${escapeHtml(caption)}</caption>` +

@@ -7,9 +7,9 @@ export default function Login() {
   const { user, loading, login, logout, refresh } = useAuth();
   const [error, setError] = useState<string | null>(null);
 
-  // 管理者としてログイン済みなら CMS へ。非管理者はこのページに留めて案内を出す。
+  // 管理者・編集者としてログイン済みなら CMS へ。権限なしはこのページに留めて案内を出す。
   useEffect(() => {
-    if (user?.role === "admin") {
+    if (user?.role === "admin" || user?.role === "editor") {
       window.location.href = "/admin/cms";
     }
   }, [user]);

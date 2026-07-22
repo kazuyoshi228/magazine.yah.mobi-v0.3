@@ -7,8 +7,13 @@ export interface AuthUser {
   name: string | null;
   email: string | null;
   avatarUrl: string | null;
-  /** admin 判定: カスタムクレーム または admin_whitelist 登録 */
-  role: "admin" | "user";
+  /**
+   * admin  … カスタムクレーム、または admin_whitelist に role:"admin"（role 未設定の既存エントリ含む）
+   * editor … admin_whitelist に role:"editor"。記事は編集できるが公開（status 変更）はできない
+   * user   … 権限なし
+   * ※ 実際の強制は firestore.rules 側。ここは UI 表示の分岐用。
+   */
+  role: "admin" | "editor" | "user";
 }
 
 type UseAuthOptions = {
@@ -31,13 +36,14 @@ export function useAuth(options?: UseAuthOptions) {
       }
       try {
         const token = await fbUser.getIdTokenResult();
-        let isAdmin = token.claims.admin === true;
+        let role: AuthUser["role"] = token.claims.admin === true ? "admin" : "user";
         // カスタムクレームが無ければ admin_whitelist に自分のメールがあるか確認する。
         // （whitelist はトークン更新を待たず追加即時反映される）
-        if (!isAdmin && fbUser.email) {
+        if (role !== "admin" && fbUser.email) {
           try {
             const snap = await getDoc(doc(db, "admin_whitelist", fbUser.email.toLowerCase()));
-            isAdmin = snap.exists();
+            // role 未設定の既存エントリは admin 扱い（後方互換）
+            if (snap.exists()) role = snap.data()?.role === "editor" ? "editor" : "admin";
           } catch {
             /* 未登録 = 権限なし */
           }
@@ -47,7 +53,7 @@ export function useAuth(options?: UseAuthOptions) {
           name: fbUser.displayName,
           email: fbUser.email,
           avatarUrl: fbUser.photoURL,
-          role: isAdmin ? "admin" : "user",
+          role,
         });
       } catch {
         setUser(null);

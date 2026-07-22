@@ -22,9 +22,14 @@
  * 実行:
  *   dry-run（全件）:        node scripts/import-md.mjs
  *   dry-run（単体）:        node scripts/import-md.mjs content/esim/ja/compare.md
- *   エミュレータへ書込:      FIRESTORE_EMULATOR_HOST=localhost:8080 node scripts/import-md.mjs --write
- *   本番へ下書き書込:        GOOGLE_APPLICATION_CREDENTIALS=./sa.json node scripts/import-md.mjs --write
+ *   本番へ下書き書込（単体）: node scripts/import-md.mjs --write content/esim/ja/compare.md
+ *   本番へ全件書込:          node scripts/import-md.mjs --write --all   ← --all の明示が必須（ガード①）
  *   本番へ公開込み（人間）:   ... --write --allow-publish
+ *
+ * 安全ガード:
+ *   ① --write でファイル未指定なら --all 必須（誤コピペで全件上書きする事故の防止）
+ *   ② CMS側の updatedAt が MDファイルの更新時刻より新しい記事はスキップ（鉄則②:
+ *      編集者がCMSで直した記事を古いMDで潰さない）。意図的な上書きは --force。
  */
 import { initializeApp, applicationDefault } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
@@ -42,6 +47,16 @@ const FILE_ARGS = args.filter((a) => !a.startsWith("--"));
 const WRITE = FLAGS.has("--write");
 const ALLOW_PUBLISH = FLAGS.has("--allow-publish");
 const SKIP_VALIDATION = FLAGS.has("--skip-validation");
+const ALL = FLAGS.has("--all");
+const FORCE = FLAGS.has("--force");
+
+// ガード①: --write の全件書き込みは --all を人間が明示した時のみ（誤コピペ・引数忘れ対策）
+if (WRITE && FILE_ARGS.length === 0 && !ALL) {
+  console.error("⛔ --write の全件書き込みには --all の明示が必要です（誤操作防止）。");
+  console.error("   単体: node scripts/import-md.mjs --write content/esim/ja/xxx.md");
+  console.error("   全件: node scripts/import-md.mjs --write --all");
+  process.exit(1);
+}
 // エミュレータ専用のプレビュー公開（MD の status は draft のまま、書き込み時だけ published 扱い）。
 // 本番では絶対に効かない（FIRESTORE_EMULATOR_HOST 必須）。
 const AS_PUBLISHED = FLAGS.has("--as-published");
@@ -125,6 +140,7 @@ function derivePathParts(file) {
 // ─── ファイル → per-lang レコード ─────────────────────────────────────────────
 function readRecord(file) {
   const { section, lang, filename } = derivePathParts(file);
+  const mtimeMs = statSync(file).mtimeMs;
   const { data, body } = parseFrontMatter(readFileSync(file, "utf-8"));
   const slug = data.slug ?? filename;
   const faq = Array.isArray(data.faq)
@@ -134,7 +150,7 @@ function readRecord(file) {
       })
     : undefined;
   return {
-    file, section, lang, slug,
+    file, section, lang, slug, mtimeMs,
     article: {
       slug,
       categorySlug: data.category ?? "esim",
@@ -151,6 +167,9 @@ function readRecord(file) {
       sources: data.sources ?? [],
       distribution: data.distribution ?? ["esim"],
       priceBindings: data.priceBindings ?? [],
+      showCompetitorTable: data.showCompetitorTable ?? false,
+      fieldReport: data.fieldReport ?? null,
+      fieldReportMode: data.fieldReportMode ?? null,
       canonical: data.canonical ?? null,
       market: data.market ?? [],
     },
@@ -174,11 +193,12 @@ function assemble(records) {
       console.warn(`⚠️ 未知の言語ディレクトリ: ${r.lang}（${r.file}）— スキップ`);
       continue;
     }
-    if (!bySlug.has(r.slug)) bySlug.set(r.slug, { article: r.article, translations: {}, files: {} });
+    if (!bySlug.has(r.slug)) bySlug.set(r.slug, { article: r.article, translations: {}, files: {}, mtimeMs: 0 });
     const g = bySlug.get(r.slug);
     if (g.translations[r.lang]) console.warn(`⚠️ 言語重複: ${r.slug} / ${r.lang}`);
     g.translations[r.lang] = r.translation;
     g.files[r.lang] = r.file;
+    g.mtimeMs = Math.max(g.mtimeMs, r.mtimeMs); // ガード②用: 最新MDファイルの更新時刻
     // 記事レベルは ja を優先。ja 以外で先に読まれた場合の上書き最小化
     if (r.lang === "ja") g.article = r.article;
   }
@@ -192,7 +212,7 @@ function validate(slug, g) {
   const a = g.article;
   if (!a.slug) errs.push("slug 必須");
   if (!KNOWN_STATUS.includes(a.status)) errs.push(`status 不正: ${a.status}`);
-  if (!a.layer) errs.push("layer 必須（M/0/1/1.5/3/season）");
+  if (!a.layer) errs.push("layer 必須（M/0/1/1.5/3/season/権威）");
   if (!["esim", "gadget", "gourmet", "travel"].includes(a.categorySlug)) errs.push(`category 不正: ${a.categorySlug}`);
   for (const [lang, t] of Object.entries(g.translations)) {
     if (!t.title) errs.push(`[${lang}] title 必須`);
@@ -232,6 +252,13 @@ function toArticleDoc(g, now, existing) {
     sources: a.sources,
     distribution: a.distribution,
     priceBindings: a.priceBindings,
+    showCompetitorTable: a.showCompetitorTable,
+    // CMS専用フィールド（MDに無い）は既存doc から退避する。
+    // set(merge:false)＝全置換のため、退避しないと再import（例: 多言語化）で消える。
+    // author は「CMSで著者を選んだ時のスナップショット」＝MDには無い → 必ず existing を継ぐ。
+    author: a.author ?? existing?.author ?? null,
+    fieldReport: a.fieldReport ?? existing?.fieldReport ?? null,
+    fieldReportMode: a.fieldReportMode ?? existing?.fieldReportMode ?? null,
     canonical: a.canonical,
     market: a.market,
   };
@@ -276,14 +303,26 @@ const db = getFirestore();
 db.settings({ ignoreUndefinedProperties: true });
 const now = Date.now();
 let wrote = 0;
+let skipped = 0;
 for (const [slug, g] of toWrite) {
   const ref = db.collection("articles").doc(slug);
   const snap = await ref.get();
-  const doc = toArticleDoc(g, now, snap.exists ? snap.data() : null);
+  const existing = snap.exists ? snap.data() : null;
+
+  // ガード②（鉄則②）: CMS側の更新がMDファイルより新しい記事は上書きしない（--force で明示上書き）。
+  // 編集者がCMSで直した内容を、古いMDバックアップで潰す事故を防ぐ。
+  if (existing && !FORCE && existing.updatedAt > g.mtimeMs) {
+    const cmsDate = new Date(existing.updatedAt).toISOString().slice(0, 16).replace("T", " ");
+    console.log(`   ⏭️ スキップ: articles/${slug} — CMS側が新しい（CMS更新 ${cmsDate} > MD更新）。上書きするには --force`);
+    skipped++;
+    continue;
+  }
+
+  const doc = toArticleDoc(g, now, existing);
   if (AS_PUBLISHED) { doc.status = "published"; doc.publishedAt = doc.publishedAt ?? now; }
   await ref.set(doc, { merge: false });
   console.log(`✅ 書込: articles/${slug} (${doc.status})`);
   wrote++;
 }
-console.log(`\n完了: ${wrote} 件書き込み。`);
+console.log(`\n完了: ${wrote} 件書き込み${skipped ? ` / ${skipped} 件スキップ（CMS側が新しい）` : ""}。`);
 process.exit(hasError ? 1 : 0);

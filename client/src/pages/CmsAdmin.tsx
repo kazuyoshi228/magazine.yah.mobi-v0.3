@@ -4,7 +4,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { listAllArticlesAdmin, setArticleIndexed } from "@/lib/db";
 import { useAuth } from "@/_core/hooks/useAuth";
 
-import { Plus, Edit2, FileText, Eye, ShieldCheck, PenLine, Users, ChevronUp, ChevronDown, Languages, UserRound } from "lucide-react";
+import { Plus, Edit2, FileText, Eye, ShieldCheck, PenLine, Users, ChevronUp, ChevronDown, Languages, UserRound, JapaneseYen } from "lucide-react";
 import { CATEGORIES, type ArticleAdminRow, type CategorySlug } from "@shared/types";
 import { toast } from "sonner";
 import SeoHead from "@/components/SeoHead";
@@ -55,7 +55,8 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
     return sorted;
   };
 
-  const isAdmin = !!user && user.role === "admin";
+  // CMS は編集者（editor）も使う。公開権限の有無は記事編集画面と firestore.rules で分岐する。
+  const isAdmin = !!user && (user.role === "admin" || user.role === "editor");
   const { data: allArticles, refetch: refetchArticles } = useQuery({
     queryKey: ["cms", "articles"],
     queryFn: listAllArticlesAdmin,
@@ -113,6 +114,10 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
               <h1 style={{ fontSize: "1.25rem", fontWeight: 500, color: "#FFFFFF", margin: 0, letterSpacing: "-0.02em" }}>CMS管理</h1>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+              <Link href="/admin/plans" style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "0.375rem" }}>
+                <JapaneseYen size={13} strokeWidth={1.5} />
+                プラン価格
+              </Link>
               <Link href="/admin/authors" style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "0.375rem" }}>
                 <Users size={13} strokeWidth={1.5} />
                 Author
@@ -233,6 +238,7 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
                         { label: "ステータス", key: "status" as SortKey },
                         { label: "公開日", key: "publishedAt" as SortKey },
                         { label: "QA", key: null },
+                        { label: "一次", key: null },
                         { label: "INDEX", key: null },
                         { label: "操作", key: null },
                       ]).map((h) => (
@@ -312,6 +318,15 @@ export default function CmsAdmin({ category }: CmsAdminProps) {
                             </span>
                           ) : (
                             <span style={{ fontSize: "0.75rem", color: "#D7D7D7" }}>—</span>
+                          )}
+                        </td>
+                        <td style={{ padding: "1rem 1.25rem" }}>
+                          {a.fieldReportStatus === "field" ? (
+                            <span title="実地レポート（一次データ）実測済み" style={{ fontSize: "0.625rem", fontWeight: 600, letterSpacing: "0.05em", border: "1px solid #1a7f37", color: "#1a7f37", padding: "0.125rem 0.5rem", whiteSpace: "nowrap" }}>実地 ✓</span>
+                          ) : a.fieldReportStatus === "assumed" ? (
+                            <span title="実地レポートは想定（実測前）" style={{ fontSize: "0.625rem", fontWeight: 600, letterSpacing: "0.05em", border: "1px solid #B45309", color: "#B45309", padding: "0.125rem 0.5rem", whiteSpace: "nowrap" }}>想定</span>
+                          ) : (
+                            <span title="実地レポート未取得（準備中）" style={{ fontSize: "0.75rem", color: "#D7D7D7" }}>—</span>
                           )}
                         </td>
                         <td style={{ padding: "1rem 1.25rem" }}>

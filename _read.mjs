@@ -1,0 +1,11 @@
+import { initializeApp, applicationDefault } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
+initializeApp({ credential: applicationDefault(), projectId: "magazine-yah-mobi" });
+const db = getFirestore();
+const s = await db.collection("articles").doc("fukuoka-4-6nin-hotel-hikaku").get();
+const d = s.data();
+console.log("status:", d.status, "/ languages:", d.languages);
+console.log("ja title:", d.translations?.ja?.title);
+console.log("ja body 冒頭:", (d.translations?.ja?.body||"").slice(0,60));
+console.log("ja body に〔要確認〕残ってる?:", (d.translations?.ja?.body||"").includes("〔要確認"));
+console.log("fieldReport:", d.fieldReport ? "有り" : "null");

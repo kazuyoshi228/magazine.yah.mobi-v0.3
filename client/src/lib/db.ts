@@ -53,10 +53,121 @@ function isHomesOnly(a: ArticleDoc): boolean {
 }
 const plansCol = collection(db, "plans");
 
-/** 価格プラン全件（CompareGrid・{{price}} 焼き込み用）。読み取りは公開（firestore.rules）。 */
+// yah.mobile 本体プランの SSOT（公開読み取り可）。案A: 自社価格はここを直読みし、選択時に SSOT docId を priceBindings に保存。
+const SSOT_PROJECT_ID = "yah-mobile-v1-3ed24";
+const SSOT_API_KEY = "AIzaSyDlX00FbPP_Ij709LN0Xtrc26VjFh-57Js"; // web APIキー（公開値・読み取り専用）
+
+function unwrapFsValue(v: Record<string, unknown> | undefined): unknown {
+  if (!v) return undefined;
+  if ("stringValue" in v) return v.stringValue;
+  if ("integerValue" in v) return Number(v.integerValue);
+  if ("doubleValue" in v) return v.doubleValue;
+  if ("booleanValue" in v) return v.booleanValue;
+  if ("nullValue" in v) return null;
+  return undefined;
+}
+
+/** SSOT（yah.mobile 本体）の有効な自社プランを Plan 形で取得。key = SSOT docId。 */
+export async function listSelfPlansFromSSOT(): Promise<Plan[]> {
+  try {
+    const url =
+      `https://firestore.googleapis.com/v1/projects/${SSOT_PROJECT_ID}` +
+      `/databases/(default)/documents/plans?pageSize=300&key=${SSOT_API_KEY}`;
+    const res = await fetch(url);
+    if (!res.ok) return [];
+    const json = (await res.json()) as { documents?: Array<{ name: string; fields?: Record<string, Record<string, unknown>> }> };
+    return (json.documents ?? [])
+      .map((d) => {
+        const f = d.fields ?? {};
+        const id = d.name.split("/").pop() ?? "";
+        return {
+          id,
+          isActive: String(unwrapFsValue(f.isActive) ?? "true"),
+          dataGb: String(unwrapFsValue(f.dataGb) ?? ""),
+          days: Number(unwrapFsValue(f.validityDays) ?? 0),
+          priceJpy: Number(unwrapFsValue(f.priceJpy) ?? 0),
+          updatedAt: Number(unwrapFsValue(f.updatedAt) ?? 0),
+          name: String(unwrapFsValue(f.name) ?? ""),
+        };
+      })
+      .filter((p) => p.isActive === "true" && p.id && p.priceJpy > 0)
+      .map<Plan>((p) => ({
+        key: p.id,
+        provider: "yah.mobile",
+        providerType: "esim",
+        days: p.days,
+        data: p.dataGb ? `${p.dataGb}GB` : "",
+        priceJpy: p.priceJpy,
+        source: "live",
+        confirmedDate: p.updatedAt ? new Date(p.updatedAt).toISOString().slice(0, 10) : null,
+        updatedAt: p.updatedAt,
+        note: p.name || null,
+      }));
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * 価格プラン（CompareGrid・{{price}} 焼き込み・チップ用）。自社（yah.mobile SSOT）のみ。
+ * 競合は competitorPlans SSOT の比較表で扱うため、per-plan の一覧には混ぜない。
+ */
 export async function listPlans(): Promise<Plan[]> {
+  return listSelfPlansFromSSOT();
+}
+
+/** magazine 側で手管理するプランのみ（＝競合）。自社は SSOT にあるためここには含めない。 */
+export async function listMagazinePlans(): Promise<Plan[]> {
   const snap = await getDocs(plansCol);
   return snap.docs.map((d) => d.data() as Plan);
+}
+
+/** 競合比較表「How we compare.」。本体 competitorPlans/main SSOT（公開読み取り可）を取得。 */
+export type CompetitorTable = {
+  columns: Array<{ id: string; label: string }>;
+  rows: Array<{ serviceName: string; isHighlight: boolean; cells: Record<string, string> }>;
+  updatedAt: number;
+};
+
+export async function getCompetitorTableFromSSOT(): Promise<CompetitorTable | null> {
+  try {
+    const url =
+      `https://firestore.googleapis.com/v1/projects/${SSOT_PROJECT_ID}` +
+      `/databases/(default)/documents/competitorPlans/main?key=${SSOT_API_KEY}`;
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const json = (await res.json()) as { fields?: Record<string, Record<string, unknown>> };
+    const f = json.fields ?? {};
+    const colArr = ((f.columns as { arrayValue?: { values?: unknown[] } })?.arrayValue?.values ?? []) as Array<{ mapValue: { fields: Record<string, Record<string, unknown>> } }>;
+    const columns = colArr
+      .map((c) => c.mapValue.fields)
+      .filter((cf) => unwrapFsValue(cf.isActive) !== false)
+      .sort((a, b) => Number(unwrapFsValue(a.sortOrder) ?? 0) - Number(unwrapFsValue(b.sortOrder) ?? 0))
+      .map((cf) => ({ id: String(unwrapFsValue(cf.id) ?? ""), label: String(unwrapFsValue(cf.label) ?? "") }));
+    const rowArr = ((f.rows as { arrayValue?: { values?: unknown[] } })?.arrayValue?.values ?? []) as Array<{ mapValue: { fields: Record<string, Record<string, unknown>> } }>;
+    const rows = rowArr
+      .map((r) => r.mapValue.fields)
+      .filter((rf) => unwrapFsValue(rf.isActive) !== false)
+      .sort((a, b) => Number(unwrapFsValue(a.sortOrder) ?? 0) - Number(unwrapFsValue(b.sortOrder) ?? 0))
+      .map((rf) => {
+        const cellFields = ((rf.cells as { mapValue?: { fields?: Record<string, Record<string, unknown>> } })?.mapValue?.fields ?? {}) as Record<string, Record<string, unknown>>;
+        const cells: Record<string, string> = {};
+        for (const [k, v] of Object.entries(cellFields)) cells[k] = String(unwrapFsValue(v) ?? "");
+        return { serviceName: String(unwrapFsValue(rf.serviceName) ?? ""), isHighlight: unwrapFsValue(rf.isHighlight) === true, cells };
+      });
+    return { columns, rows, updatedAt: Number(unwrapFsValue(f.updatedAt) ?? 0) };
+  } catch {
+    return null;
+  }
+}
+
+/** プラン upsert（docId = key。magazine 側の競合価格のみ。自社は本体 SSOT で更新する） */
+export async function savePlan(p: Omit<Plan, "updatedAt">): Promise<void> {
+  await setDoc(doc(plansCol, p.key), { ...p, updatedAt: Date.now() });
+}
+
+export async function deletePlan(key: string): Promise<void> {
+  await deleteDoc(doc(plansCol, key));
 }
 
 // ─── Public reads ─────────────────────────────────────────────────────────────
@@ -135,6 +246,10 @@ export async function getArticleBySlug(slug: string, lang: Lang): Promise<Articl
         author: a.author ?? null,
         homesOnly: isHomesOnly(a),
         handoff: a.handoff ?? [],
+        priceBindings: a.priceBindings ?? [],
+        showCompetitorTable: a.showCompetitorTable ?? false,
+        fieldReport: a.fieldReport ?? null,
+        fieldReportMode: a.fieldReportMode ?? null,
       },
       categories: getCategory(a.categorySlug),
       ai_writers: null,
@@ -167,6 +282,7 @@ export async function listAllArticlesAdmin(): Promise<ArticleAdminRow[]> {
       googleIndexed: a.googleIndexed ?? false,
       ultracodeQaAt: a.ultracodeQaAt ?? null,
       ultracodeQaFindings: a.ultracodeQaFindings ?? 0,
+      fieldReportStatus: a.fieldReport ? (a.fieldReportMode === "assumed" ? "assumed" : "field") : null,
       languages: langs,
     };
   });
@@ -195,6 +311,13 @@ export interface ArticleMetaInput {
   distribution?: DistributionSurface[];
   market?: string[];
   author?: ArticleAuthor | null;
+  /** 通信カテゴリ: FAQ直前に自動挿入されるプラン表（自社SSOT docID） */
+  priceBindings?: string[];
+  /** compare/vs記事: 本体 competitorPlans SSOT の「How we compare.」比較表を挿入 */
+  showCompetitorTable?: boolean;
+  /** 実地レポート（一次データ）。AI本文と独立に後から編集。 */
+  fieldReport?: string | null;
+  fieldReportMode?: "field" | "assumed" | null;
 }
 
 /** 新規作成。docId = slug。既存 slug は拒否 */
@@ -225,6 +348,10 @@ export async function createArticle(meta: ArticleMetaInput): Promise<{ id: strin
     distribution: meta.distribution ?? ["esim"],
     market: meta.market ?? [],
     author: meta.author ?? null,
+    priceBindings: meta.priceBindings ?? [],
+    showCompetitorTable: meta.showCompetitorTable ?? false,
+    fieldReport: meta.fieldReport ?? null,
+    fieldReportMode: meta.fieldReportMode ?? null,
   };
   await setDoc(refDoc, data);
   return { id: meta.slug };
@@ -337,10 +464,15 @@ export async function countUniqueVisitors30d(opts?: { articleSlugs?: Set<string>
 
 const whitelistCol = collection(db, "admin_whitelist");
 
+/** editor は記事を編集できるが status を変更できない（公開は admin のみ・firestore.rules で強制）。 */
+export type WhitelistRole = "admin" | "editor";
+
 export interface WhitelistEntry {
   email: string;
   addedBy: string | null;
   addedAt: number;
+  /** 未設定の既存エントリは admin 扱い（後方互換）。 */
+  role?: WhitelistRole;
 }
 
 export async function listWhitelist(): Promise<WhitelistEntry[]> {
@@ -353,7 +485,11 @@ function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
 }
 
-export async function addToWhitelist(email: string, addedBy: string | null): Promise<void> {
+export async function addToWhitelist(
+  email: string,
+  addedBy: string | null,
+  role: WhitelistRole = "editor",
+): Promise<void> {
   const normalized = normalizeEmail(email);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized)) {
     throw new Error("メールアドレスの形式が正しくありません。");
@@ -362,6 +498,7 @@ export async function addToWhitelist(email: string, addedBy: string | null): Pro
     email: normalized,
     addedBy,
     addedAt: Date.now(),
+    role,
   } satisfies WhitelistEntry);
 }
 

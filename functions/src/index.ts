@@ -45,13 +45,18 @@ interface ArticleDoc {
   languages: Lang[];
   translations: Partial<Record<Lang, Translation>>;
   priceBindings?: string[];
+  showCompetitorTable?: boolean;
+  fieldReport?: string | null;
+  fieldReportMode?: "field" | "assumed" | null;
   // v9 配信面（design_guides_pipeline.md）
   distribution?: string[];
   layer?: string;
   hesitation?: string | null;
   handoff?: string[];
   primaryQuery?: string;
+  secondaryQueries?: string[];
   confirmedDate?: string | null;
+  canonical?: string | null;
   /** 著者スナップショット（CMSで選択時に保存・email は含まない） */
   author?: { id: string; name: string; title: string; photoUrl: string | null } | null;
 }
@@ -64,6 +69,23 @@ interface ArticleDoc {
 function isHomesOnly(a: ArticleDoc): boolean {
   const d = a.distribution ?? [];
   return d.includes("homes") && !d.includes("esim") && !d.includes("guides");
+}
+
+/**
+ * ヘッド（別ドメイン）が正規URLを持つ記事の、その正規URL。
+ * eSIM記事の正規面は yah.mobi ヘッド（実URL: /guides/esim/{lang}/{slug}）。
+ * magazine の SSR ページは GEO 用に残すが、canonical はヘッドへ向けて重複を解消する。
+ * 判定は保存 canonical（例 "/esim/ja/esim-chatgpt"）の先頭セクションで行う（distribution 未設定でも効く）。
+ * homes は magazine では 404 のため対象外。
+ */
+function headCanonical(a: ArticleDoc, lang: Lang): string | null {
+  const m = (a.canonical ?? "").match(/^\/(esim)\/[a-z-]+\/([a-z0-9-]+)\/?$/i);
+  if (!m) return null;
+  return `https://yah.mobi/guides/esim/${lang}/${m[2]}`;
+}
+/** ヘッドが正規URLを持つ記事か（magazine の sitemap から除外するため・lang 非依存）。 */
+function isHeadOwned(a: ArticleDoc): boolean {
+  return /^\/esim\//.test(a.canonical ?? "");
 }
 
 interface Plan {
@@ -204,21 +226,18 @@ function substitutePlaceholders(text: string, plans: Plan[], meta: { date: strin
   });
 }
 
-function buildCompareTableHtml(bindings: string[], plans: Plan[], meta: { date: string; time: string }): string {
+function buildCompareTableHtml(bindings: string[], plans: Plan[], meta: { date: string; time: string }, asOfDate?: string): string {
   const map = new Map(plans.map((p) => [p.key, p]));
   const rows = bindings.map((k) => map.get(k)).filter((p): p is Plan => !!p);
   if (!rows.length) return "";
-  const min = Math.min(...rows.map((r) => r.priceJpy));
   const hasPlaceholder = rows.some((r) => r.source === "placeholder");
   const bodyHtml = rows
     .map((r) => {
-      const cheapest = r.priceJpy === min;
-      const priceStyle = `text-align:right;${cheapest ? "font-weight:700;background:#EAF7EE;" : ""}`;
-      const badge = cheapest ? ' <span style="font-size:0.75em;color:#1a7f37;">最安</span>' : "";
-      return `<tr><td>${esc(r.provider)}</td><td>${esc(`${r.days}日 / ${r.data}`)}</td><td style="${priceStyle}">¥${fmtJpy(r.priceJpy)}${badge}</td><td>${PLAN_TYPE_LABEL[r.providerType] ?? esc(r.providerType)}</td></tr>`;
+      return `<tr><td>${esc(r.provider)}</td><td>${esc(`${r.days}日 / ${r.data}`)}</td><td style="text-align:right;">¥${fmtJpy(r.priceJpy)}</td><td>${PLAN_TYPE_LABEL[r.providerType] ?? esc(r.providerType)}</td></tr>`;
     })
     .join("");
-  const caption = `${meta.date} ${meta.time} 取得（yah.mobile は決済と同一 Firestore・他社は手動更新）${hasPlaceholder ? "／※サンプル価格・要差し替え" : ""}`;
+  const when = asOfDate ? `${asOfDate}時点` : `${meta.date}時点`;
+  const caption = `${when}の価格（yah.mobile 本体の価格ソースと同一）${hasPlaceholder ? "／※サンプル価格・要差し替え" : ""}`;
   return (
     `<table class="compare-grid">` +
     `<caption style="caption-side:top;text-align:left;font-size:0.8em;color:#666;padding-bottom:0.4em;">${esc(caption)}</caption>` +
@@ -245,13 +264,136 @@ function renderCompareBody(body: string, plans: Plan[]): string {
   return html;
 }
 
-async function getPlans(): Promise<Plan[]> {
+// yah.mobile 本体プランの単一の真実の源（SSOT）。plans は公開読み取り可（firestore.rules: allow read: if true）。
+// 自社価格は本体で更新すれば magazine にも自動追随する（鉄則③・価格の二重管理をしない）。
+const SSOT_PROJECT_ID = "yah-mobile-v1-3ed24";
+const SSOT_API_KEY = "AIzaSyDlX00FbPP_Ij709LN0Xtrc26VjFh-57Js"; // web APIキー（公開値・読み取り専用）
+
+/** Firestore REST の型付き値を素の JS 値へ。 */
+function unwrapFsValue(v: Record<string, unknown> | undefined): unknown {
+  if (!v) return undefined;
+  if ("stringValue" in v) return v.stringValue;
+  if ("integerValue" in v) return Number(v.integerValue);
+  if ("doubleValue" in v) return v.doubleValue;
+  if ("booleanValue" in v) return v.booleanValue;
+  if ("nullValue" in v) return null;
+  return undefined;
+}
+
+/** SSOT（yah.mobile 本体）の有効な自社プランを magazine の Plan 形へ写像。docId をそのまま key にする（案A: priceBindings は SSOT docId を指す）。 */
+async function getSelfPlansFromSSOT(): Promise<Plan[]> {
   try {
-    const snap = await db.collection("plans").get();
-    return snap.docs.map((d) => d.data() as Plan);
+    const url =
+      `https://firestore.googleapis.com/v1/projects/${SSOT_PROJECT_ID}` +
+      `/databases/(default)/documents/plans?pageSize=300&key=${SSOT_API_KEY}`;
+    const res = await fetch(url);
+    if (!res.ok) return [];
+    const json = (await res.json()) as { documents?: Array<{ name: string; fields?: Record<string, Record<string, unknown>> }> };
+    const docs = json.documents ?? [];
+    return docs
+      .map((d) => {
+        const f = d.fields ?? {};
+        const id = d.name.split("/").pop() ?? "";
+        const isActive = String(unwrapFsValue(f.isActive) ?? "true");
+        const dataGb = String(unwrapFsValue(f.dataGb) ?? "");
+        const days = Number(unwrapFsValue(f.validityDays) ?? 0);
+        const priceJpy = Number(unwrapFsValue(f.priceJpy) ?? 0);
+        const updatedAt = Number(unwrapFsValue(f.updatedAt) ?? 0);
+        const name = String(unwrapFsValue(f.name) ?? "");
+        return { id, isActive, dataGb, days, priceJpy, updatedAt, name };
+      })
+      .filter((p) => p.isActive === "true" && p.id && p.priceJpy > 0)
+      .map<Plan>((p) => ({
+        key: p.id,
+        provider: "yah.mobile",
+        providerType: "esim",
+        days: p.days,
+        data: p.dataGb ? `${p.dataGb}GB` : "",
+        priceJpy: p.priceJpy,
+        source: "live",
+        confirmedDate: p.updatedAt ? new Date(p.updatedAt).toISOString().slice(0, 10) : null,
+        updatedAt: p.updatedAt,
+        note: p.name || null,
+      }));
   } catch {
     return [];
   }
+}
+
+// 競合比較表「How we compare.」の SSOT（本体 competitorPlans/main・公開読み取り可）。
+// yah.mobile 行＋競合各社の完成済み比較表。magazine では手管理せず、そのまま焼き込む。
+interface CompetitorTable {
+  columns: Array<{ id: string; label: string }>;
+  rows: Array<{ serviceName: string; isHighlight: boolean; cells: Record<string, string> }>;
+  updatedAt: number;
+}
+
+async function getCompetitorTable(): Promise<CompetitorTable | null> {
+  try {
+    const url =
+      `https://firestore.googleapis.com/v1/projects/${SSOT_PROJECT_ID}` +
+      `/databases/(default)/documents/competitorPlans/main?key=${SSOT_API_KEY}`;
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const json = (await res.json()) as { fields?: Record<string, Record<string, unknown>> };
+    const f = json.fields ?? {};
+    const colArr = ((f.columns as { arrayValue?: { values?: unknown[] } })?.arrayValue?.values ?? []) as Array<{ mapValue: { fields: Record<string, Record<string, unknown>> } }>;
+    const columns = colArr
+      .map((c) => c.mapValue.fields)
+      .filter((cf) => unwrapFsValue(cf.isActive) !== false)
+      .sort((a, b) => Number(unwrapFsValue(a.sortOrder) ?? 0) - Number(unwrapFsValue(b.sortOrder) ?? 0))
+      .map((cf) => ({ id: String(unwrapFsValue(cf.id) ?? ""), label: String(unwrapFsValue(cf.label) ?? "") }));
+    const rowArr = ((f.rows as { arrayValue?: { values?: unknown[] } })?.arrayValue?.values ?? []) as Array<{ mapValue: { fields: Record<string, Record<string, unknown>> } }>;
+    const rows = rowArr
+      .map((r) => r.mapValue.fields)
+      .filter((rf) => unwrapFsValue(rf.isActive) !== false)
+      .sort((a, b) => Number(unwrapFsValue(a.sortOrder) ?? 0) - Number(unwrapFsValue(b.sortOrder) ?? 0))
+      .map((rf) => {
+        const cellFields = ((rf.cells as { mapValue?: { fields?: Record<string, Record<string, unknown>> } })?.mapValue?.fields ?? {}) as Record<string, Record<string, unknown>>;
+        const cells: Record<string, string> = {};
+        for (const [k, v] of Object.entries(cellFields)) cells[k] = String(unwrapFsValue(v) ?? "");
+        return {
+          serviceName: String(unwrapFsValue(rf.serviceName) ?? ""),
+          isHighlight: unwrapFsValue(rf.isHighlight) === true,
+          cells,
+        };
+      });
+    return { columns, rows, updatedAt: Number(unwrapFsValue(f.updatedAt) ?? 0) };
+  } catch {
+    return null;
+  }
+}
+
+function buildCompetitorTableHtml(table: CompetitorTable, lang: Lang): string {
+  if (!table.columns.length || !table.rows.length) return "";
+  const head = table.columns.map((c) => `<th>${esc(c.label)}</th>`).join("");
+  const body = table.rows
+    .map((r) => {
+      const style = r.isHighlight ? ' style="font-weight:700;background:#EAF7EE;"' : "";
+      const tds = table.columns
+        .map((c, i) => {
+          const v = c.id === "service" ? r.serviceName : (r.cells[c.id] ?? "—");
+          return `<td${i === 0 ? style : ""}>${esc(v)}</td>`;
+        })
+        .join("");
+      return `<tr${r.isHighlight ? style : ""}>${tds}</tr>`;
+    })
+    .join("");
+  const date = table.updatedAt ? new Date(table.updatedAt).toISOString().slice(0, 10) : "";
+  const cap = lang === "ja" ? `${date} 時点の比較（他社は概算・自社が最安を強調）` : `Comparison as of ${date}`;
+  return (
+    `<table class="competitor-grid">` +
+    `<caption style="caption-side:top;text-align:left;font-size:0.8em;color:#666;padding-bottom:0.4em;">${esc(cap)}</caption>` +
+    `<thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`
+  );
+}
+
+/**
+ * 記事に焼き込む自社プラン群（priceBindings 用）。本体 SSOT（plans）のみ（案A・key=SSOT docId）。
+ * 競合は competitorPlans SSOT の比較表（showCompetitorTable）で扱うため、ここには混ぜない。
+ */
+async function getPlans(): Promise<Plan[]> {
+  return getSelfPlansFromSSOT();
 }
 
 const AI_CRAWLERS: Array<[RegExp, string]> = [
@@ -313,6 +455,38 @@ async function renderHomesFeed(): Promise<string> {
   return JSON.stringify(feed);
 }
 
+// ─── /feeds/esim.json（yah.mobile 配信用フィード・esim_pipeline_magazine.md） ────
+// homes feed の対称。ヘッド(yah.mobile Astro)が build時に取得し /guides/esim/{lang}/{slug} を静的描画する。
+// 価格の数値は載せない（鉄則③）。priceBindings(docID) のみ渡し、ヘッドが自前SSOTで焼く。
+async function renderEsimFeed(): Promise<string> {
+  const articles = (await getPublishedArticles()).filter((a) => (a.distribution ?? ["esim"]).includes("esim"));
+  const feed = articles.map((a) => ({
+    slug: a.slug,
+    categorySlug: a.categorySlug,
+    schemaType: a.schemaType,
+    layer: a.layer ?? null,
+    hesitation: a.hesitation ?? null,
+    handoff: a.handoff ?? [],
+    primaryQuery: a.primaryQuery ?? null,
+    secondaryQueries: a.secondaryQueries ?? [],
+    confirmedDate: a.confirmedDate ?? null,
+    publishedAt: a.publishedAt,
+    updatedAt: a.updatedAt,
+    thumbnailUrl: a.thumbnailUrl,
+    author: a.author ?? null,
+    languages: a.languages ?? [],
+    priceBindings: a.priceBindings ?? [],          // ★SSOT docID（数値でない）
+    showCompetitorTable: a.showCompetitorTable ?? false,
+    fieldReport: a.fieldReport ?? null,            // ★実地レポート（一次データ・Markdown）
+    fieldReportMode: a.fieldReportMode ?? null,    // "field"=実測 / "assumed"=想定
+    // 正規URLはヘッドが slug×lang から /guides/esim/{lang}/{slug} で確定する。
+    // ここは記事保存値の参考パス（既定言語ぶん）を渡す。
+    canonical: a.canonical ?? null,
+    translations: a.translations,
+  }));
+  return JSON.stringify(feed);
+}
+
 // ─── llms.txt ─────────────────────────────────────────────────────────────────
 async function renderLlmsTxt(): Promise<string> {
   const articles = (await getPublishedArticles()).filter((a) => !isHomesOnly(a));
@@ -320,7 +494,10 @@ async function renderLlmsTxt(): Promise<string> {
     .map((a) => {
       const t = a.translations.en ?? a.translations.ja;
       if (!t) return null;
-      return `- [${t.title}](${BASE_URL}/articles/${a.slug}): ${t.excerpt ?? ""}`.trim();
+      // ヘッドが正規面を持つ記事は、AIも正規URL（ヘッド）へ誘導する。
+      const lang: Lang = a.translations.en ? "en" : "ja";
+      const url = headCanonical(a, lang) ?? `${BASE_URL}/articles/${a.slug}`;
+      return `- [${t.title}](${url}): ${t.excerpt ?? ""}`.trim();
     })
     .filter(Boolean)
     .join("\n");
@@ -362,7 +539,8 @@ Full sitemap: ${BASE_URL}/sitemap.xml
 
 // ─── sitemap.xml ──────────────────────────────────────────────────────────────
 async function renderSitemap(): Promise<string> {
-  const articles = (await getPublishedArticles()).filter((a) => !isHomesOnly(a));
+  // homes（magazine非配信）とヘッド所有（正規はヘッド側）を sitemap から除外し、矛盾シグナルを断つ。
+  const articles = (await getPublishedArticles()).filter((a) => !isHomesOnly(a) && !isHeadOwned(a));
   const staticUrls = [
     { loc: `${BASE_URL}/`, priority: "1.0" },
     { loc: `${BASE_URL}/articles`, priority: "0.9" },
@@ -381,11 +559,19 @@ async function renderSitemap(): Promise<string> {
 }
 
 // ─── 記事ページ（メタ + JSON-LD + クローラー向け本文の注入） ────────────────────
+// 管理用プレフィックス「W1-03｜」を配信タイトルから除去（クローラー/AIに社内番号を見せない）
+function stripWavePrefix(s: string): string {
+  return (s ?? "").replace(/^W\d+-\d+\s*[｜|]\s*/, "");
+}
+
 function buildHeadTags(a: ArticleDoc, t: Translation, lang: Lang, plans: Plan[], meta: { date: string; time: string }): string {
-  const sub = (s: string) => substitutePlaceholders(s, plans, meta);
+  const sub = (s: string) => stripWavePrefix(substitutePlaceholders(s, plans, meta));
   const title = sub(t.metaTitle || t.title);
   const desc = sub(t.metaDescription || t.excerpt || "");
-  const url = `${BASE_URL}/articles/${a.slug}`;
+  const selfUrl = `${BASE_URL}/articles/${a.slug}`;
+  // 正規URL: ヘッド(yah.mobi等)が正規面を持つ記事はそちらへ向け、重複コンテンツを解消。
+  // それ以外（magazine自身が正規）は自URL。og:url・JSON-LD・canonical で統一する。
+  const url = headCanonical(a, lang) ?? selfUrl;
   const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": a.schemaType || "Article",
@@ -402,7 +588,12 @@ function buildHeadTags(a: ArticleDoc, t: Translation, lang: Lang, plans: Plan[],
     url,
   };
   const hreflang = (a.languages ?? [])
-    .map((l) => `<link rel="alternate" hreflang="${l}" href="${url}?lang=${l}" />`)
+    .map((l) => {
+      const langCode = l as Lang;
+      // ヘッドが正規面を持つなら各言語のヘッドURL、そうでなければ magazine の ?lang= 形式。
+      const href = headCanonical(a, langCode) ?? `${selfUrl}?lang=${l}`;
+      return `<link rel="alternate" hreflang="${l}" href="${href}" />`;
+    })
     .join("\n    ");
   const faqScript =
     t.faq && t.faq.length
@@ -434,15 +625,36 @@ function buildHeadTags(a: ArticleDoc, t: Translation, lang: Lang, plans: Plan[],
     .join("\n    ");
 }
 
-function buildSeoContent(a: ArticleDoc, t: Translation, lang: Lang, plans: Plan[], meta: { date: string; time: string }): string {
+function buildSeoContent(a: ArticleDoc, t: Translation, lang: Lang, plans: Plan[], meta: { date: string; time: string }, competitor: CompetitorTable | null): string {
   const date = a.publishedAt ? new Date(a.publishedAt).toISOString().split("T")[0] : "";
+  // プラン表の「◯◯時点の価格」＝記事の公開日（JST）。未公開なら確認日→なければ本日。
+  const asOfMs = a.publishedAt ?? a.updatedAt ?? Date.now();
+  const asOfDate = new Date(asOfMs).toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo", year: "numeric", month: "long", day: "numeric" });
   const sub = (s: string) => substitutePlaceholders(s, plans, meta);
   return `<div id="seo-content">
 <article>
-<h1>${esc(sub(t.title))}</h1>
+<h1>${esc(stripWavePrefix(sub(t.title)))}</h1>
 ${date ? `<p><time datetime="${date}">${date}</time> · ${esc(a.categorySlug)} · yah.magazine</p>` : ""}
 ${t.directAnswer ? `<section><h2>Summary</h2><p>${esc(sub(t.directAnswer))}</p></section>` : ""}
 ${withToc(linkPropertyImages(renderCompareBody(t.body, plans), a.handoff ?? []), lang)}
+${
+  // 実地レポート（一次データ・E-E-A-T/GEOの核）。本文直後に静的HTMLで焼き込み。空なら出さない。
+  a.fieldReport
+    ? `<section class="field-report"><h2>${lang === "ja" ? `実地レポート${a.fieldReportMode === "assumed" ? "（編集部の想定・実測前）" : "（実測）"}` : "Field report"}</h2>${renderMarkdown(a.fieldReport)}</section>`
+    : ""
+}
+${
+  // 通信カテゴリの定型: priceBindings のプラン表を FAQ 直前に自動挿入（最新価格をSSRで焼き込み＝GEO/堀）
+  a.priceBindings && a.priceBindings.length
+    ? `<section><h2>${lang === "ja" ? "現在のプランと価格" : "Current plans & prices"}</h2>${buildCompareTableHtml(a.priceBindings, plans, meta, asOfDate)}<p><a href="https://yah.mobi/app?ref=${esc(a.slug)}">${lang === "ja" ? "yah.mobileでeSIMを購入する →" : "Get your Japan eSIM at yah.mobile →"}</a></p></section>`
+    : ""
+}
+${
+  // compare/vs記事の定型: 本体 competitorPlans SSOT の「How we compare.」比較表を FAQ 直前に挿入
+  a.showCompetitorTable && competitor
+    ? `<section><h2>${lang === "ja" ? "他社との比較" : "How we compare"}</h2>${buildCompetitorTableHtml(competitor, lang)}</section>`
+    : ""
+}
 ${
   t.faq && t.faq.length
     ? `<section><h2>${lang === "ja" ? "よくある質問" : "FAQ"}</h2>${t.faq
@@ -450,7 +662,7 @@ ${
         .join("\n")}</section>`
     : ""
 }
-<footer><p><a href="https://yah.mobi/app">Get a Japan eSIM at yah.mobile</a> · <a href="https://yah.homes">Stay in Fukuoka with yah.homes</a></p></footer>
+<footer><p><a href="https://yah.mobi/app?ref=${esc(a.slug)}">Get a Japan eSIM at yah.mobile</a> · <a href="https://yah.homes">Stay in Fukuoka with yah.homes</a></p></footer>
 </article>
 </div>`;
 }
@@ -466,14 +678,17 @@ async function renderArticlePage(slug: string, lang: Lang): Promise<{ status: nu
   const t = a.translations[lang] ?? a.translations.ja ?? Object.values(a.translations)[0];
   if (!t) return { status: 404, html: template };
 
-  // 価格プランを読み込み、{{price}} / CompareGrid を SSR で焼き込む（GEO: クローラーに数値を見せる）
-  const plans = a.priceBindings && a.priceBindings.length ? await getPlans() : [];
+  // 価格プランと競合比較表を SSR で焼き込む（GEO: クローラーに数値を見せる）。必要な記事だけ取得。
+  const [plans, competitor] = await Promise.all([
+    a.priceBindings && a.priceBindings.length ? getPlans() : Promise.resolve([] as Plan[]),
+    a.showCompetitorTable ? getCompetitorTable() : Promise.resolve(null),
+  ]);
   const meta = computePriceMeta(plans);
 
   // <title> をテンプレートから除去してから head タグ群を注入（重複防止）
   let html = template.replace(/<title>[\s\S]*?<\/title>/, "");
   html = html.replace("</head>", `    ${buildHeadTags(a, t, lang, plans, meta)}\n  </head>`);
-  html = html.replace(/(<body[^>]*>)/, `$1\n${buildSeoContent(a, t, lang, plans, meta)}`);
+  html = html.replace(/(<body[^>]*>)/, `$1\n${buildSeoContent(a, t, lang, plans, meta, competitor)}`);
   return { status: 200, html };
 }
 
@@ -503,6 +718,13 @@ export const seoserver = onRequest(
         res.set("Cache-Control", "public, max-age=300, s-maxage=600");
         res.set("Access-Control-Allow-Origin", "*");
         res.send(await renderHomesFeed());
+        return;
+      }
+      if (reqPath === "/feeds/esim.json") {
+        res.set("Content-Type", "application/json; charset=utf-8");
+        res.set("Cache-Control", "public, max-age=300, s-maxage=600");
+        res.set("Access-Control-Allow-Origin", "*");
+        res.send(await renderEsimFeed());
         return;
       }
       const m = reqPath.match(/^\/articles\/([a-z0-9-]+)\/?$/);

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import {
@@ -7,10 +7,12 @@ import {
   updateArticleMeta,
   upsertTranslation as upsertTranslationDoc,
   uploadImageFile,
-  listPlans,
+  listSelfPlansFromSSOT,
   listAuthors,
+  getCompetitorTableFromSSOT,
+  type CompetitorTable,
 } from "@/lib/db";
-import { renderCompareBody } from "@/lib/compareGrid";
+import { renderCompareBody, buildCompareTableHtml, computePriceMeta } from "@/lib/compareGrid";
 import { CATEGORIES, LANGS as ALL_LANGS, type Lang, type SchemaType, type ArticleStatus, type CategorySlug, type ArticleTranslation, type Layer, type PageType, type Hesitation, type DistributionSurface } from "@shared/types";
 import { useAuth } from "@/_core/hooks/useAuth";
 
@@ -58,6 +60,56 @@ const toggleCsv = (csv: string, v: string): string => {
 const emptyTranslation = (): ArticleTranslation => ({
   title: "", excerpt: "", body: "", directAnswer: "", metaTitle: "", metaDescription: "",
 });
+
+// 内容に応じて高さが伸びるtextarea（固定高さ＋スクロールをやめ、コピー量で枠が育つ）
+function AutoTextarea({
+  value, onChange, minHeight = 44, style, ...rest
+}: {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  minHeight?: number;
+  style?: React.CSSProperties;
+  placeholder?: string;
+}) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.max(el.scrollHeight, minHeight)}px`;
+  }, [value, minHeight]);
+  return (
+    <textarea
+      {...rest}
+      ref={ref}
+      value={value}
+      onChange={onChange}
+      rows={1}
+      style={{ ...style, minHeight, height: "auto", resize: "none", overflow: "hidden" }}
+    />
+  );
+}
+
+// プレビューを公開実物（seoserver）と一致させる: 競合比較表HTML（buildCompetitorTableHtml と同等）
+const escHtml = (s: unknown) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+function buildCompetitorHtmlPreview(table: CompetitorTable | null): string {
+  if (!table || !table.columns.length || !table.rows.length) return "";
+  const head = table.columns.map((c) => `<th>${escHtml(c.label)}</th>`).join("");
+  const body = table.rows
+    .map((r) => {
+      const style = r.isHighlight ? ' style="font-weight:700;background:#EAF7EE;"' : "";
+      const tds = table.columns
+        .map((c, i) => `<td${i === 0 ? style : ""}>${escHtml(c.id === "service" ? r.serviceName : (r.cells[c.id] ?? "—"))}</td>`)
+        .join("");
+      return `<tr${r.isHighlight ? style : ""}>${tds}</tr>`;
+    })
+    .join("");
+  const date = table.updatedAt ? new Date(table.updatedAt).toISOString().slice(0, 10) : "";
+  return (
+    `<table class="competitor-grid"><caption style="caption-side:top;text-align:left;font-size:0.8em;color:#666;padding-bottom:0.4em;">${escHtml(date)} 時点の比較（他社は概算・自社が最安を強調）</caption>` +
+    `<thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`
+  );
+}
 
 /** 固定選択肢をチップ式で選ぶ（値は既存のカンマ区切り文字列を維持）。 */
 function ChipToggles({ options, csv, onChange }: {
@@ -148,6 +200,7 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadingInlineImage, setUploadingInlineImage] = useState(false);
+  const [uploadingFieldImage, setUploadingFieldImage] = useState(false);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -162,13 +215,22 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
   const [distribution, setDistribution] = useState("esim");
   const [market, setMarket] = useState("");
   const [authorId, setAuthorId] = useState("");
+  // 通信カテゴリ: FAQ直前に自動挿入されるプラン表（自社SSOT docID・カンマ区切り）
+  const [priceBindings, setPriceBindings] = useState("");
+  // compare/vs記事: 本体 competitorPlans SSOT の比較表を挿入
+  const [showCompetitorTable, setShowCompetitorTable] = useState(false);
+  // 実地レポート（一次データ）。AI本文と独立に後から追記・修正。
+  const [fieldReport, setFieldReport] = useState("");
+  const [fieldReportMode, setFieldReportMode] = useState<"field" | "assumed" | "">("");
 
   // Translations per lang
   const [translations, setTranslations] = useState<Record<Lang, ArticleTranslation>>({
     ja: emptyTranslation(), en: emptyTranslation(), ko: emptyTranslation(), "zh-TW": emptyTranslation(), th: emptyTranslation(),
   });
 
-  const isAdmin = !!user && user.role === "admin";
+  // CMS は編集者（editor）も使う。ただし status の変更（公開・非公開）は admin のみ（firestore.rules で強制）。
+  const isAdmin = !!user && (user.role === "admin" || user.role === "editor");
+  const canPublish = user?.role === "admin";
 
   const { data: existingData } = useQuery({
     queryKey: ["cms", "article", articleId],
@@ -176,7 +238,9 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     enabled: articleId !== null && isAdmin,
   });
   // 価格プラン（プレビューで {{price}} 焼き込み・CompareGrid 表を実値表示）
-  const { data: plans = [] } = useQuery({ queryKey: ["plans"], queryFn: listPlans, staleTime: 5 * 60_000, enabled: isAdmin });
+  const { data: competitorTable = null } = useQuery({ queryKey: ["plans", "ssot-competitor"], queryFn: getCompetitorTableFromSSOT, staleTime: 5 * 60_000, enabled: isAdmin });
+  // プラン表チップは自社（yah.mobile SSOT）のみ。競合は「競合比較表」トグルで別枠に出す。
+  const { data: selfPlans = [] } = useQuery({ queryKey: ["plans", "ssot-self"], queryFn: listSelfPlansFromSSOT, staleTime: 5 * 60_000, enabled: isAdmin });
   // 著者マスタ。新規記事ではログインメールと一致する著者をデフォルト選択（Auth連携）
   const { data: authors = [] } = useQuery({ queryKey: ["cms", "authors"], queryFn: listAuthors, staleTime: 5 * 60_000, enabled: isAdmin });
   useEffect(() => {
@@ -204,6 +268,10 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
       setDistribution((existingData.distribution ?? ["esim"]).join(", "));
       setMarket((existingData.market ?? []).join(", "));
       setAuthorId(existingData.author?.id ?? "");
+      setPriceBindings((existingData.priceBindings ?? []).join(", "));
+      setShowCompetitorTable(existingData.showCompetitorTable ?? false);
+      setFieldReport(existingData.fieldReport ?? "");
+      setFieldReportMode(existingData.fieldReportMode ?? "");
       setTranslations((prev) => {
         const next = { ...prev };
         for (const l of LANGS) {
@@ -226,6 +294,10 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     confirmedDate: confirmedDate || null,
     distribution: parseList(distribution) as DistributionSurface[],
     market: parseList(market),
+    priceBindings: parseList(priceBindings),
+    showCompetitorTable,
+    fieldReport: fieldReport.trim() || null,
+    fieldReportMode: fieldReport.trim() ? (fieldReportMode || "field") : null,
     author: (() => {
       const a = authors.find((x) => x.id === authorId);
       return a ? { id: a.id, name: a.name, title: a.title, photoUrl: a.photoUrl } : null;
@@ -245,6 +317,16 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     mutationFn: () => updateArticleMeta(articleId!, { categorySlug, schemaType, status, thumbnailUrl: thumbnailUrl || null, ...v9Fields() }),
     onSuccess: () => toast.success("記事を更新しました。"),
     onError: () => toast.error("更新に失敗しました。"),
+  });
+
+  // 実地レポート専用保存（記事レベル・翻訳保存や設定更新と取り違えないよう独立ボタンに）
+  const saveFieldReport = useMutation({
+    mutationFn: () => updateArticleMeta(articleId!, {
+      fieldReport: fieldReport.trim() || null,
+      fieldReportMode: fieldReport.trim() ? (fieldReportMode || "field") : null,
+    }),
+    onSuccess: () => toast.success("実地レポートを保存しました。"),
+    onError: () => toast.error("実地レポートの保存に失敗しました。"),
   });
 
   const upsertTranslation = useMutation({
@@ -327,6 +409,33 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
     setIsDraggingOver(false);
     const file = e.dataTransfer.files?.[0];
     if (file && file.type.startsWith("image/")) void processInlineImageFile(file);
+  };
+
+  // 実地レポート（一次データ）の画像: 末尾にMarkdown画像を追記／サムネの✕で削除
+  const processFieldReportImage = async (file: File) => {
+    if (file.size > 8 * 1024 * 1024) { toast.error("画像は8MB以内にしてください。"); return; }
+    if (!["image/jpeg", "image/png", "image/webp", "image/gif"].includes(file.type)) { toast.error("JPEG・PNG・WebP・GIF のみ対応しています。"); return; }
+    setUploadingFieldImage(true);
+    try {
+      const url = await uploadImageFile(file, "images");
+      const alt = file.name.replace(/\.[^.]+$/, "");
+      setFieldReport((prev) => `${prev}${prev && !prev.endsWith("\n") ? "\n" : ""}\n![${alt}](${url})\n`);
+      toast.success("画像を追加しました。");
+    } catch {
+      toast.error("画像のアップロードに失敗しました。");
+    } finally {
+      setUploadingFieldImage(false);
+    }
+  };
+  const handleFieldReportImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) void processFieldReportImage(file);
+    e.target.value = "";
+  };
+  // fieldReport本文中の Markdown画像 ![alt](url) を抽出（サムネ一覧・削除用）
+  const fieldReportImages = Array.from(fieldReport.matchAll(/!\[[^\]]*\]\(([^)]+)\)/g)).map((m) => ({ full: m[0], url: m[1] }));
+  const removeFieldReportImage = (full: string) => {
+    setFieldReport((prev) => prev.replace(full, "").replace(/\n{3,}/g, "\n\n"));
   };
 
   const handleSaveMeta = () => {
@@ -416,15 +525,26 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
               </h1>
             </div>
             {articleId && (
-              <a
-                href={`/articles/${slug}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "rgba(255,255,255,0.6)", display: "flex", alignItems: "center", gap: "0.375rem", fontSize: "0.75rem" }}
-              >
-                <Eye size={13} strokeWidth={1.5} />
-                プレビュー
-              </a>
+              status === "published" ? (
+                <a
+                  href={`/articles/${slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "rgba(255,255,255,0.6)", display: "flex", alignItems: "center", gap: "0.375rem", fontSize: "0.75rem" }}
+                  title="公開ページを別タブで開く"
+                >
+                  <Eye size={13} strokeWidth={1.5} />
+                  公開ページ ↗
+                </a>
+              ) : (
+                <span
+                  style={{ color: "rgba(255,255,255,0.3)", display: "flex", alignItems: "center", gap: "0.375rem", fontSize: "0.75rem", cursor: "not-allowed" }}
+                  title="下書き（draft）は公開ページに出ません。編集画面のプレビュー（本文ツールバーのプレビュー）で確認してください。公開後にここから開けます。"
+                >
+                  <Eye size={13} strokeWidth={1.5} />
+                  公開ページ（未公開）
+                </span>
+              )
             )}
           </div>
         </div>
@@ -466,11 +586,11 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                 </div>
                 <div>
                   <label style={labelStyle}>抜粋</label>
-                  <textarea value={currentTranslation.excerpt} onChange={(e) => updateTranslation("excerpt", e.target.value)} style={{ ...inputStyle, height: "80px", resize: "vertical" }} placeholder="記事の概要（一覧ページに表示）" />
+                  <AutoTextarea value={currentTranslation.excerpt} onChange={(e) => updateTranslation("excerpt", e.target.value)} minHeight={64} style={inputStyle} placeholder="記事の概要（一覧ページに表示）" />
                 </div>
                 <div>
                   <label style={labelStyle}>直接回答ブロック（GEO最適化）</label>
-                  <textarea value={currentTranslation.directAnswer} onChange={(e) => updateTranslation("directAnswer", e.target.value)} style={{ ...inputStyle, height: "80px", resize: "vertical" }} placeholder="AIや検索エンジンへの直接回答テキスト" />
+                  <AutoTextarea value={currentTranslation.directAnswer} onChange={(e) => updateTranslation("directAnswer", e.target.value)} minHeight={64} style={inputStyle} placeholder="AIや検索エンジンへの直接回答テキスト" />
                 </div>
                 <div>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
@@ -540,13 +660,40 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                       }}
                       placeholder="# 見出し&#10;&#10;本文をMarkdown形式で入力してください。&#10;画像はドラッグ&amp;ドロップまたは「画像を挿入」ボタンでアップロードできます。"
                     />
-                    {preview && (
-                      <div
-                        className="prose-yah"
-                        style={{ height: "500px", overflowY: "auto", padding: "1rem 1.25rem", backgroundColor: "#F7F7F7", border: "1px solid #D7D7D7" }}
-                        dangerouslySetInnerHTML={{ __html: linkPropertyImages(renderCompareBody(currentTranslation.body, plans, renderMarkdown), parseList(handoff)) }}
-                      />
-                    )}
+                    {preview && (() => {
+                      // 公開実物（seoserver buildSeoContent）と同じ順序で組む: 本文 → プラン表 → 競合表 → FAQ。
+                      // 何が起きてもプレビューでアプリを白画面にしないため、全体を try/catch で保護し本文だけは必ず出す。
+                      let inner = "";
+                      try {
+                        const bindings = parseList(priceBindings);
+                        const previewAsOf = confirmedDate
+                          ? new Date(confirmedDate + "T00:00:00+09:00").toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo", year: "numeric", month: "long", day: "numeric" })
+                          : undefined;
+                        const bodyHtml = linkPropertyImages(renderCompareBody(currentTranslation.body ?? "", selfPlans, renderMarkdown), parseList(handoff));
+                        const fieldHtml = fieldReport.trim()
+                          ? `<section style="border-left:3px solid #1a7f37;background:#F7FBF8;padding:1rem 1.25rem;margin-top:1rem"><h2>実地レポート${fieldReportMode === "assumed" ? "（編集部の想定・実測前）" : "（実測）"}</h2>${renderMarkdown(fieldReport)}</section>`
+                          : "";
+                        const planHtml = bindings.length
+                          ? `<section><h2>現在のプランと価格</h2>${buildCompareTableHtml(bindings, selfPlans, computePriceMeta(selfPlans), previewAsOf)}<p><a href="#">yah.mobileでeSIMを購入する →</a></p></section>`
+                          : "";
+                        const compHtml = showCompetitorTable
+                          ? `<section><h2>他社との比較</h2>${buildCompetitorHtmlPreview(competitorTable)}</section>`
+                          : "";
+                        const faqHtml = faqItems.length
+                          ? `<section><h2>よくある質問</h2>${faqItems.map((f) => `<h3>${escHtml(f?.q)}</h3><p>${escHtml(f?.a)}</p>`).join("")}</section>`
+                          : "";
+                        inner = bodyHtml + fieldHtml + planHtml + compHtml + faqHtml;
+                      } catch (err) {
+                        inner = `<p style="color:#b00">プレビューの生成に失敗しました（内容は保存に影響しません）: ${escHtml(String(err))}</p>`;
+                      }
+                      return (
+                        <div
+                          className="prose-yah"
+                          style={{ height: "500px", overflowY: "auto", padding: "1rem 1.25rem", backgroundColor: "#F7F7F7", border: "1px solid #D7D7D7" }}
+                          dangerouslySetInnerHTML={{ __html: inner }}
+                        />
+                      );
+                    })()}
                   </div>
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
@@ -559,6 +706,35 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                     <input type="text" value={currentTranslation.metaDescription} onChange={(e) => updateTranslation("metaDescription", e.target.value)} style={inputStyle} placeholder="SEO用説明文（省略可）" />
                   </div>
                 </div>
+                {categorySlug === "esim" && (
+                  <div style={{ border: "1px solid #D7D7D7", backgroundColor: "#FAFAFA", padding: "1rem" }}>
+                    <label style={labelStyle}>プラン表（通信カテゴリ・FAQの直前に自動挿入）</label>
+                    <p style={{ fontSize: "0.6875rem", color: "#999", margin: "0 0 0.5rem" }}>
+                      自社（yah.mobile）プランのみ。選択したプランが最新価格（本体SSOTと同一ソース）で配信時に焼き込まれます。競合は下の「競合比較表」で。本文に価格を直書きしないでください。
+                    </p>
+                    <ChipToggles
+                      options={selfPlans.map((p) => ({ value: p.key, label: `${p.provider} ${p.days}日/${p.data} ¥${p.priceJpy.toLocaleString()}` }))}
+                      csv={priceBindings}
+                      onChange={setPriceBindings}
+                    />
+                    {parseList(priceBindings).length > 0 && (
+                      <div
+                        className="prose-yah"
+                        style={{ marginTop: "0.75rem", padding: "0.75rem", backgroundColor: "#FFFFFF", border: "1px solid #E5E5E5" }}
+                        dangerouslySetInnerHTML={{ __html: buildCompareTableHtml(parseList(priceBindings), selfPlans, computePriceMeta(selfPlans), confirmedDate ? new Date(confirmedDate + "T00:00:00+09:00").toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo", year: "numeric", month: "long", day: "numeric" }) : undefined) }}
+                      />
+                    )}
+                    <p style={{ fontSize: "0.625rem", color: "#999", margin: "0.5rem 0 0" }}>保存は右の「記事設定を保存」（記事レベルの設定・全言語共通）。価格の追加・修正は <a href="/admin/plans" style={{ textDecoration: "underline" }}>プラン価格管理</a> から。</p>
+
+                    <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "1rem", fontSize: "0.8125rem", cursor: "pointer" }}>
+                      <input type="checkbox" checked={showCompetitorTable} onChange={(e) => setShowCompetitorTable(e.target.checked)} />
+                      競合比較表「How we compare.」を挿入（本体 competitorPlans SSOT・compare/vs記事用）
+                    </label>
+                    <p style={{ fontSize: "0.625rem", color: "#999", margin: "0.25rem 0 0" }}>
+                      オンにすると、本体（yah.mobi/admin/competitorPlans）で管理する自社＋競合の比較表がFAQ直前に自動挿入されます。競合価格を本文に書く必要はありません。
+                    </p>
+                  </div>
+                )}
                 <div>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
                     <label style={{ ...labelStyle, marginBottom: 0 }}>FAQ（FAQPage Schema）</label>
@@ -571,10 +747,78 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                         <input type="text" value={f.q} onChange={(e) => updateFaqItem(i, "q", e.target.value)} style={{ ...inputStyle, flex: 1 }} placeholder="質問" />
                         <button onClick={() => removeFaq(i)} type="button" style={{ background: "none", border: "1px solid #D7D7D7", padding: "0.5rem", cursor: "pointer", color: "#999" }} title="削除"><X size={13} /></button>
                       </div>
-                      <textarea value={f.a} onChange={(e) => updateFaqItem(i, "a", e.target.value)} style={{ ...inputStyle, height: "60px", resize: "vertical" }} placeholder="回答" />
+                      <AutoTextarea value={f.a} onChange={(e) => updateFaqItem(i, "a", e.target.value)} minHeight={56} style={inputStyle} placeholder="回答" />
                     </div>
                   ))}
                 </div>
+
+                {/* 実地レポート（一次データ）— AI本文と独立。後から追記・修正できる。空なら「準備中」。 */}
+                <div style={{ border: "1px solid #D7D7D7", backgroundColor: "#FAFAFA", padding: "1rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.25rem" }}>
+                    <label style={{ ...labelStyle, marginBottom: 0 }}>実地レポート（一次データ）</label>
+                    <span style={{ fontSize: "0.6875rem", fontWeight: 600, color: !fieldReport.trim() ? "#999" : fieldReportMode === "assumed" ? "#B45309" : "#1a7f37" }}>
+                      {!fieldReport.trim() ? "準備中（未取得）" : fieldReportMode === "assumed" ? "想定（実測前）" : "実地✓"}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: "0.6875rem", color: "#999", margin: "0 0 0.5rem" }}>
+                    実際に使った/測った一次データを記入（日時・場所・機種・速度・スクショ・正直な評価・開示）。**必須ではない**が、記事の信頼とAI引用の核。空の間は記事に出ません。保存は右の「記事設定を保存」。
+                  </p>
+                  <div style={{ display: "flex", gap: "0.75rem", alignItems: "center", marginBottom: "0.5rem" }}>
+                    <label style={{ fontSize: "0.75rem", color: "#555" }}>種別:</label>
+                    <select value={fieldReportMode} onChange={(e) => setFieldReportMode(e.target.value as "field" | "assumed" | "")} style={{ ...inputStyle, width: "auto", padding: "0.4rem 0.6rem", fontSize: "0.8125rem" }}>
+                      <option value="field">実地（実際に測定・検証した）</option>
+                      <option value="assumed">想定（実測前・編集部の見込み）</option>
+                    </select>
+                  </div>
+                  <AutoTextarea
+                    value={fieldReport}
+                    onChange={(e) => setFieldReport(e.target.value)}
+                    minHeight={140}
+                    style={{ ...inputStyle, fontFamily: "monospace", fontSize: "0.8125rem" }}
+                    placeholder={"例）\n2026-07-20 東海道新幹線（東京→新大阪）iPhone 15 で実測。\n\n| 項目 | 結果 |\n|---|---|\n| 平均速度 | 32Mbps |\n| IP国 | Japan |\n| ChatGPT | ○ 快適 |\n\n正直な評価: トンネルで数秒切れるが復帰は速い。動画は問題なし。\n開示: yah.mobileは当社製品。競合も実際に購入して同条件でテストしています。"}
+                  />
+
+                  {/* 画像: 追加ボタン＋サムネ（✕で削除）。本文と独立に一次データの写真を管理 */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.5rem" }}>
+                    <label
+                      style={{ fontSize: "0.6875rem", color: uploadingFieldImage ? "#999" : "#333", background: "none", border: "1px solid #D7D7D7", padding: "0.3rem 0.7rem", cursor: uploadingFieldImage ? "not-allowed" : "pointer", display: "inline-flex", alignItems: "center", gap: "0.375rem" }}
+                      title="実測スクショ・実物写真を追加（末尾に挿入）"
+                    >
+                      <ImagePlus size={12} strokeWidth={1.5} />
+                      {uploadingFieldImage ? "アップロード中..." : "画像を追加"}
+                      <input type="file" accept="image/*" onChange={handleFieldReportImageSelect} disabled={uploadingFieldImage} style={{ display: "none" }} />
+                    </label>
+                    <span style={{ fontSize: "0.625rem", color: "#999" }}>実測スクショ・実物写真（末尾に追加。位置は本文内の ![](…) で調整可）</span>
+                  </div>
+                  {fieldReportImages.length > 0 && (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginTop: "0.5rem" }}>
+                      {fieldReportImages.map((img, i) => (
+                        <div key={i} style={{ position: "relative", width: "72px", height: "72px", border: "1px solid #E5E5E5", borderRadius: "4px", overflow: "hidden", background: "#fff" }}>
+                          <img src={img.url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                          <button
+                            type="button"
+                            onClick={() => removeFieldReportImage(img.full)}
+                            title="この画像を削除"
+                            style={{ position: "absolute", top: "2px", right: "2px", width: "18px", height: "18px", borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.6)", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
+                          >
+                            <X size={11} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => saveFieldReport.mutate()}
+                    disabled={saveFieldReport.isPending || !articleId}
+                    className="btn-primary"
+                    style={{ marginTop: "0.75rem", justifyContent: "center", opacity: (saveFieldReport.isPending || !articleId) ? 0.6 : 1, display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.8125rem", padding: "0.5rem 1rem" }}
+                  >
+                    <Save size={12} strokeWidth={1.5} />
+                    {saveFieldReport.isPending ? "保存中..." : "実地レポートを保存"}
+                  </button>
+                </div>
+
                 <button
                   onClick={handleSaveTranslation}
                   disabled={upsertTranslation.isPending || !articleId}
@@ -625,11 +869,22 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
 
             <div>
               <label style={labelStyle}>ステータス</label>
-              <select value={status} onChange={(e) => setStatus(e.target.value as ArticleStatus)} style={{ ...inputStyle, appearance: "none" }}>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value as ArticleStatus)}
+                disabled={!canPublish}
+                style={{ ...inputStyle, appearance: "none", opacity: canPublish ? 1 : 0.6, cursor: canPublish ? "pointer" : "not-allowed" }}
+                title={canPublish ? undefined : "公開・非公開の切替は管理者のみが行えます"}
+              >
                 <option value="draft">下書き (draft)</option>
                 <option value="published">公開 (published)</option>
                 <option value="archived">アーカイブ (archived)</option>
               </select>
+              {!canPublish && (
+                <p style={{ fontSize: "0.75rem", color: "#999999", marginTop: "0.375rem", lineHeight: 1.6 }}>
+                  編集者権限では公開状態を変更できません。仕上がったら管理者に公開を依頼してください。
+                </p>
+              )}
             </div>
 
             <div style={{ borderTop: "1px solid #E5E5E5", paddingTop: "1.25rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
@@ -644,6 +899,7 @@ export default function CmsArticleEdit({ articleId }: CmsArticleEditProps) {
                   <option value="1.5">1.5: 旅のハウツー</option>
                   <option value="3">3: 福岡実測データ</option>
                   <option value="season">季節</option>
+                  <option value="権威">権威: 知識/GEO素材（eSIMとは 等）</option>
                 </select>
               </div>
               <div>

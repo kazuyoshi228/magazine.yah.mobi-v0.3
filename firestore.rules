@@ -3,14 +3,32 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // 管理者判定: ①カスタムクレーム admin（ブートストラップ用・set-admin.mjs）
-    // または ②admin_whitelist コレクションにログインメールが登録済み。
+    // 権限判定: ①カスタムクレーム admin（ブートストラップ用・set-admin.mjs）
+    // または ②admin_whitelist にログインメールが登録済み（role: "admin" | "editor"）。
     // whitelist 方式はトークン更新を待たず追加即時反映される。
+    function inWhitelist() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && exists(/databases/$(database)/documents/admin_whitelist/$(request.auth.token.email));
+    }
+    // role 未設定の既存エントリは "admin" 扱い（後方互換。既存管理者を締め出さない）
+    function wlRole() {
+      return get(/databases/$(database)/documents/admin_whitelist/$(request.auth.token.email)).data.get("role", "admin");
+    }
     function isAdmin() {
       return request.auth != null && (
         request.auth.token.admin == true ||
-        exists(/databases/$(database)/documents/admin_whitelist/$(request.auth.token.email))
+        (inWhitelist() && wlRole() == "admin")
       );
+    }
+    // editor（外注編集者・翻訳者）: 記事は編集できるが status を変更できない。
+    // ＝「Claude/外注は公開しない。公開は人間(admin)が行う」(CLAUDE.md 鉄則①) を
+    //   運用ルールでなくシステムで担保するための境界。
+    function isEditor() {
+      return inWhitelist() && wlRole() == "editor";
+    }
+    function isStaff() {
+      return isAdmin() || isEditor();
     }
 
     // ─── 管理者ホワイトリスト（email をドキュメントIDに使用） ───────────────
@@ -26,21 +44,27 @@ service cloud.firestore {
     }
 
     // ─── 記事 ──────────────────────────────────────────────────────────────
-    // 公開記事は誰でも読める。作成・更新・削除・下書き閲覧は admin のみ。
+    // 公開記事は誰でも読める。下書き閲覧・編集は staff（admin/editor）。
+    // status の変更（＝公開・非公開の切替）と削除は admin のみ。
     // 一覧クエリは where("status","==","published") を含む場合のみ一般公開される。
     match /articles/{slug} {
-      allow read: if resource.data.status == "published" || isAdmin();
-      allow create: if isAdmin()
-        && request.resource.data.slug == slug
-        && request.resource.data.status in ["draft", "published", "archived"];
-      allow update: if isAdmin();
+      allow read: if resource.data.status == "published" || isStaff();
+      allow create: if request.resource.data.slug == slug && (
+        (isAdmin() && request.resource.data.status in ["draft", "published", "archived"]) ||
+        (isEditor() && request.resource.data.status == "draft")
+      );
+      allow update: if isAdmin() || (
+        isEditor() && request.resource.data.status == resource.data.status
+      );
       allow delete: if isAdmin();
     }
 
-    // ─── 著者マスタ（email を含むため admin のみ）──────────────────────────
+    // ─── 著者マスタ（email を含む）─────────────────────────────────────────
+    // 読みは staff（CMSの著者選択に必要）。編集は admin のみ。
     // 公開面（記事・feed）へは記事ドキュメントへのスナップショット（author）で反映。
     match /authors/{id} {
-      allow read, write: if isAdmin();
+      allow read: if isStaff();
+      allow write: if isAdmin();
     }
 
     // ─── 価格プラン（CompareGrid・価格の単一ソース） ─────────────────────────

@@ -16,6 +16,7 @@ import CmsArticleEdit from "./pages/CmsArticleEdit";
 import AdminWhitelist from "./pages/AdminWhitelist";
 import AdminWriter from "./pages/AdminWriter";
 import AdminAuthors from "./pages/AdminAuthors";
+import AdminPlans from "./pages/AdminPlans";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
@@ -44,6 +45,7 @@ function Router({ lang, onLangChange }: { lang: Lang; onLangChange: (l: Lang) =>
           <Route path="/admin/whitelist" component={AdminWhitelist} />
           <Route path="/admin/writer" component={AdminWriter} />
           <Route path="/admin/authors" component={AdminAuthors} />
+          <Route path="/admin/plans" component={AdminPlans} />
           <Route path="/login" component={Login} />
           <Route path="/404" component={NotFound} />
           <Route component={NotFound} />

@@ -1,8 +1,8 @@
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Wifi, UtensilsCrossed, MapPin } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { getArticleBySlug, listPlans } from "@/lib/db";
-import { renderCompareBody, substitutePlaceholders, computePriceMeta } from "@/lib/compareGrid";
+import { getArticleBySlug, listPlans, getCompetitorTableFromSSOT, type CompetitorTable } from "@/lib/db";
+import { renderCompareBody, substitutePlaceholders, computePriceMeta, buildCompareTableHtml } from "@/lib/compareGrid";
 import SeoHead from "@/components/SeoHead";
 import type { Lang } from "@/components/Header";
 import { useAnalytics } from "@/hooks/useAnalytics";
@@ -72,7 +72,7 @@ function buildArticleSchema(article: any, translation: any, lang: string) {
   return {
     "@context": "https://schema.org",
     "@type": schemaType,
-    headline: translation?.title ?? "",
+    headline: displayTitle(translation?.title),
     description: translation?.excerpt ?? translation?.metaDescription ?? "",
     image: article.articles?.thumbnailUrl ?? undefined,
     datePublished: article.articles?.publishedAt ? new Date(article.articles.publishedAt).toISOString() : undefined,
@@ -90,6 +90,34 @@ function buildArticleSchema(article: any, translation: any, lang: string) {
   };
 }
 
+// 管理用プレフィックス「W1-03｜」を読者向け表示から除去（CMS一覧では保持）
+function displayTitle(t: string | null | undefined): string {
+  return (t ?? "").replace(/^W\d+-\d+\s*[｜|]\s*/, "");
+}
+
+// 競合比較表「How we compare.」を公開ページ用HTMLに（seoserver buildCompetitorTableHtml と同等）
+function escHtml(s: unknown): string {
+  return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function buildCompetitorHtml(table: CompetitorTable | null): string {
+  if (!table || !table.columns.length || !table.rows.length) return "";
+  const head = table.columns.map((c) => `<th>${escHtml(c.label)}</th>`).join("");
+  const body = table.rows
+    .map((r) => {
+      const style = r.isHighlight ? ' style="font-weight:700;background:#EAF7EE;"' : "";
+      const tds = table.columns
+        .map((c, i) => `<td${i === 0 ? style : ""}>${escHtml(c.id === "service" ? r.serviceName : (r.cells[c.id] ?? "—"))}</td>`)
+        .join("");
+      return `<tr${r.isHighlight ? style : ""}>${tds}</tr>`;
+    })
+    .join("");
+  const date = table.updatedAt ? new Date(table.updatedAt).toISOString().slice(0, 10) : "";
+  return (
+    `<table class="competitor-grid"><caption style="caption-side:top;text-align:left;font-size:0.8em;color:#666;padding-bottom:0.4em;">${escHtml(date)} 時点の比較（他社は概算・自社が最安を強調）</caption>` +
+    `<thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`
+  );
+}
+
 export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
   const cta = CTA_COPY[lang] ?? CTA_COPY.en;
 
@@ -101,6 +129,7 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
   });
   // 価格プラン（CompareGrid・{{price}} 焼き込み）。価格を持たない記事でも実害はない。
   const { data: plans = [] } = useQuery({ queryKey: ["plans"], queryFn: listPlans, staleTime: 5 * 60_000 });
+  const { data: competitorTable = null } = useQuery({ queryKey: ["plans", "ssot-competitor"], queryFn: getCompetitorTableFromSSOT, staleTime: 5 * 60_000 });
   const articleId = data?.article?.articles?.id;
   const { trackCtaClick } = useAnalytics({ articleId });
 
@@ -224,7 +253,7 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
 
           {/* Title */}
           <h1 className="headline-lg" style={{ marginBottom: "1rem" }}>
-            {translation?.title ?? slug}
+            {displayTitle(translation?.title) || slug}
           </h1>
 
           {/* Excerpt */}
@@ -308,6 +337,42 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
             </div>
           )}
 
+          {/* 実地レポート（一次データ）。本文の直後・信頼の核として出す。空なら出さない。 */}
+          {article.articles.fieldReport && (
+            <section
+              className="prose-yah"
+              style={{ marginTop: "2rem", borderLeft: "3px solid #1a7f37", background: "#F7FBF8", padding: "1rem 1.25rem" }}
+            >
+              <h2 style={{ marginTop: 0 }}>
+                実地レポート{article.articles.fieldReportMode === "assumed" ? "（編集部の想定・実測前）" : "（実測）"}
+              </h2>
+              <div dangerouslySetInnerHTML={{ __html: renderMarkdown(article.articles.fieldReport) }} />
+            </section>
+          )}
+
+          {/* プラン表（priceBindings・自社SSOT）。seoserver と同じく本文とFAQの間に出す。 */}
+          {(article.articles.priceBindings?.length ?? 0) > 0 && (() => {
+            const asOf = article.articles.publishedAt
+              ? new Date(article.articles.publishedAt).toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo", year: "numeric", month: "long", day: "numeric" })
+              : undefined;
+            const html = buildCompareTableHtml(article.articles.priceBindings ?? [], plans, computePriceMeta(plans), asOf);
+            if (!html) return null;
+            return (
+              <section className="prose-yah" style={{ marginTop: "2rem" }}>
+                <h2>{lang === "ja" ? "現在のプランと価格" : "Current plans & prices"}</h2>
+                <div dangerouslySetInnerHTML={{ __html: html }} />
+              </section>
+            );
+          })()}
+
+          {/* 競合比較表「How we compare.」（showCompetitorTable・本体SSOT） */}
+          {article.articles.showCompetitorTable && competitorTable && (
+            <section className="prose-yah" style={{ marginTop: "2rem" }}>
+              <h2>{lang === "ja" ? "他社との比較" : "How we compare"}</h2>
+              <div dangerouslySetInnerHTML={{ __html: buildCompetitorHtml(competitorTable) }} />
+            </section>
+          )}
+
           {/* FAQ（CMSのfaqフィールドから自動表示） */}
           {translation?.faq && translation.faq.length > 0 && (
             <section className="md-faq">
@@ -338,7 +403,7 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
               {cta.esimSub}
             </p>
             <a
-              href="https://yah.mobi/app"
+              href={`https://yah.mobi/app?ref=${encodeURIComponent(slug)}`}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackCtaClick("esim_article", articleId)}
@@ -363,34 +428,19 @@ export default function ArticleDetail({ slug, lang }: ArticleDetailProps) {
             </a>
           </div>
 
-          {/* yah.homes CTA */}
-          <div
-            style={{
-              marginTop: "1.5rem",
-              padding: "2rem",
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #D7D7D7",
-            }}
-          >
-            <p className="label-section" style={{ marginBottom: "0.75rem" }}>yah.homes</p>
-            <h3 style={{ fontSize: "1.25rem", fontWeight: 500, marginBottom: "0.75rem", letterSpacing: "-0.02em" }}>
-              {cta.homesHeadline}
-            </h3>
-            <p style={{ fontSize: "0.9375rem", lineHeight: 1.7, color: "#555555", marginBottom: "1.5rem" }}>
-              {cta.homesSub}
-            </p>
+          {/* yah.homes は eSIM記事では主目的（購入）を薄めないよう、極小フッターリンクに降格（1ページ1ジョブ） */}
+          <p style={{ marginTop: "1rem", fontSize: "0.8125rem", color: "#999999" }}>
+            {cta.homesHeadline}{" "}
             <a
               href="https://yah.homes"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackCtaClick("yah_homes", articleId)}
-              className="btn-outline"
+              style={{ color: "#555555", textDecoration: "underline" }}
             >
-              {cta.homesBtn}
-              <ArrowRight size={13} strokeWidth={1.5} />
+              {cta.homesBtn} →
             </a>
-          </div>
-
+          </p>
 
         </div>
       </div>

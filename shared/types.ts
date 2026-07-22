@@ -19,7 +19,7 @@ export type CategorySlug = "esim" | "gadget" | "gourmet" | "travel";
 
 // ─── v9 戦略軸（迷わせない・クエリ層・出力コントラクト） ───────────────────────
 /** クエリ層（v9 §9-1） */
-export type Layer = "M" | "0" | "1" | "1.5" | "3" | "season";
+export type Layer = "M" | "0" | "1" | "1.5" | "3" | "season" | "権威";
 /** 消す離脱理由（v9 §1）: 高いかも / 面倒 / 自分に合うか不安 */
 export type Hesitation = "price" | "hassle" | "anxiety";
 /** 記事 / 受けページ / 格子（v9 §8-1） */
@@ -94,8 +94,14 @@ export interface ArticleDoc {
   sources?: string[];
   /** 配信面（既定: ["esim"]・v9 §7-2） */
   distribution?: DistributionSurface[];
-  /** 動的価格キー（Firestore 束縛・格子/道具用・v9 §5-2） */
+  /** 動的価格キー（自社プラン束縛・SSOT docID を指す・格子/道具用・v9 §5-2） */
   priceBindings?: string[];
+  /** 競合比較表「How we compare.」を FAQ 直前に挿入（本体 competitorPlans SSOT を焼き込む）。compare/vs記事用 */
+  showCompetitorTable?: boolean;
+  /** 実地レポート（一次データ）本文。AI本文とは独立に後から追記・修正できる。空なら「準備中」。当面ja、後で多言語。 */
+  fieldReport?: string | null;
+  /** 実地レポートの種別（正直さの担保）。"field"=実地実測 / "assumed"=編集部の想定（実測前）。 */
+  fieldReportMode?: "field" | "assumed" | null;
   /** rel=canonical（既定: 自 path・v9 出力コントラクト） */
   canonical?: string | null;
   /** 対象市場（KO/TW/TH/HK/SG/ID） */
@@ -199,6 +205,8 @@ export interface ArticleAdminRow {
   /** ultracode QA実施日時（未実施はnull） */
   ultracodeQaAt: number | null;
   ultracodeQaFindings: number;
+  /** 実地レポート（一次データ）の状態: "field"=実測済 / "assumed"=想定 / null=準備中（一覧のバッジ用） */
+  fieldReportStatus?: "field" | "assumed" | null;
   /** 翻訳が存在する言語（一覧の言語バッジ表示用） */
   languages: Lang[];
 }
@@ -219,6 +227,10 @@ export interface ArticleDetailData {
       /** homes専売（magazine表示面では管理者プレビューのみ許可） */
       homesOnly?: boolean;
       handoff?: string[];
+      priceBindings?: string[];
+      showCompetitorTable?: boolean;
+      fieldReport?: string | null;
+      fieldReportMode?: "field" | "assumed" | null;
     };
     categories: Category;
     ai_writers: null; // v1 では著者機能なし
