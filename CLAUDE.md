@@ -33,6 +33,7 @@ functions seoserver → /articles/:slug（SSR+JSON-LD+FAQPage+hreflang+#seo-cont
 ## 鉄則（絶対・v9 §8-2）
 
 0. **仕様書 → 承認 → 実装 → （承認後）デプロイ の手順を必ず踏む。** 実装・本番デプロイはユーザーの明示的な指示があるまで行わない。細部の確認回答を着工・デプロイの承認と解釈しない（2026-07-21 発注者指示・yah.homes-v2/CLAUDE.md と共通ルール）。
+0-2. **デプロイ承認後の作業完了時は `git push` まで行う。** 未プッシュのコミットを溜めない（2026-07-21 発注者指示）。
 
 
 1. **Claude は公開しない。** `status: published` への昇格は人間（編集者が CMS で／`import-md.mjs --allow-publish`）。AI/スクリプトに公開権限を持たせない。
